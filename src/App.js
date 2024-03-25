@@ -2,6 +2,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header";
 import Ticketing from "./pages/ticketing/Ticketing";
+import Homepage from "./pages/homepage/HomePage";
+import MyPage from "./pages/mypage/MyPage";
+import WriteReview from "./components/WriteReview";
+import ViewAll from "./pages/homepage/ViewAll";
+import Community from "./pages/community/Community";
 
 function App() {
   return (
@@ -9,7 +14,11 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="/"></Route>
+          <Route path="/" element={<Homepage />}></Route>
+          <Route path="/writereview" element={<WriteReview />}></Route>
+          <Route path="/community" element={<Community />}></Route>
+          <Route path="/mypage" element={<MyPage />}></Route>
+          <Route path="/viewall" element={<ViewAll />}></Route>
           <Route path="/ticketing" element={<Ticketing />} />
         </Routes>
       </BrowserRouter>

@@ -108,16 +108,18 @@ const Header = ({ isLoggedIn }) => {
           </NavListItem>
           <NavListItem bold>
             <Icon src={navCommIcon} alt="navCommunityIcon" />
-            <li>커뮤니티</li>
+            <li>
+              <Link to="/community">커뮤니티</Link>
+            </li>
           </NavListItem>
           <NavListItem>
-            <Link to="/review">후기</Link>
+            <Link to="/community?selectedItem=2">후기</Link>
           </NavListItem>
           <NavListItem>
-            <Link to="/notice">공지사항</Link>
+            <Link to="/community?selectedItem=1">공지사항</Link>
           </NavListItem>
           <NavListItem>
-            <Link to="/guide">이용안내</Link>
+            <Link to="/community?selectedItem=3">이용안내</Link>
           </NavListItem>
         </ul>
       </Nav>
@@ -142,7 +144,7 @@ const Header = ({ isLoggedIn }) => {
                 <Link to="/signup">회원가입</Link>
               </li>
               <li>
-                <Link to="/login">마이페이지</Link>
+                <Link to="/mypage">마이페이지</Link>
               </li>
             </>
           )}
