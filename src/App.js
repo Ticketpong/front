@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Header from "./components/Header";
 import Ticketing from "./pages/ticketing/Ticketing";
 import Homepage from "./pages/homepage/HomePage";
 import MyPage from "./pages/mypage/MyPage";
@@ -12,7 +11,6 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Header />
         <Routes>
           <Route path="/" element={<Homepage />}></Route>
           <Route path="/writereview" element={<WriteReview />}></Route>
