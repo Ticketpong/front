@@ -9,7 +9,6 @@ import WriteReview from "./components/WriteReview";
 import ViewAll from "./pages/homepage/ViewAll";
 import Community from "./pages/community/Community";
 import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage";
 
 function App() {
   const pathname = window.location.pathname;
@@ -29,7 +28,6 @@ function App() {
           <Route path="/viewall" element={<ViewAll />} />
           <Route path="/ticketing" element={<Ticketing />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
         </Routes>
         {showHF && <Footer />}
       </BrowserRouter>
