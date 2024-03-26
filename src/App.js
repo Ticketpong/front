@@ -8,24 +8,28 @@ import MyPage from "./pages/mypage/MyPage";
 import WriteReview from "./components/WriteReview";
 import ViewAll from "./pages/homepage/ViewAll";
 import Community from "./pages/community/Community";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
 
 function App() {
   const pathname = window.location.pathname;
 
   // 현재 경로가 login, signup이면 false
-  const showHF = !['/login', '/signup'].includes(pathname);
+  const showHF = !["/login", "/signup"].includes(pathname);
 
   return (
     <div className="App">
       <BrowserRouter>
         {showHF && <Header />}
         <Routes>
-          <Route path="/" element={<Homepage />}/>
+          <Route path="/" element={<Homepage />} />
           <Route path="/writereview" element={<WriteReview />} />
           <Route path="/community" element={<Community />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/viewall" element={<ViewAll />} />
           <Route path="/ticketing" element={<Ticketing />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
         </Routes>
         {showHF && <Footer />}
       </BrowserRouter>
