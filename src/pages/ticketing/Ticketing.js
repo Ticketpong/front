@@ -7,12 +7,11 @@ import PlaceMap from "../../components/KakaoMap";
 
 import jsonDataDetail from "../../dummy/show_detail.json";
 import jsonDataTime from "../../dummy/show_time.json";
-import jsonDataReview from "../../dummy/reviews.json";
 import TicketingSelectSeat from "../../features/Ticketing/TicketingSelectSeat";
+import TicketingReview from "../../features/Ticketing/TicketingReview";
 
 export const dataDetail = jsonDataDetail;
 const dataTime = jsonDataTime;
-const dataReview = jsonDataReview;
 
 const Ticketing = () => {
   const navigate = useNavigate();
@@ -232,15 +231,24 @@ const Ticketing = () => {
       <S.ContentWrapper>
         {activeTab === 0 && (
           <S.TabContentDetail>
-            <h2>작품 상세 정보</h2>
-            <S.TabContentDetailImg>
-              <img src={dataDetail.styurl} alt="" />
-            </S.TabContentDetailImg>
+            <S.TabContentWrapper>
+              <h2>작품 상세 정보</h2>
+              <hr />
+              <S.TabContentDetailImg>
+                <img src={dataDetail.styurl} alt="" />
+              </S.TabContentDetailImg>
+            </S.TabContentWrapper>
           </S.TabContentDetail>
         )}
-        {activeTab === 1 && <S.TabContentReview>Review</S.TabContentReview>}
+        {activeTab === 1 && (
+          <S.TabContentReview>
+            <S.TabContentWrapper>
+              <TicketingReview mt20id={dataDetail.mt20id} />
+            </S.TabContentWrapper>
+          </S.TabContentReview>
+        )}
         {activeTab === 2 && (
-          <S.TabContentPlace>
+          <S.TabContentWrapper>
             <h2>공연장 안내</h2>
             <hr />
             <p>장소: {dataDetail.fcltynm}</p>
@@ -255,11 +263,11 @@ const Ticketing = () => {
             >
               길 찾기
             </PongButton>
-          </S.TabContentPlace>
+          </S.TabContentWrapper>
         )}
         {activeTab === 3 && (
           <S.TabContentNotice>
-            <S.TabContentPlace>
+            <S.TabContentWrapper>
               <h2>예매 유의사항</h2>
               <ul>
                 <li>
@@ -309,7 +317,7 @@ const Ticketing = () => {
                 </li>
               </ul>
               <hr />
-            </S.TabContentPlace>
+            </S.TabContentWrapper>
           </S.TabContentNotice>
         )}
       </S.ContentWrapper>
