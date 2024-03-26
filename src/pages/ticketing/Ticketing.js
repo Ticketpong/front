@@ -9,21 +9,13 @@ import jsonDataDetail from "../../dummy/show_detail.json";
 import jsonDataTime from "../../dummy/show_time.json";
 import TicketingSelectSeat from "../../features/Ticketing/TicketingSelectSeat";
 import TicketingReview from "../../features/Ticketing/TicketingReview";
+import TicketingHeader from "../../features/Ticketing/TicketingHeader";
+import TicketingShowInfo from "../../features/Ticketing/TicketingShowInfo";
 
 export const dataDetail = jsonDataDetail;
 const dataTime = jsonDataTime;
 
 const Ticketing = () => {
-  const navigate = useNavigate();
-  const clickHome = () => {
-    navigate("/");
-  };
-  const clickShowList = () => {
-    navigate("/showlist");
-  };
-  const clickGenre = () => {
-    navigate(`/showlist/${dataDetail.genrenm}`);
-  };
   const [selectDate, setSelectDate] = useState("");
   const [showTimes, setShowTimes] = useState([]);
   const [showSeats, setShowSeats] = useState([]);
@@ -72,56 +64,12 @@ const Ticketing = () => {
   return (
     <S.TicketingWrapper>
       <S.ContentWrapper>
-        <S.ContentTitle>
-          <S.NavLocation>
-            <span onClick={clickHome}>HOME</span>
-            <span>/</span>
-            <span onClick={clickShowList}>공연전시예매</span>
-            <span>/</span>
-            <span onClick={clickGenre}>{dataDetail.genrenm}</span>
-          </S.NavLocation>
-          <strong>{dataDetail.prfnm}</strong>
-          <span>
-            {dataDetail.prfpdfrom} ~ {dataDetail.prfpdto}
-          </span>
-        </S.ContentTitle>
+        <TicketingHeader headerData={dataDetail} />
         <S.ContentDetail>
           <S.ContentDetailPoster>
             <img src={dataDetail.poster} alt="" />
           </S.ContentDetailPoster>
-          <S.ContentDetailInfo>
-            <ul>
-              <li>공연일시</li>
-              <span>
-                {dataDetail.prfpdfrom} ~ {dataDetail.prfpdto}
-              </span>
-            </ul>
-            <ul>
-              <li>시간</li>
-              <span>{dataDetail.dtguidance}</span>
-            </ul>
-            <ul>
-              <li>장소</li>
-              <span>{dataDetail.fcltynm}</span>
-            </ul>
-            <ul>
-              <li>관람시간</li>
-              <span>{dataDetail.prfruntime}</span>
-            </ul>
-            <ul>
-              <li>관람등급</li>
-              <span>{dataDetail.prfage}</span>
-            </ul>
-            <ul>
-              <li>문의</li>
-              <span>📞{dataDetail.telno}</span>
-            </ul>
-            <hr />
-            <ul>
-              <li style={{ color: "#AB003C" }}>티켓가격</li>
-              <span>{dataDetail.pcseguidance}</span>
-            </ul>
-          </S.ContentDetailInfo>
+          <TicketingShowInfo showInfoData={dataDetail} />
         </S.ContentDetail>
       </S.ContentWrapper>
       <S.SeatWrapper>
