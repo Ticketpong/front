@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import CommuReview from "./CommuReview";
+<<<<<<< HEAD
+=======
+import CommunityBoard from "./CommunityBoard.js";
+>>>>>>> Main
 import styled from "styled-components";
 
 const Head = styled.div`
@@ -83,140 +87,6 @@ const Contents = styled.div`
     height: 700px;
     overflow-y: auto;
   }
-  /* 게시판 컨테이너 스타일 */
-  .boardContainer {
-    margin-top: 20px;
-    margin-bottom: 40px;
-  }
-
-  /* 게시판 표 스타일 */
-  .postTable {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: center;
-    border-top: 2px solid black;
-    border-bottom: 2px solid black;
-  }
-
-  /* 테이블 헤더 스타일 */
-  .postTable th {
-    padding: 8px;
-    text-align: center;
-    background-color: #f2f2f2;
-  }
-
-  .postTable th:nth-child(2) {
-    text-align: left;
-  }
-
-  /* 테이블 행 스타일 */
-  .postTable tr {
-    border-bottom: 1px solid #ddd;
-  }
-
-  /* 선택된 행 스타일 */
-  .postTable tr.selectedRow {
-    background-color: #eaeaea;
-  }
-
-  /* 테이블 데이터 셀 스타일 */
-  .postTable td {
-    padding: 8px;
-  }
-
-  .postTable th:first-child,
-  .postTable td:first-child,
-  .postTable th:last-child,
-  .postTable td:last-child {
-    width: 20%; /* id 및 date 열의 비중 */
-  }
-
-  .postTable th:nth-child(2),
-  .postTable td:nth-child(2) {
-    width: 60%; /* title 열의 비중 */
-  }
-
-  /* Optional: Adjusting title text alignment */
-  .postTable td:nth-child(2) {
-    text-align: left; /* 제목 텍스트를 왼쪽 정렬로 변경 */
-  }
-
-  /* 게시글 내용 컨테이너 스타일 */
-  .postContentContainer {
-    margin-top: 20px;
-  }
-
-  /* 게시글 내용 스타일 */
-  .postContent {
-    margin-bottom: 10px;
-  }
-  /* 게시글 내용 글자크기 */
-  td {
-    font-size: 24px;
-  }
-  /* 목록으로 돌아가기 버튼 스타일 */
-  .goBackButton {
-    cursor: pointer;
-    background-color: #007bff;
-    color: white;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-  }
-
-  /* 목록으로 돌아가기 버튼 호버 스타일 */
-
-  .pagination {
-    margin-top: 50px;
-    text-align: center;
-  }
-
-  .pagination button {
-    margin-left: 10px;
-    margin-right: 10px;
-    border: 0;
-    background-color: white;
-    font-size: 16px;
-  }
-
-  /* 게시판 내용 */
-
-  .postContentContainer {
-    position: relative;
-  }
-
-  .postContent {
-    max-height: calc(1.2em * 7); /* 최대 7줄의 높이로 설정 */
-    overflow: hidden;
-    margin-bottom: 300px; /* 공백 추가 */
-  }
-
-  .postContent::after {
-    content: "";
-    display: block;
-    height: 0;
-    width: 100%;
-    visibility: hidden;
-  }
-
-  .goBackButton {
-    position: absolute;
-    bottom: 5px;
-    right: 10px;
-    font-size: 16px;
-    background-color: #fc1055;
-  }
-`;
-
-const GoBackBtn = styled.button`
-  float: right;
-  width: 120px;
-  height: 50px;
-  border-radius: 3px;
-  color: #ffffff;
-  background-color: #fc1055;
-  border: none;
-  font-size: 18px;
 `;
 
 const Rules = styled.div`
@@ -232,47 +102,6 @@ const Rules = styled.div`
 
 function Community() {
   const [selectedItem, setSelectedItem] = useState(1);
-  const [selectedPost, setSelectedPost] = useState(null);
-  const [showPostList, setShowPostList] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(8);
-
-  // 예시 게시글
-  const [posts] = useState([
-    {
-      id: 1,
-      title: "첫 번째 게시글",
-      content: "첫 번째 게시글의 내용입니다.",
-      date: "2024-03-19",
-    },
-    {
-      id: 2,
-      title: "두 번째 게시글",
-      content: "두 번째 게시글의 내용입니다.",
-      date: "2024-03-20",
-    },
-    {
-      id: 3,
-      title: "세 번째 게시글",
-      content: "세 번째 게시글의 내용입니다.",
-      date: "2024-03-21",
-    },
-  ]);
-
-  // 게시글 토글
-  const togglePost = (postId) => {
-    if (selectedPost === postId) {
-      setSelectedPost(null);
-    } else {
-      setSelectedPost(postId);
-      setShowPostList(false); // 게시판 리스트 감춤
-    }
-  };
-
-  const toggleList = () => {
-    setShowPostList(!showPostList);
-    setSelectedPost(null); // 선택된 게시글 초기화
-  };
 
   // 후기 전체보기 링크 영역
   const location = useLocation();
@@ -314,22 +143,6 @@ function Community() {
       selectedName = "";
   }
 
-  // 페이지 번호 클릭 시 해당 페이지로 이동하는 함수
-  const handleClick = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  // 현재 페이지에서 보여줄 게시글 목록
-  // const indexOfLastPost = currentPage * postsPerPage;
-  // const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  // const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-
-  // 페이지 번호 배열 생성
-  const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(posts.length / postsPerPage); i++) {
-    pageNumbers.push(i);
-  }
-
   return (
     <Container>
       <Sidebar>
@@ -368,78 +181,7 @@ function Community() {
           className={`${styled.box} ${styled.text}`}
           style={{ display: selectedItem === 1 ? "block" : "none" }}
         >
-          <div className={styled.boardContainer}>
-            {/* 게시판 리스트 */}
-            {showPostList && (
-              <>
-                <table className="postTable">
-                  <thead>
-                    <tr>
-                      <th>번호</th>
-                      <th>제목</th>
-                      <th>작성일자</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {posts.map((post) => (
-                      <tr
-                        key={post.id}
-                        onClick={() => togglePost(post.id)}
-                        className={
-                          selectedPost === post.id ? styled.selectedRow : ""
-                        }
-                      >
-                        <td>{post.id}</td>
-                        <td>{post.title}</td>
-                        <td>{post.date}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-
-                {/* 페이지 이동 */}
-                <div className="pagination">
-                  <button onClick={() => handleClick(1)}>&laquo;</button>
-                  <button onClick={() => handleClick(currentPage - 1)}>
-                    &lt;
-                  </button>
-                  {pageNumbers.map((number) => (
-                    <button
-                      key={number}
-                      onClick={() => handleClick(number)}
-                      className={currentPage === number ? styled.active : ""}
-                    >
-                      {number}
-                    </button>
-                  ))}
-                  <button onClick={() => handleClick(currentPage + 1)}>
-                    &gt;
-                  </button>
-                  <button
-                    onClick={() =>
-                      handleClick(Math.ceil(posts.length / postsPerPage))
-                    }
-                  >
-                    &raquo;
-                  </button>
-                </div>
-              </>
-            )}
-
-            {/* 선택된 게시글 내용 */}
-            {!showPostList && selectedPost && (
-              <div className={styled.postContentContainer}>
-                <h3>{posts.find((post) => post.id === selectedPost).title}</h3>
-                <h5>{posts.find((post) => post.id === selectedPost).date}</h5>
-                <hr />
-                <p className={styled.postContent}>
-                  {posts.find((post) => post.id === selectedPost).content}
-                </p>
-                <hr />
-                <GoBackBtn onClick={toggleList}>목록</GoBackBtn>
-              </div>
-            )}
-          </div>
+          <CommunityBoard />
         </div>
         <div
           className={styled.box}

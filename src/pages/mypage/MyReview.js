@@ -3,12 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import data from "../../dummy/data.json";
 
-const ITEMS_PER_PAGE = 3; // 페이지당 표시할 데이터의 개수
-
-const TopHr = styled.hr`
-  height: 2px;
-  background-color: black;
-`;
+const ITEMS_PER_PAGE = 2; // 페이지당 표시할 데이터의 개수
 
 const Container = styled.div`
   hr {
@@ -76,6 +71,11 @@ const WriteBtn = styled.button`
   font-size: 18px;
 `;
 
+const HrBox = styled.div`
+  width: 1700px;
+  height: 320px;
+`;
+
 const MyReview = () => {
   // const [jsonData, setJsonData] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -104,6 +104,11 @@ const MyReview = () => {
     jsonData?.boxofs?.boxof?.length
   );
 
+  // 시작페이지로 이동
+  const goToStartPage = () => {
+    setCurrentPage(1);
+  };
+
   // 이전 페이지로 이동
   const goToPrevPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
@@ -119,32 +124,38 @@ const MyReview = () => {
     );
   };
 
+  // 끝 페이지로 이동
+  const goToEndPage = () => {
+    setCurrentPage(endIndex);
+  };
+
   return (
     <Container>
-      <TopHr />
+      <hr style={{ border: "0", borderTop: "2px solid black" }} />
       <ul>
         {jsonData?.boxofs?.boxof
           ?.slice(startIndex, endIndex)
           .map((item, index) => (
-            <ListItem key={index}>
-              <div className="imageContainer">
-                {item.poster && (
-                  <img src={URL + item.poster._text} alt="포스터" />
-                )}
-              </div>
-              <div className="contentContainer">
-                {item.cate && <p>장르: {item.cate._text}</p>}
-                {item.area && <p>지역: {item.area._text}</p>}
-                {item.prfnm && <p>이름: {item.prfnm._text}</p>}
-                {item.prfpd && <p>기간: {item.prfpd._text}</p>}
-              </div>
-              {index < endIndex - 1 && <hr />}
-            </ListItem>
+            <HrBox key={index}>
+              <ListItem key={index}>
+                <div className="imageContainer">
+                  {item.poster && (
+                    <img src={URL + item.poster._text} alt="포스터" />
+                  )}
+                </div>
+                <div className="contentContainer">
+                  {item.cate && <p>장르: {item.cate._text}</p>}
+                  {item.area && <p>지역: {item.area._text}</p>}
+                  {item.prfnm && <p>이름: {item.prfnm._text}</p>}
+                  {item.prfpd && <p>기간: {item.prfpd._text}</p>}
+                </div>
+              </ListItem>
+              {index <= endIndex - 1 && <hr />}
+            </HrBox>
           ))}
       </ul>
-      <hr />
       <ButtonContainer>
-        <MoveBtn onClick={goToPrevPage}>{"<<"}</MoveBtn>
+        <MoveBtn onClick={goToStartPage}>{"<<"}</MoveBtn>
         <MoveBtn onClick={goToPrevPage}>{"<"}</MoveBtn>
         {Array.from(
           {
@@ -158,7 +169,7 @@ const MyReview = () => {
         )}
 
         <MoveBtn onClick={goToNextPage}>{">"}</MoveBtn>
-        <MoveBtn onClick={goToNextPage}>{">>"}</MoveBtn>
+        <MoveBtn onClick={goToEndPage}>{">>"}</MoveBtn>
         <Link to="/writereview">
           <WriteBtn>후기 작성</WriteBtn>
         </Link>

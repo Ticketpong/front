@@ -5,11 +5,6 @@ import data from "../../dummy/data.json";
 
 const ITEMS_PER_PAGE = 2; // 페이지당 표시할 데이터의 개수
 
-const TopHr = styled.hr`
-  height: 2px;
-  background-color: black;
-`;
-
 const Container = styled.div`
   hr {
     height: 1px;
@@ -75,9 +70,9 @@ const WriteBtn = styled.button`
   font-size: 18px;
 `;
 
-const Hr = styled.hr`
-  background-color: black;
-  height: 2px;
+const HrBox = styled.div`
+  width: 1700px;
+  height: 320px;
 `;
 
 const CommuReview = () => {
@@ -108,6 +103,11 @@ const CommuReview = () => {
     jsonData?.boxofs?.boxof?.length
   );
 
+  // 시작페이지로 이동
+  const goToStartPage = () => {
+    setCurrentPage(1);
+  };
+
   // 이전 페이지로 이동
   const goToPrevPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
@@ -123,14 +123,19 @@ const CommuReview = () => {
     );
   };
 
+  // 끝 페이지로 이동
+  const goToEndPage = () => {
+    setCurrentPage(endIndex);
+  };
+
   return (
     <Container>
-      <TopHr />
+      <hr style={{ border: "0", borderTop: "2px solid black" }} />
       <ul>
         {jsonData?.boxofs?.boxof
           ?.slice(startIndex, endIndex)
           .map((item, index) => (
-            <Hr key={index}>
+            <HrBox key={index}>
               <ListItem key={index}>
                 <div className="imageContainer">
                   {item.poster && (
@@ -144,13 +149,12 @@ const CommuReview = () => {
                   {item.prfpd && <p>기간: {item.prfpd._text}</p>}
                 </div>
               </ListItem>
-              {index < endIndex - 1 && <hr />}
-            </Hr>
+              {index <= endIndex - 1 && <hr />}
+            </HrBox>
           ))}
       </ul>
-      <hr />
       <ButtonContainer>
-        <button onClick={goToPrevPage}>{"<<"}</button>
+        <button onClick={goToStartPage}>{"<<"}</button>
         <button onClick={goToPrevPage}>{"<"}</button>
         {Array.from(
           {
@@ -164,7 +168,7 @@ const CommuReview = () => {
         )}
 
         <button onClick={goToNextPage}>{">"}</button>
-        <button onClick={goToNextPage}>{">>"}</button>
+        <button onClick={goToEndPage}>{">>"}</button>
       </ButtonContainer>
       <Link to="/writereview">
         <WriteBtn>후기 작성</WriteBtn>
