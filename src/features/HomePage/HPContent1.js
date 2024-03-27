@@ -104,7 +104,7 @@ const Text = styled.p`
   max-width: ${(props) => (props.over ? "350px" : "none")};
 `;
 
-const HPContent1 = () => {
+const HPContent1 = ({ item, onClick }) => {
   // const [jsonData, setJsonData] = useState("");
   const [startIndex, setStartIndex] = useState(0);
   const URL = "https://www.kopis.or.kr/";
@@ -170,8 +170,10 @@ const HPContent1 = () => {
         </SlideButton>
         <ul>
           {displayedData.map((item, index) => (
-            <ListItem key={index}>
-              <Image src={URL + item.poster._text} alt="포스터" />
+            <ListItem key={index} onClick={() => onclick(item)}>
+              <Link to={`/ticketing/${item.id}`}>
+                <Image src={URL + item.poster._text} alt="포스터" />
+              </Link>
               <Text>장르: {item.cate._text}</Text>
               <Text>지역: {item.area._text}</Text>
               <Text over className="over">

@@ -71,7 +71,8 @@ const EndButton = styled.button`
   border-radius: 3px;
   border: 0;
   font-size: 24px;
-  margin-left: 75px;
+  margin-left: 50px;
+  margin-right: 50px;
 `;
 
 const EditProfile = () => {

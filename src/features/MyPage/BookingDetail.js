@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Container = styled.table`
   border-collapse: collapse;
@@ -88,6 +89,18 @@ const ReviewStatus = styled.div`
               `;
     }
   }}
+`;
+
+const WriteButton = styled.button`
+  width: 72px;
+  height: 30px;
+  border-radius: 3px;
+  color: white;
+  font-weight: 500;
+  font-size: 16px;
+  margin: 0 auto;
+  background-color: #fc1055;
+  border: 0;
 `;
 
 // 항목 수
@@ -216,6 +229,11 @@ const BookingDetail = () => {
                 <Cell>{item.status}</Cell>
                 <Cell>
                   <ReviewStatus status={item.reviewStatus}>
+                    {item.reviewStatus === "작성하기" && (
+                      <Link to="/writereview">
+                        <WriteButton>작성하기</WriteButton>
+                      </Link>
+                    )}
                     {item.reviewStatus}
                   </ReviewStatus>
                 </Cell>

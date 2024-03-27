@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import data from "../../dummy/data.json";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -111,7 +112,7 @@ const Text = styled.p`
   max-width: ${(props) => (props.over ? "350px" : "none")};
 `;
 
-const HPContent2 = () => {
+const HPContent2 = ({ item, onClick }) => {
   // const [jsonData, setJsonData] = useState("");
   const URL = "https://www.kopis.or.kr/";
   const [startIndex, setStartIndex] = useState(0);
@@ -179,11 +180,13 @@ const HPContent2 = () => {
         </SlideButton>
         <ul>
           {displayedData.map((item, index) => (
-            <ListItem key={index}>
-              <ImageContainer>
-                <Image src={URL + item.poster._text} alt="포스터" />
-                <Rank>{startIndex + index + 1}</Rank>
-              </ImageContainer>
+            <ListItem key={index} onClick={() => onClick(item)}>
+              <Link to={`/ticketing/${item.id}`}>
+                <ImageContainer>
+                  <Image src={URL + item.poster._text} alt="포스터" />
+                  <Rank>{startIndex + index + 1}</Rank>
+                </ImageContainer>
+              </Link>
               <Text>장르: {item.cate._text}</Text>
               <Text>지역: {item.area._text}</Text>
               <Text over className="over">

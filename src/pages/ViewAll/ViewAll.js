@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import data from "../../dummy/data.json";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -186,7 +187,7 @@ const StyledP = styled.p`
 // =============================================================================================== //
 // 데이터 처리 부문
 
-const ViewAll = () => {
+const ViewAll = ({ item, onClick }) => {
   // const [jsonData, setJsonData] = useState("");
   const URL = "https://www.kopis.or.kr/";
   const [startIndex, setStartIndex] = useState(0);
@@ -239,11 +240,13 @@ const ViewAll = () => {
             {displayedData.map((item, index) => {
               if (!showAll && index >= 5) return null;
               return (
-                <UpperLI key={index}>
-                  <ImageContainer>
-                    <UpperImage src={URL + item.poster._text} alt="포스터" />
-                    <Rank>{startIndex + index + 1}</Rank>
-                  </ImageContainer>
+                <UpperLI key={index} onClick={() => onclick(item)}>
+                  <Link to={`/ticketing/${item.id}`}>
+                    <ImageContainer>
+                      <UpperImage src={URL + item.poster._text} alt="포스터" />
+                      <Rank>{startIndex + index + 1}</Rank>
+                    </ImageContainer>
+                  </Link>
                   <UpperP over className="over">
                     이름: {item.prfnm._text}
                   </UpperP>
@@ -267,8 +270,10 @@ const ViewAll = () => {
           {displayedData.map((item, index) => {
             if (!showAll && index >= 12) return null;
             return (
-              <StyledLI key={index}>
-                <StyledImage src={URL + item.poster._text} alt="포스터" />
+              <StyledLI key={index} onclick={() => onclick(item)}>
+                <Link to={`/ticketing/${item.id}`}>
+                  <StyledImage src={URL + item.poster._text} alt="포스터" />
+                </Link>
                 <StyledP>장르: {item.cate._text}</StyledP>
                 <StyledP>지역: {item.area._text}</StyledP>
                 <StyledP over className="over">
