@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import CommuReview from "./CommuReview";
-<<<<<<< HEAD
-=======
-import CommunityBoard from "./CommunityBoard.js";
->>>>>>> Main
+import CommuReview from "../../features/Community/CommuReview.js";
+import CommunityBoard from "../../features/Community/CommunityBoard.js";
 import styled from "styled-components";
 
 const Head = styled.div`

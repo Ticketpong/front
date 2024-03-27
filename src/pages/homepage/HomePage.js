@@ -1,6 +1,6 @@
-import HPContent1 from "./HPContent1";
-import HPReviews from "./HPReviews";
-import HPContent2 from "./HPContent2";
+import HPContent1 from "../../features/HomePage/HPContent1";
+import HPReviews from "../../features/HomePage/HPReviews";
+import HPContent2 from "../../features/HomePage/HPContent2";
 
 const Homepage = () => {
   return (

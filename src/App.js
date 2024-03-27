@@ -3,7 +3,7 @@ import "./App.css";
 import Homepage from "./pages/homepage/HomePage";
 import MyPage from "./pages/mypage/MyPage";
 import WriteReview from "./components/WriteReview";
-import ViewAll from "./pages/homepage/ViewAll";
+import ViewAll from "./pages/ViewAll/ViewAll";
 import Community from "./pages/community/Community";
 import Header from "./components/Header";
 

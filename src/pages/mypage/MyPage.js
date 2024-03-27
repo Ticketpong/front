@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import BookingDetail from "./BookingDetail";
-import MyReview from "./MyReview";
+import BookingDetail from "../../features/MyPage/BookingDetail";
+import MyReview from "../../features/MyPage/MyReview";
+import EditProfile from "../../features/MyPage/EditProfile";
 
 const Head = styled.div`
   font-size: 42px;
@@ -156,7 +157,7 @@ const MyPage = () => {
           className={styled.box}
           style={{ display: selectedItem === 3 ? "block" : "none" }}
         >
-          내용3
+          <EditProfile />
         </div>
       </Content>
     </Container>
