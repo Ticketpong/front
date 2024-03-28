@@ -7,7 +7,7 @@ import Ticketing from "./pages/ticketing/Ticketing";
 import Homepage from "./pages/homepage/HomePage";
 import MyPage from "./pages/mypage/MyPage";
 import WriteReview from "./components/WriteReview";
-import ViewAll from "./pages/homepage/ViewAll";
+import ViewAll from "./pages/ViewAll/ViewAll";
 import Community from "./pages/community/Community";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
