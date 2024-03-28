@@ -3,11 +3,7 @@ import "./App.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Ticketing from "./pages/ticketing/Ticketing";
-import Homepage from "./pages/homepage/HomePage";
-import MyPage from "./pages/mypage/MyPage";
-import WriteReview from "./components/WriteReview";
-import ViewAll from "./pages/homepage/ViewAll";
-import Community from "./pages/community/Community";
+
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 
@@ -22,11 +18,6 @@ function App() {
       <BrowserRouter>
         {showHF && <Header />}
         <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/writereview" element={<WriteReview />} />
-          <Route path="/community" element={<Community />} />
-          <Route path="/mypage" element={<MyPage />} />
-          <Route path="/viewall" element={<ViewAll />} />
           <Route path="/ticketing" element={<Ticketing />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
