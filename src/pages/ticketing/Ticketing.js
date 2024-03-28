@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { PongButton } from "../../features/Ticketing/TicketingPayment";
-import { useNavigate } from "react-router";
 import Calendar from "../../features/Ticketing/TicketingCalendar";
 import * as S from "../../styles/TicketingStyled";
 import PlaceMap from "../../components/KakaoMap";
