@@ -222,6 +222,8 @@ const BookingDetail = () => {
             </tr>
           ) : (
             Data.map((item) => (
+              <tr key={item.id} onClick={() => setSelectedItem(item)}>
+                <Cell>{item.id}</Cell>
               <tr key={item.id}>
                 <Cell>{item.reservationDate.toLocaleDateString()}</Cell>
                 <Cell>{item.performance}</Cell>
@@ -268,6 +270,21 @@ const BookingDetail = () => {
           <MdKeyboardDoubleArrowRight />
         </button>
       </ButtonContainer>
+
+      {/* 팝업 */}
+      {selectedItem && (
+        <Popup>
+          <PopupContent>
+            <PopupCloseButton onClick={handleClosePopup}>닫기</PopupCloseButton>
+            <div>ID: {selectedItem.id}</div>
+            <div>공연: {selectedItem.performance}</div>
+            <div>날짜: {selectedItem.date.toLocaleDateString()}</div>
+            <div>가격: {selectedItem.price}</div>
+            <div>수량: {selectedItem.quantity}</div>
+            <div>상태: {selectedItem.status}</div>
+          </PopupContent>
+        </Popup>
+      )}
     </>
   );
 };
