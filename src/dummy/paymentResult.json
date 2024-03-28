@@ -40,7 +40,7 @@
     "buyer_name": "홍길동",
     "buyer_email": "example@example.com",
     "buyer_tel": "01012341234",
-    "buyer_addr": "신사동 661-16",
+    "buyer_addr": "당감동 661-16",
     "buyer_postcode": "",
     "custom_data": null,
     "status": "paid",

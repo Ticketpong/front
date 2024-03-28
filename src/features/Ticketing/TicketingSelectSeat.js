@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { PongButton } from "./TicketingPayment";
-import SeatSelectionModal from "./SeatSelectionModal"; // 모달 컴포넌트 import
+import SeatSelectionModal from "./SeatSelectionModal"; 
 
 const TicketingSelectSeat = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

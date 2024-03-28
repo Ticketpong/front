@@ -4,14 +4,14 @@ import Calendar from "../../features/Ticketing/TicketingCalendar";
 import * as S from "../../styles/TicketingStyled";
 import PlaceMap from "../../components/KakaoMap";
 
-import jsonDataDetail from "../../dummy/show_detail.json";
+import ShowDataDetail from "../../dummy/show_detail.json";
 import jsonDataTime from "../../dummy/show_time.json";
 import TicketingSelectSeat from "../../features/Ticketing/TicketingSelectSeat";
 import TicketingReview from "../../features/Ticketing/TicketingReview";
 import TicketingHeader from "../../features/Ticketing/TicketingHeader";
 import TicketingShowInfo from "../../features/Ticketing/TicketingShowInfo";
 
-export const dataDetail = jsonDataDetail;
+export const dataDetail = ShowDataDetail;
 const dataTime = jsonDataTime;
 
 const Ticketing = () => {

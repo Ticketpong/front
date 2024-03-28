@@ -53,7 +53,7 @@ const TicketingReview = ({ mt20id }) => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    // mt20id에 해당하는 리뷰만 필터링하여 가져오기
+    // mt20id에 해당하는 리뷰만 필터링
     const filteredReviews = reviewData.filter(
       (review) => review.mt20id === mt20id
     );

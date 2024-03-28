@@ -2,10 +2,10 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./css/TicketingCalendar.css";
-import jsonData from "../../dummy/show_detail.json";
+import jsonDetailData from "../../dummy/show_detail.json";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 
-const data = jsonData;
+const data = jsonDetailData;
 
 const Calendar = ({ onDataChange }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());

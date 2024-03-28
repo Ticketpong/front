@@ -181,6 +181,7 @@ export const TicketingTabBtn = styled.button`
   background-color: #fff;
   cursor: pointer;
   font-weight: 700;
+  //active 따라 표시
   color: ${({ active }) => (active ? "#F5167E" : "#666666")};
   border-color: ${({ active }) => (active ? "#F5167E" : "#d8d9df")};
   border-right: ${({ active }) => (active ? "1px solid #F5167E;" : "none")};

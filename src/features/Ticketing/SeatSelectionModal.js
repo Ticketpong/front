@@ -72,7 +72,7 @@ const SeatSelectionModal = ({ isOpen, onClose, onSelect }) => {
     R: 140000,
     S: 110000,
     A: 90000,
-    B: 60000, // B석 추가
+    B: 60000,
   };
   const seatTypes = ["VIP", "R", "S", "A", "B"];
   const seatsPerType = 10;

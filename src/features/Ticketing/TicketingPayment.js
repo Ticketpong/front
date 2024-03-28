@@ -60,10 +60,10 @@ const Payment = ({ amount, prfnm }) => {
 
   const callback = (response) => {
     if (response.success) {
-      alert("결제 성공");
+      alert("결제 성공!");
       console.log(response);
     } else {
-      alert(`결제 실패 : ${response.error_msg}`);
+      alert(`결제 실패! : ${response.error_msg}`);
     }
   };
 

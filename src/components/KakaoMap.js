@@ -1,7 +1,7 @@
 import { Map, MapMarker, ZoomControl } from "react-kakao-maps-sdk";
-import jsonDataPlace from "../dummy/show_place.json";
+import ShowPlaceData from "../dummy/show_place.json";
 
-const dataPlace = jsonDataPlace;
+const dataPlace = ShowPlaceData;
 
 const PlaceMap = () => {
   const { kakao } = window;

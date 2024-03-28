@@ -3,7 +3,6 @@ import "./App.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Ticketing from "./pages/ticketing/Ticketing";
-
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 
