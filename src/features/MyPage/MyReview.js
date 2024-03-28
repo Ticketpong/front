@@ -34,7 +34,7 @@ const ListItem = styled.li`
   }
 
   p {
-    font-size: 24px;
+    font-size: 18px;
     margin: 0;
     text-align: left;
     line-height: 50px;
@@ -77,23 +77,8 @@ const HrBox = styled.div`
 `;
 
 const MyReview = () => {
-  // const [jsonData, setJsonData] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const URL = "https://www.kopis.or.kr/";
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch("/data/data.json");
-  //       const jsonData = await response.json();
-  //       setJsonData(jsonData);
-  //     } catch (error) {
-  //       console.error("JSON 데이터를 가져오는 중 오류가 발생했습니다.", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   const jsonData = data;
 
@@ -139,9 +124,11 @@ const MyReview = () => {
             <HrBox key={index}>
               <ListItem key={index}>
                 <div className="imageContainer">
-                  {item.poster && (
-                    <img src={URL + item.poster._text} alt="포스터" />
-                  )}
+                  <Link to={`/editmyreview/${item.prfnm._text}`}>
+                    {item.poster && (
+                      <img src={URL + item.poster._text} alt="포스터" />
+                    )}
+                  </Link>
                 </div>
                 <div className="contentContainer">
                   {item.cate && <p>장르: {item.cate._text}</p>}

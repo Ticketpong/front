@@ -7,6 +7,8 @@ import ViewAll from "./pages/ViewAll/ViewAll";
 import Community from "./pages/community/Community";
 import Header from "./components/Header";
 import Ticketing from "./pages/ticketing/Ticketing";
+import MyReview from "./features/MyPage/MyReview";
+import EditMyReview from "./features/MyPage/EditMyReview";
 
 function App() {
   return (
@@ -20,6 +22,11 @@ function App() {
           <Route path="/mypage" element={<MyPage />}></Route>
           <Route path="/viewall" element={<ViewAll />}></Route>
           <Route path="/ticketing" element={<Ticketing />}></Route>
+          <Route
+            path="/editmyreview/:prfnmText"
+            element={<EditMyReview />}
+          ></Route>
+          <Route path="/myreview" element={<MyReview />}></Route>
         </Routes>
       </BrowserRouter>
     </div>
