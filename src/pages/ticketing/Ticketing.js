@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { PongButton } from "../../features/Ticketing/TicketingPayment";
 import Calendar from "../../features/Ticketing/TicketingCalendar";
@@ -270,6 +271,7 @@ const Ticketing = () => {
       </S.ContentWrapper>
     </S.TicketingWrapper>
   );
+
 };
 
 export default Ticketing;

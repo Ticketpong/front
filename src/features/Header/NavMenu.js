@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import { Icon } from '../../styles/HeaderStyled';
-import { Link } from 'react-router-dom';
-import navUserIcon from '../../assets/headerImg/nav_userIcon.png';
-import navShowIcon from '../../assets/headerImg/nav_showIcon.png';
-import navCommIcon from '../../assets/headerImg/nav_commIcon.png';
+import React, { useEffect } from "react";
+import styled from "styled-components";
+import { Icon } from "../../styles/HeaderStyled";
+import { Link } from "react-router-dom";
+import navUserIcon from "../../assets/headerImg/nav_userIcon.png";
+import navShowIcon from "../../assets/headerImg/nav_showIcon.png";
+import navCommIcon from "../../assets/headerImg/nav_commIcon.png";
 
 const NavMenuContainer = styled.nav`
   position: absolute;
@@ -57,14 +57,14 @@ const NavListItem = styled.li`
 const NavMenu = ({ open, isLoggedIn, onClose }) => {
   useEffect(() => {
     const handleOutsideClick = (event) => {
-      if (!event.target.closest('.nav-menu-container') && open) {
+      if (!event.target.closest(".nav-menu-container") && open) {
         onClose(); // onClose 함수 호출
       }
     };
 
-    document.addEventListener('mousedown', handleOutsideClick);
+    document.addEventListener("mousedown", handleOutsideClick);
     return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [open, onClose]);
 
@@ -73,7 +73,11 @@ const NavMenu = ({ open, isLoggedIn, onClose }) => {
       <ul>
         <NavListItem bold>
           <Icon src={navUserIcon} alt="navUserIcon" />
-          {isLoggedIn ? <Link to="/mypage">회원서비스</Link> : <Link to="/login">회원서비스</Link>}
+          {isLoggedIn ? (
+            <Link to="/mypage">회원서비스</Link>
+          ) : (
+            <Link to="/login">회원서비스</Link>
+          )}
         </NavListItem>
         <NavListItem bold>
           <Icon src={navShowIcon} alt="navShowIcon" />
@@ -84,13 +88,13 @@ const NavMenu = ({ open, isLoggedIn, onClose }) => {
           <li>커뮤니티</li>
         </NavListItem>
         <NavListItem>
-          <Link to="/review">후기</Link>
+          <Link to="/community?selectedItem=2">후기</Link>
         </NavListItem>
         <NavListItem>
-          <Link to="/notice">공지사항</Link>
+          <Link to="/community?selectedItem=1">공지사항</Link>
         </NavListItem>
         <NavListItem>
-          <Link to="/guide">이용안내</Link>
+          <Link to="/community?selectedItem=3">이용안내</Link>
         </NavListItem>
       </ul>
     </NavMenuContainer>
