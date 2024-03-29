@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { FooterContainer, LeftSection, TextContainer, VerticalLine, ContactInfo, RightSection, ScrollTopButton, ScrollTopButtonImg, MenuText, ContactText, SelectBox } from '../styles/FooterStyled';
 import arrowIcon from '../assets/footerImg/arrowIcon.png';
 
@@ -9,6 +10,11 @@ const Footer = () => {
       behavior: 'smooth',
     });
   };
+
+  const locationInfo = useLocation();
+
+  if(locationInfo.pathname === "/login" || locationInfo.pathname === "/signup")
+    return null;
 
   return (
     <FooterContainer>
