@@ -33,6 +33,7 @@ function App() {
           <Route path="/viewall" element={<ViewAll />} />
           <Route path="/ticketing" element={<Ticketing />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
         </Routes>
         {showHF && <Footer />}
       </BrowserRouter>
