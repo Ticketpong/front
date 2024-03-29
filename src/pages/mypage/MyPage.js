@@ -3,69 +3,67 @@ import styled from "styled-components";
 import BookingDetail from "../../features/MyPage/BookingDetail";
 import MyReview from "../../features/MyPage/MyReview";
 import EditProfile from "../../features/MyPage/EditProfile";
-
-const Head = styled.div`
-  font-size: 42px;
-  margin-bottom: 30px;
-  font-weight: bold;
-`;
+import { MdKeyboardArrowRight } from "react-icons/md";
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
+  margin: 120px auto;
 `;
 
 const Sidebar = styled.div`
-  width: 280px;
-  background-color: white;
+  width: 200px;
+  background-color: #fff;
   padding: 20px;
-  margin-top: 110px;
-  margin-right: 100px;
-  font-size: 24px;
+  margin-top: 50px;
+  margin-right: 30px;
+`;
 
-  .item {
-    background-color: #f0f0f0;
-    border: 1px solid #999999;
-    padding: 10px;
-    margin-bottom: 10px;
-    cursor: pointer;
+const Head = styled.h1`
+  font-size: 32px;
+  color: #373a42;
+  margin-bottom: 30px;
+`;
+
+const MenuItemWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-bottom: 1px solid #999999;
+  background-color: ${(props) => (props.selected ? "#99999930" : "#fff")};
+  cursor: pointer;
+
+  div {
+    color: ${(props) => (props.selected ? "#FC1055" : "#373A42")};
   }
+`;
+
+const MenuItem = styled.div`
+  font-size: 16px;
+  font-weight: 700;
+  padding: 15px 20px;
+  border-radius: 5px;
+`;
+
+const ArrowIconWrapper = styled.div`
+  margin-left: auto;
+  margin-right: 20px;
+  transition: color 0.3s ease;
+  font-size: 26px;
 `;
 
 const Content = styled.div`
   width: 70%;
+  background-color: #fff;
   padding: 20px;
-  margin-top: 120px;
+  margin-top: 50px;
+`;
 
-  span {
-    font-weight: lighter;
-    font-size: 18px;
-    color: #999999;
-  }
-  .box {
-    background-color: #fff;
-    border: 1px solid #999999;
-    padding: 20px;
-    height: 700px;
-    overflow-y: auto;
-  }
-
-  p {
-    font-size: 34px;
-    margin: 0;
-    text-align: left;
-    line-height: 50px;
-    font-weight: 500;
-    padding: 5px;
-  }
-
-  .text {
-    font-weight: lighter;
-    font-size: 10px;
-    color: #999999;
-  }
+const Title = styled.h2`
+  font-size: 24px;
+  font-weight: 500;
+  color: #373a42;
+  margin-bottom: 20px;
 `;
 
 const MyPage = () => {
@@ -73,92 +71,49 @@ const MyPage = () => {
 
   const handleItemClick = (num) => {
     setSelectedItem(num);
-    const items = document.querySelectorAll(".item");
-    items.forEach((item, index) => {
-      if (index + 1 === num) {
-        item.style.color = "red";
-        item.querySelector("span").style.color = "#fc1055";
-      } else {
-        item.style.color = "inherit";
-        item.querySelector("span").style.color = "black";
-      }
-    });
   };
 
-  // 이름 변경
-  let selectedName = "";
-  let subText = "";
-  switch (selectedItem) {
-    case 1:
-      selectedName = "예매내역";
-      subText = "최대 지난 1년간의 예매내역을 확인할 수 있습니다.";
-      break;
-    case 2:
-      selectedName = "관람 후기";
-      subText = "";
-      break;
-    case 3:
-      selectedName = "회원정보수정";
-      subText = "";
-      break;
-    default:
-      selectedName = "";
-  }
   return (
     <Container>
       <Sidebar>
-        <Head>마이 페이지</Head>
-        <div
-          className={`${styled.item} item`}
+        <Head>마이페이지</Head>
+        <MenuItemWrapper
+          selected={selectedItem === 1}
           onClick={() => handleItemClick(1)}
         >
-          예매내역
-          <span>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;
-          </span>
-        </div>
-        <div
-          className={`${styled.item} item`}
+          <MenuItem>예매 내역</MenuItem>
+          <ArrowIconWrapper>
+            <MdKeyboardArrowRight />
+          </ArrowIconWrapper>
+        </MenuItemWrapper>
+        <MenuItemWrapper
+          selected={selectedItem === 2}
           onClick={() => handleItemClick(2)}
         >
-          관람 후기
-          <span>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;
-          </span>
-        </div>
-        <div
-          className={`${styled.item} item`}
+          <MenuItem>관람 후기</MenuItem>
+          <ArrowIconWrapper>
+            <MdKeyboardArrowRight />
+          </ArrowIconWrapper>
+        </MenuItemWrapper>
+        <MenuItemWrapper
+          selected={selectedItem === 3}
           onClick={() => handleItemClick(3)}
         >
-          회원정보수정
-          <span>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;
-          </span>
-        </div>
+          <MenuItem>회원 정보 수정</MenuItem>
+          <ArrowIconWrapper>
+            <MdKeyboardArrowRight />
+          </ArrowIconWrapper>
+        </MenuItemWrapper>
       </Sidebar>
       <Content>
-        <p>
-          {selectedName}
-          <span id={styled.subTextStyle}>&nbsp;&nbsp;{subText}</span>
-        </p>
-        <div
-          className={`${styled.box} ${styled.text}`}
-          style={{ display: selectedItem === 1 ? "block" : "none" }}
-        >
-          <BookingDetail />
-        </div>
-        <div
-          className={styled.box}
-          style={{ display: selectedItem === 2 ? "block" : "none" }}
-        >
-          <MyReview />
-        </div>
-        <div
-          className={styled.box}
-          style={{ display: selectedItem === 3 ? "block" : "none" }}
-        >
-          <EditProfile />
-        </div>
+        <Title>
+          {selectedItem === 1 && "예매 내역"}
+          {selectedItem === 2 && "관람 후기"}
+          {selectedItem === 3 && "회원 정보 수정"}
+        </Title>
+        {selectedItem === 1 && <BookingDetail />}
+        {selectedItem === 2 && <MyReview />}
+        {selectedItem === 3 && <EditProfile />}
       </Content>
     </Container>
   );

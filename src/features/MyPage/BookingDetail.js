@@ -1,26 +1,35 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import {
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
+  MdKeyboardDoubleArrowLeft,
+  MdKeyboardDoubleArrowRight,
+} from "react-icons/md";
 
 const Container = styled.table`
+  margin: 20px auto;
   border-collapse: collapse;
   width: 100%;
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
+  border-top: 2px solid #373a42;
+  border-bottom: 1px solid #373a42;
 `;
 
 const Header = styled.th`
+  font-weight: 500;
+  font-size: 14px;
   padding: 10px;
   text-align: center;
-  border-bottom: 2px solid black;
+  border-bottom: 1px solid #373a42;
   background-color: #f6f8f7;
 `;
 
 const Cell = styled.td`
   padding: 10px;
   text-align: center;
-  border-top: 2px solid transparent;
-  border-bottom: 2px solid transparent;
+  font-weight: 500;
+  font-size: 14px;
 
   &:last-child {
     border-right: none;
@@ -33,74 +42,75 @@ const NoDataCell = styled(Cell)`
 `;
 
 const LabelContainer = styled.div`
-  width: 150px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0 auto;
   float: right;
   margin-bottom: 5px;
 
-  #period {
-    font-size: 18px;
-    border-color: #666666;
+  select {
+    width: 100px;
+    height: 28px;
+    font-size: 16px;
+    margin-right: 20px;
+    border-radius: 2px;
+    text-align: center;
+    border: 1px solid #99999980;
+  }
+
+  label {
+    font-size: 14px;
+    color: #999999;
   }
 `;
 
 const ButtonContainer = styled.div`
-  align-items: center;
+  display: flex;
   text-align: center;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
 
   button {
     text-align: center;
     background-color: white;
-    border: 0;
-    font-size: 20px;
-    border-radius: 20px;
+    border: none;
+    padding: 0;
+    margin: 0 6px;
+    width: 24px;
+    height: 30px;
 
-    &:active,
-    &:hover {
-      background-color: #fc1055;
+    cursor: pointer;
+    svg {
+      width: 100%;
+      height: 100%;
     }
   }
-`;
-// 리뷰 상태 박스
-const ReviewStatus = styled.div`
-  width: 72px;
-  height: 30px;
-  border-radius: 3px;
-  color: white;
-  font-weight: 500;
-  font-size: 16px;
-  margin: 0 auto;
-  ${({ status }) => {
-    switch (status) {
-      case "작성하기":
-        return `
-                background-color: #fc1055;
-              `;
-      case "완료":
-        return `
-                background-color: #999999;
-              `;
-      case "불가":
-        return `
-                background-color: #99999;
-              `;
-      default:
-        return `
-                background-color: #999999;
-              `;
-    }
-  }}
+  strong {
+  }
 `;
 
-const WriteButton = styled.button`
-  width: 72px;
-  height: 30px;
+const ReviewStatus = styled.button`
+  width: 70px;
+  height: 28px;
+  border: none;
   border-radius: 3px;
   color: white;
-  font-weight: 500;
-  font-size: 16px;
+  font-size: 14px;
   margin: 0 auto;
-  background-color: #fc1055;
-  border: 0;
+  background-color: ${({ status }) => {
+    switch (status) {
+      case "작성하기":
+        return "#fc1055";
+      case "완료":
+      case "불가":
+        return "#999999";
+      default:
+        return "#999999";
+    }
+  }};
+  cursor: ${({ status }) => (status === "작성하기" ? "pointer" : "default")};
 `;
 
 // 항목 수
@@ -110,13 +120,14 @@ const BookingDetail = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState("3");
+  const navigate = useNavigate();
 
   const [data, setData] = useState([
     {
       id: 1,
+      reservationDate: new Date("2023-11-01"),
       performance: "공연1",
-      date: new Date("2023-12-01"),
-      // 실제 데이터를 가져올 때는 문자열을 Date 객체로 전환해야함
+      performanceDate: new Date("2023-12-01"),
       price: 50000,
       quantity: 2,
       status: "결제완료",
@@ -124,17 +135,15 @@ const BookingDetail = () => {
     },
     {
       id: 2,
+      reservationDate: new Date("2023-12-15"),
       performance: "공연2",
-      date: new Date("2024-03-05"),
+      performanceDate: new Date("2024-03-05"),
       price: 60000,
       quantity: 1,
       status: "결제취소",
       reviewStatus: "작성완료",
     },
   ]);
-
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, filteredData.length);
 
   useEffect(() => {
     const today = new Date();
@@ -155,41 +164,34 @@ const BookingDetail = () => {
     }
 
     const filtered = data.filter(
-      (item) => item.date >= startDate && item.date <= today
+      (item) =>
+        item.performanceDate >= startDate && item.performanceDate <= today
     );
     setFilteredData(filtered);
   }, [data, selectedPeriod]);
 
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, filteredData.length);
   const Data = filteredData.slice(startIndex, endIndex);
 
-  // Pagination
-  const goToStartPage = () => {
-    setCurrentPage(1);
-  };
-  // 이전 페이지로 이동
-  const goToPrevPage = () => {
+  const goToStartPage = () => setCurrentPage(1);
+  const goToPrevPage = () =>
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
-  };
-
-  // 다음 페이지로 이동
-  const goToNextPage = () => {
+  const goToNextPage = () =>
     setCurrentPage((prevPage) =>
       Math.min(prevPage + 1, Math.ceil(data.length / ITEMS_PER_PAGE))
     );
-  };
-
-  const goToEndPage = () => {
+  const goToEndPage = () =>
     setCurrentPage(Math.ceil(filteredData.length / ITEMS_PER_PAGE));
-  };
 
-  const handlePeriodChange = (event) => {
-    setSelectedPeriod(event.target.value);
-  };
+  const handlePeriodChange = (event) => setSelectedPeriod(event.target.value);
 
   return (
     <>
       <LabelContainer>
-        <label for="period">기간 선택&nbsp;&nbsp;&nbsp;</label>
+        <label for="period">
+          최대 지난 1년의 예매 내역을 확인할 수 있습니다.
+        </label>
         <select
           id="period"
           name="period"
@@ -204,7 +206,7 @@ const BookingDetail = () => {
       <Container>
         <thead>
           <tr>
-            <Header>에매일</Header>
+            <Header>예매일</Header>
             <Header>공연명</Header>
             <Header>관람일</Header>
             <Header>가격</Header>
@@ -221,19 +223,21 @@ const BookingDetail = () => {
           ) : (
             Data.map((item) => (
               <tr key={item.id}>
-                <Cell>{item.id}</Cell>
+                <Cell>{item.reservationDate.toLocaleDateString()}</Cell>
                 <Cell>{item.performance}</Cell>
-                <Cell>{item.date.toLocaleDateString()}</Cell>
+                <Cell>{item.performanceDate.toLocaleDateString()}</Cell>
                 <Cell>{item.price}</Cell>
                 <Cell>{item.quantity}</Cell>
                 <Cell>{item.status}</Cell>
                 <Cell>
-                  <ReviewStatus status={item.reviewStatus}>
-                    {item.reviewStatus === "작성하기" && (
-                      <Link to="/writereview">
-                        <WriteButton>작성하기</WriteButton>
-                      </Link>
-                    )}
+                  <ReviewStatus
+                    status={item.reviewStatus}
+                    onClick={
+                      item.reviewStatus === "작성하기"
+                        ? () => navigate("/writereview")
+                        : undefined
+                    }
+                  >
                     {item.reviewStatus}
                   </ReviewStatus>
                 </Cell>
@@ -242,23 +246,27 @@ const BookingDetail = () => {
           )}
         </tbody>
       </Container>
-      <hr />
       <ButtonContainer>
-        <button onClick={goToStartPage}>{"<<"}</button>
-        <button onClick={goToPrevPage}>{"<"}</button>
+        <button onClick={goToStartPage}>
+          <MdKeyboardDoubleArrowLeft />
+        </button>
+        <button onClick={goToPrevPage}>
+          <MdKeyboardArrowLeft />
+        </button>
         {Array.from(
-          {
-            length: Math.ceil(data.length / ITEMS_PER_PAGE),
-          },
+          { length: Math.ceil(data.length / ITEMS_PER_PAGE) },
           (_, i) => (
-            <button key={i + 1} onClick={() => setCurrentPage(i + 1)}>
+            <strong key={i + 1} onClick={() => setCurrentPage(i + 1)}>
               {i + 1}
-            </button>
+            </strong>
           )
         )}
-
-        <button onClick={goToNextPage}>{">"}</button>
-        <button onClick={goToEndPage}>{">>"}</button>
+        <button onClick={goToNextPage}>
+          <MdKeyboardArrowRight />
+        </button>
+        <button onClick={goToEndPage}>
+          <MdKeyboardDoubleArrowRight />
+        </button>
       </ButtonContainer>
     </>
   );
