@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import data from "../../dummy/data.json";
+import data2 from "../../dummy/data2.json";
 import { Link } from "react-router-dom";
+import Img from "../../assets/ViewAllImg/Image20240328164620.jpg";
 
 const Container = styled.div`
   display: flex;
@@ -9,16 +11,17 @@ const Container = styled.div`
   align-items: center;
   margin-bottom: 150px;
   text-align: center;
-  align-items: center;
+  max-width: 100%;
 `;
 
 const BackgroudImg = styled.image`
-  background-image: url("/img/img1.jpg");
+  background-image: url(${Img});
   background-size: cover;
+  background-size: 100% 380px;
   background-position: top;
+  background-repeat: no-repeat;
   align-items: center;
-  height: 15%;
-  width: 100%;
+  min-width: 100%;
   overflow: hidden;
 `;
 
@@ -30,7 +33,10 @@ const Upper = styled.div`
 
 const ShortHr = styled.hr`
   width: 50px;
-  height: 3px;
+  height: 1px;
+  background-color: #ffffff;
+  margin-top: 15px;
+  border: 0;
 `;
 const All = styled.span`
   font-size: 40px;
@@ -39,6 +45,7 @@ const All = styled.span`
   text-align: center;
   align-items: center;
   margin: 10px auto;
+  color: #ffffff;
 `;
 
 const UpperUL = styled.ul`
@@ -49,6 +56,7 @@ const UpperUL = styled.ul`
   padding: 0;
   margin: 100px 0;
   flex-wrap: wrap;
+  min-width: 1500px;
 `;
 
 const UpperLI = styled.li`
@@ -58,11 +66,12 @@ const UpperLI = styled.li`
   display: inline-block;
   margin-right: 20px;
   vertical-align: top;
+  min-width: 200px;
 `;
 
 const UpperImage = styled.img`
   display: block;
-  width: 200px;
+  min-width: 200px;
   height: 290px;
   margin-bottom: 10px;
   object-fit: cover;
@@ -83,21 +92,24 @@ const ImageContainer = styled.div`
   position: relative;
 `;
 
-const Rank = styled.span`
+const Rank = styled.p`
   position: absolute;
-  bottom: 5px;
+  bottom: -50px;
   left: 5px;
   background-color: none;
   color: white;
   padding: 5px;
   border-radius: 5px;
   border-radius: 5px;
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 48px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+  @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 `;
 
 const Button = styled.button`
-  width: 120px;
+  min-width: 120px;
   height: 50px;
   background-color: #373a42;
   color: white;
@@ -117,14 +129,35 @@ const Button = styled.button`
   }
 `;
 
+// const GeographyButton = styled.button`
+//   min-width: 120px;
+//   height: 50px;
+//   background-color: #373a42;
+//   color: white;
+//   border: none;
+//   padding: 10px 20px;
+//   margin-top: 100px;
+//   margin-bottom: 10px;
+//   margin-right: 15px;
+//   margin-left: 15px;
+//   cursor: pointer;
+//   border-radius: 24px;
+//   font-size: 18px;
+
+//   &:focus {
+//     background-color: #fc1055;
+//     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+//   }
+// `;
+
 const MoreButton = styled.button`
-  width: 240px;
+  min-width: 240px;
   height: 60px;
   background-color: #ffffff;
   color: #fc1055;
   border: 1px solid #fc1055;
   padding: 10px 20px;
-  margin-top: 100px;
+  margin-top: 50px;
   margin-bottom: 10px;
   margin-right: 15px;
   margin-left: 15px;
@@ -138,38 +171,49 @@ const MoreButton = styled.button`
     color: #ffffff;
   }
 `;
+const CategoryContainer = styled.div`
+  display: flex;
+  margin-bottom: 80px;
+  align-items: center;
+  justify-content: center;
+`;
 
 // =============================================================================================================
 // 하단 부분
 
 const Bottom = styled.div`
-  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 1780px;
+  max-width: 1600px;
+  margin: 80px auto;
 `;
 
 const StyledUL = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
   list-style-type: none;
   padding: 0;
   margin: 0;
-  flex-wrap: wrap;
 `;
 
 const StyledLI = styled.li`
-  flex: 0 0 calc(20% - 20px);
+  align-items: center;
+  justify-content: center;
   margin: 10px;
-  box-sizing: border-box;
   display: inline-block;
-  margin-bottom: 40px;
   vertical-align: top;
-  margin-right: 60px;
+  margin-bottom: 80px;
+  margin-left: 40px;
+  margin-right: 40px;
+  min-width: 350px;
+  min-height: 350px;
 `;
 
 const StyledImage = styled.img`
   display: block;
-  width: 320px;
-  height: 420px;
+  min-width: 350px;
+  height: 450px;
   margin-bottom: 10px;
   object-fit: cover;
   border-radius: 12px;
@@ -181,6 +225,7 @@ const StyledP = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-align: left;
   max-width: ${(props) => (props.over ? "350px" : "inherit")};
 `;
 
@@ -210,10 +255,15 @@ const ViewAll = ({ item, onClick }) => {
 
   //   fetchData();
   // }, []);
+
   const jsonData = data;
+  const jsonData2 = data2;
 
   const getAllData = () => {
     return jsonData?.boxofs?.boxof || [];
+  };
+  const getAllData2 = () => {
+    return jsonData2?.boxofs?.boxof || [];
   };
 
   const getDisplayedData = () => {
@@ -223,52 +273,70 @@ const ViewAll = ({ item, onClick }) => {
       return jsonData?.boxofs?.boxof?.slice(startIndex, startIndex + 4) || [];
     }
   };
+  const getDisplayedData2 = () => {
+    if (startIndex === 0) {
+      return getAllData2();
+    } else {
+      return jsonData2?.boxofs?.boxof?.slice(startIndex, startIndex + 4) || [];
+    }
+  };
 
   const displayedData = getDisplayedData();
+  const displayedData2 = getDisplayedData2();
 
   const handleCategoryChange = (start) => {
     setStartIndex(start);
   };
 
-  return (
-    <Container>
-      <BackgroudImg>
-        <Upper>
-          <All>공연 / 전시</All>
-          <ShortHr />
-          <UpperUL>
-            {displayedData.map((item, index) => {
-              if (!showAll && index >= 5) return null;
-              return (
-                <UpperLI key={index} onClick={() => onclick(item)}>
-                  <Link to={`/ticketing/${item.id}`}>
-                    <ImageContainer>
-                      <UpperImage src={URL + item.poster._text} alt="포스터" />
-                      <Rank>{startIndex + index + 1}</Rank>
-                    </ImageContainer>
-                  </Link>
-                  <UpperP over className="over">
-                    이름: {item.prfnm._text}
-                  </UpperP>
-                  <UpperP>기간: {item.prfpd._text}</UpperP>
-                </UpperLI>
-              );
-            })}
-          </UpperUL>
-        </Upper>
-      </BackgroudImg>
+  // const GeographyChange =
 
-      <div>
+  return (
+    <>
+      <Container>
+        <BackgroudImg>
+          <Upper>
+            <All>공연 / 전시</All>
+            <ShortHr />
+            <UpperUL>
+              {displayedData2.map((item, index) => {
+                if (!showAll && index >= 5) return null;
+                return (
+                  <UpperLI key={index} onClick={() => onclick(item)}>
+                    <Link to={`/ticketing/${item.id}`}>
+                      <ImageContainer>
+                        <UpperImage
+                          src={URL + item.poster._text}
+                          alt="포스터"
+                        />
+                        <Rank>{startIndex + index + 1}</Rank>
+                      </ImageContainer>
+                    </Link>
+                    <UpperP over className="over">
+                      이름: {item.prfnm._text}
+                    </UpperP>
+                    <UpperP>기간: {item.prfpd._text}</UpperP>
+                  </UpperLI>
+                );
+              })}
+            </UpperUL>
+          </Upper>
+        </BackgroudImg>
+      </Container>
+
+      <CategoryContainer>
         <Button onClick={() => setStartIndex(0)}>전체보기</Button>
         <Button onClick={() => handleCategoryChange(1)}>연극</Button>
         <Button onClick={() => handleCategoryChange(5)}>공연</Button>
         <Button onClick={() => handleCategoryChange(9)}>콘서트</Button>
-      </div>
+        {/* <GeographyButton onClick={() => GeographyChange()}>
+          위치기반
+        </GeographyButton> */}
+      </CategoryContainer>
 
       <Bottom>
         <StyledUL>
           {displayedData.map((item, index) => {
-            if (!showAll && index >= 12) return null;
+            if (!showAll && index >= 8) return null;
             return (
               <StyledLI key={index} onclick={() => onclick(item)}>
                 <Link to={`/ticketing/${item.id}`}>
@@ -284,9 +352,9 @@ const ViewAll = ({ item, onClick }) => {
             );
           })}
         </StyledUL>
+        {!showAll && <MoreButton onClick={handleShowAll}>더보기</MoreButton>}
       </Bottom>
-      {!showAll && <MoreButton onClick={handleShowAll}>더보기</MoreButton>}
-    </Container>
+    </>
   );
 };
 

@@ -16,7 +16,7 @@ const Strong = styled.div`
 const Container = styled.div`
   .head {
     border-width: 4px;
-    width: 70%;
+    min-width: 1658px;
     color: black;
   }
   .normal {
@@ -57,7 +57,7 @@ const Container = styled.div`
     overflow: hidden;
     text-overflow: ellipsis; /* 텍스트가 범위를 넘으면 생략 (...) */
     white-space: nowrap;
-    max-width: 1200px;
+    max-width: 1400px;
   }
 
   .name {
@@ -73,7 +73,7 @@ const CenterHr = styled.hr`
 
 const StyledViewAllButton = styled.button`
   margin-top: 100px;
-  width: 240px;
+  min-width: 240px;
   height: 60px;
   border-radius: 50px;
   background-color: white;
@@ -81,6 +81,7 @@ const StyledViewAllButton = styled.button`
   border: 1px solid #fc1055;
   text-align: center;
   font-size: 24px;
+  font-weight: bold;
   margin: 30px auto 30px;
   &:focus,
   :hover {
@@ -148,6 +149,11 @@ const HPReviews = () => {
               {jsonData?.boxofs?.boxof?.[0]?.prfpd && (
                 <p>기간: {jsonData.boxofs.boxof[0].prfpd._text}</p>
               )}
+              <p>
+                후기 내용이 들어가는 영역을 테스트 하기 위한 문구입니다.후기
+                내용이 들어가는 영역을 테스트 하기 위한 문구입니다.후기 내용이
+                들어가는 영역을 테스트 하기 위한 문구입니다.
+              </p>
             </div>
           </li>
           <CenterHr />
@@ -176,6 +182,11 @@ const HPReviews = () => {
               {jsonData?.boxofs?.boxof?.[1]?.prfpd && (
                 <p>기간: {jsonData.boxofs.boxof[1].prfpd._text}</p>
               )}
+              <p>
+                후기 내용이 들어가는 영역을 테스트 하기 위한 문구입니다.후기
+                내용이 들어가는 영역을 테스트 하기 위한 문구입니다.후기 내용이
+                들어가는 영역을 테스트 하기 위한 문구입니다.
+              </p>
             </div>
           </li>
           <CenterHr />
@@ -204,6 +215,11 @@ const HPReviews = () => {
               {jsonData?.boxofs?.boxof?.[2]?.prfpd && (
                 <p>기간: {jsonData.boxofs.boxof[2].prfpd._text}</p>
               )}
+              <p>
+                후기 내용이 들어가는 영역을 테스트 하기 위한 문구입니다.후기
+                내용이 들어가는 영역을 테스트 하기 위한 문구입니다.후기 내용이
+                들어가는 영역을 테스트 하기 위한 문구입니다.
+              </p>
             </div>
           </li>
         </ul>

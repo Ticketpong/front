@@ -8,7 +8,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 120px 10px;
+  margin: 120px auto;
+  min-width: 1358px;
+  height: 780px;
 `;
 
 const Strong = styled.strong`
@@ -17,9 +19,9 @@ const Strong = styled.strong`
   margin-bottom: 20px;
 `;
 
-const CategoryBtn = styled.div`
+const CategoryContainer = styled.div`
   display: flex;
-  margin-bottom: 40px;
+  margin-bottom: 80px;
 `;
 
 const CategoryButton = styled.button`
@@ -34,6 +36,7 @@ const CategoryButton = styled.button`
   margin-left: 15px;
   cursor: pointer;
   border-radius: 25px;
+  line-height: 10px;
 
   &:focus,
   :hover {
@@ -47,15 +50,32 @@ const CategoryButton = styled.button`
   }
 `;
 
+const UlContainer = styled.div`
+  min-width: 1300px;
+`;
+
+const SliderContainer = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: auto;
+  white-space: nowrap;
+`;
+
 const SlideButton = styled.button`
   position: absolute;
-  top: 50%;
+  top: 45%;
+  width: 70px;
+  height: 70px;
   transform: translateY(-50%);
   background-color: white;
   border: none;
-  font-size: 50px;
+  font-size: 40px;
+  color: #fc1055;
   cursor: pointer;
   border-radius: 50%;
+  z-index: 999;
   ${(props) => (props.direction === "left" ? "left: 0;" : "right: 0;")}
 
   &:focus {
@@ -63,33 +83,17 @@ const SlideButton = styled.button`
   }
 `;
 
-const StyledViewAllButton = styled.button`
-  margin-top: 40px;
-  width: 240px;
-  height: 60px;
-  border-radius: 50px;
-  background-color: white;
-  color: #fc1055;
-  border: 1px solid #fc1055;
-  text-align: center;
-  font-size: 24px;
-  &:focus {
-    background-color: #fc1055;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    color: #ffffff;
-  }
-`;
-
 const ListItem = styled.li`
   display: inline-block;
-  margin-right: 60px;
+  margin-right: 40px;
+  margin-left: 40px;
   vertical-align: top;
 `;
 
 const Image = styled.img`
   display: block;
-  width: 320px;
-  height: 420px;
+  min-width: 350px;
+  height: 450px;
   margin-bottom: 10px;
   object-fit: cover;
   border-radius: 12px;
@@ -148,7 +152,7 @@ const HPContent1 = ({ item, onClick }) => {
   return (
     <Container>
       <Strong>New 신규오픈!</Strong>
-      <CategoryBtn>
+      <CategoryContainer>
         <CategoryButton onClick={() => handleCategoryChange(0)}>
           연극
         </CategoryButton>
@@ -158,9 +162,8 @@ const HPContent1 = ({ item, onClick }) => {
         <CategoryButton onClick={() => handleCategoryChange(8)}>
           콘서트
         </CategoryButton>
-      </CategoryBtn>
-
-      <div style={{ position: "relative" }}>
+      </CategoryContainer>
+      <SliderContainer>
         <SlideButton
           className="prevButton"
           onClick={handlePrev}
@@ -168,7 +171,7 @@ const HPContent1 = ({ item, onClick }) => {
         >
           {"<"}
         </SlideButton>
-        <ul>
+        <UlContainer>
           {displayedData.map((item, index) => (
             <ListItem key={index} onClick={() => onclick(item)}>
               <Link to={`/ticketing/${item.id}`}>
@@ -182,18 +185,11 @@ const HPContent1 = ({ item, onClick }) => {
               <Text>기간: {item.prfpd._text}</Text>
             </ListItem>
           ))}
-        </ul>
-        <SlideButton
-          className="nextButton"
-          onClick={handleNext}
-          // direction="right"
-        >
+        </UlContainer>
+        <SlideButton className="nextButton" onClick={handleNext}>
           {">"}
         </SlideButton>
-      </div>
-      <Link to="/viewall">
-        <StyledViewAllButton>티켓 전체보기</StyledViewAllButton>
-      </Link>
+      </SliderContainer>
     </Container>
   );
 };
