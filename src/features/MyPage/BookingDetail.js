@@ -7,6 +7,7 @@ import {
   MdKeyboardDoubleArrowLeft,
   MdKeyboardDoubleArrowRight,
 } from "react-icons/md";
+import Modal from "./BookingDetailModal";
 
 const Container = styled.table`
   margin: 20px auto;
@@ -30,7 +31,7 @@ const Cell = styled.td`
   text-align: center;
   font-weight: 500;
   font-size: 14px;
-
+  cursor: pointer; /* 추가: 클릭 가능한 커서 스타일 */
   &:last-child {
     border-right: none;
   }
@@ -101,16 +102,15 @@ const ReviewStatus = styled.button`
   margin: 0 auto;
   background-color: ${({ status }) => {
     switch (status) {
-      case "작성하기":
+      case false:
         return "#fc1055";
-      case "완료":
-      case "불가":
+      case true:
         return "#999999";
       default:
         return "#999999";
     }
   }};
-  cursor: ${({ status }) => (status === "작성하기" ? "pointer" : "default")};
+  cursor: ${({ status }) => (status === false ? "pointer" : "default")};
 `;
 
 // 항목 수
@@ -120,28 +120,44 @@ const BookingDetail = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState("3");
+  const [showModal, setShowModal] = useState(false); // 모달 제어 상태 추가
+  const [selectedData, setSelectedData] = useState(null); // 선택된 데이터 상태 추가
   const navigate = useNavigate();
 
   const [data, setData] = useState([
     {
-      id: 1,
-      reservationDate: new Date("2023-11-01"),
-      performance: "공연1",
-      performanceDate: new Date("2023-12-01"),
-      price: 50000,
-      quantity: 2,
-      status: "결제완료",
-      reviewStatus: "작성하기",
+      imp_uid: "imp_uid01", //예매 ID
+      user_id: "user_id01", //ID
+      manage_id: "manage_id01", //ID
+      mt10id: "공연시설01", //공연시설
+      prfnm: "공연01", //공연명
+      res_date: new Date("2023-11-01"), //예매일
+      paid_amount: 120000, //결제금액
+      success: true, //결제상태
+      watchstate: true, //관람상태
+      prestate: false, //후기상태
+      selectdate: new Date("2023-11-01"), //선택날짜
+      selecttime: "14:00", //선택시간
+      selectseat: "VIP01, VIP02", //좌석
+      people: 2, //인원
+      pay_method: "card",
     },
     {
-      id: 2,
-      reservationDate: new Date("2023-12-15"),
-      performance: "공연2",
-      performanceDate: new Date("2024-03-05"),
-      price: 60000,
-      quantity: 1,
-      status: "결제취소",
-      reviewStatus: "작성완료",
+      imp_uid: "imp_uid02", //예매 ID
+      user_id: "user_id01", //ID
+      manage_id: "manage_id02", //ID
+      mt10id: "공연시설02", //공연시설
+      prfnm: "공연02", //공연명
+      res_date: new Date("2023-12-15"), //예매일
+      paid_amount: 120000, //결제금액
+      success: true, //결제상태
+      watchstate: true, //관람상태
+      prestate: true, //후기상태
+      selectdate: new Date("2024-03-05"), //선택날짜
+      selecttime: "17:00", //선택시간
+      selectseat: "S01, S02", //좌석
+      people: 2, //인원
+      pay_method: "card",
     },
   ]);
 
@@ -164,8 +180,7 @@ const BookingDetail = () => {
     }
 
     const filtered = data.filter(
-      (item) =>
-        item.performanceDate >= startDate && item.performanceDate <= today
+      (item) => item.selectdate >= startDate && item.selectdate <= today
     );
     setFilteredData(filtered);
   }, [data, selectedPeriod]);
@@ -186,10 +201,16 @@ const BookingDetail = () => {
 
   const handlePeriodChange = (event) => setSelectedPeriod(event.target.value);
 
+  const handleCellClick = (data) => {
+    setSelectedData(data);
+    setShowModal(true);
+    console.log(data);
+  };
+
   return (
     <>
       <LabelContainer>
-        <label for="period">
+        <label htmlFor="period">
           최대 지난 1년의 예매 내역을 확인할 수 있습니다.
         </label>
         <select
@@ -221,24 +242,32 @@ const BookingDetail = () => {
               <NoDataCell colSpan="7">등록된 예매 내역이 없습니다.</NoDataCell>
             </tr>
           ) : (
-            Data.map((item) => (
-              <tr key={item.id}>
-                <Cell>{item.reservationDate.toLocaleDateString()}</Cell>
-                <Cell>{item.performance}</Cell>
-                <Cell>{item.performanceDate.toLocaleDateString()}</Cell>
-                <Cell>{item.price}</Cell>
-                <Cell>{item.quantity}</Cell>
-                <Cell>{item.status}</Cell>
+            Data.map((filtered) => (
+              <tr
+                key={filtered.imp_uid}
+                onClick={() => handleCellClick(filtered)}
+              >
+                <Cell>{filtered.res_date.toLocaleDateString()}</Cell>
+                <Cell>{filtered.prfnm}</Cell>
+                <Cell>
+                  {filtered.selectdate.toLocaleDateString()}{" "}
+                  {filtered.selecttime}
+                </Cell>
+                <Cell>{filtered.paid_amount}</Cell>
+                <Cell>{filtered.people}</Cell>
+                <Cell>
+                  {filtered.success === true ? "결제완료" : "결제취소"}
+                </Cell>
                 <Cell>
                   <ReviewStatus
-                    status={item.reviewStatus}
+                    status={filtered.prestate}
                     onClick={
-                      item.reviewStatus === "작성하기"
+                      filtered.prestate === false
                         ? () => navigate("/writereview")
                         : undefined
                     }
                   >
-                    {item.reviewStatus}
+                    {filtered.prestate === true ? "작성완료" : "작성하기"}
                   </ReviewStatus>
                 </Cell>
               </tr>
@@ -248,10 +277,10 @@ const BookingDetail = () => {
       </Container>
       <ButtonContainer>
         <button onClick={goToStartPage}>
-          <MdKeyboardDoubleArrowLeft />
+          <MdKeyboardDoubleArrowLeft color="#999999" />
         </button>
         <button onClick={goToPrevPage}>
-          <MdKeyboardArrowLeft />
+          <MdKeyboardArrowLeft color="#999999" />
         </button>
         {Array.from(
           { length: Math.ceil(data.length / ITEMS_PER_PAGE) },
@@ -262,12 +291,17 @@ const BookingDetail = () => {
           )
         )}
         <button onClick={goToNextPage}>
-          <MdKeyboardArrowRight />
+          <MdKeyboardArrowRight color="#999999" />
         </button>
         <button onClick={goToEndPage}>
-          <MdKeyboardDoubleArrowRight />
+          <MdKeyboardDoubleArrowRight color="#999999" />
         </button>
       </ButtonContainer>
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        data={selectedData}
+      />
     </>
   );
 };

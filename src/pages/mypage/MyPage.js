@@ -9,6 +9,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   margin: 120px auto;
+  max-width: 1500px;
 `;
 
 const Sidebar = styled.div`
