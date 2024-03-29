@@ -2,62 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const BoardContainer = styled.div`
-  width: 70%;
+  width: 1500px;
   padding: 20px;
   margin-top: 20px;
-
-  .postTable th:nth-child(2) {
-    text-align: left;
-  }
-
-  /* 테이블 행 스타일 */
-  .postTable tr {
-    border-bottom: 1px solid #ddd;
-  }
-
-  /* 선택된 행 스타일 */
-  .postTable tr.selectedRow {
-    background-color: #eaeaea;
-  }
-
-  .postTable th:first-child,
-  .postTable td:first-child,
-  .postTable th:last-child,
-  .postTable td:last-child {
-    width: 20%; /* id 및 date 열의 비중 */
-  }
-
-  .postTable th:nth-child(2),
-  .postTable td:nth-child(2) {
-    width: 60%; /* title 열의 비중 */
-  }
-
-  /* Optional: Adjusting title text alignment */
-  .postTable td:nth-child(2) {
-    text-align: left; /* 제목 텍스트를 왼쪽 정렬로 변경 */
-  }
-
-  /* 게시글 내용 컨테이너 스타일 */
-  .postContentContainer {
-    margin-top: 20px;
-  }
-
-  /* 게시글 내용 스타일 */
-  .postContent {
-    margin-bottom: 10px;
-  }
-
-  /* 목록으로 돌아가기 버튼 스타일 */
-  .goBackButton {
-    cursor: pointer;
-    background-color: #007bff;
-    color: white;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-  }
-
-  /* 목록으로 돌아가기 버튼 호버 스타일 */
 
   .pagination {
     margin-top: 50px;
@@ -70,18 +17,6 @@ const BoardContainer = styled.div`
     border: 0;
     background-color: white;
     font-size: 16px;
-  }
-
-  /* 게시판 내용 */
-
-  .postContentContainer {
-    position: relative;
-  }
-
-  .postContent {
-    max-height: calc(1.2em * 7); /* 최대 7줄의 높이로 설정 */
-    overflow: hidden;
-    margin-bottom: 300px; /* 공백 추가 */
   }
 
   .postContent::after {
@@ -99,16 +34,46 @@ const PostTable = styled.table`
   text-align: center;
   border-top: 2px solid black;
   border-bottom: 2px solid black;
+  & thead {
+    text-align: center;
+  }
+
+  & tbody {
+    text-align: center;
+  }
 `;
 
 const Th = styled.th`
   padding: 8px;
   text-align: center;
   background-color: #f2f2f2;
+  &:nth-child(2) {
+    text-align: left;
+    width: 60%;
+  }
+  &:first-child,
+  &:last-child {
+    width: 20%;
+  }
 `;
 
 const Td = styled.td`
   padding: 8px;
+  text-align: center;
+  &:first-child,
+  &:last-child {
+    min-width: 300px;
+  }
+  &:nth-child(2) {
+    min-width: 900px;
+    text-align: left;
+  }
+`;
+
+const TrBox = styled.div``;
+
+const HrBox = styled.div`
+  border-bottom: 1px solid #ccc;
 `;
 
 const GoBackBtn = styled.button`
@@ -130,22 +95,25 @@ const CommunityBoard = () => {
 
   const [posts] = useState([
     {
-      id: 1,
-      title: "첫 번째 게시글",
-      content: "첫 번째 게시글의 내용입니다.",
+      id: 3,
+      title: "개인정보 처리방침 변경안내",
+      content:
+        "개인정보보호위원회(이하 `개인정보위'라 한다)는 정보주체의 자유와 권리 보호를 위해 「개인정보 보호법」 및 관계 법령이 정한 바를 준수하여, 적법하게 개인정보를 처리하고 안전하게 관리하고 있습니다. 이에 「개인정보 보호법」 제30조에 따라 정보주체에게 개인정보 처리에 관한 절차 및 기준을 안내하고, 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이 개인정보 처리방침을 수립 ‧ 공개합니다.",
       date: "2024-03-19",
     },
     {
       id: 2,
-      title: "두 번째 게시글",
-      content: "두 번째 게시글의 내용입니다.",
-      date: "2024-03-20",
+      title: "3월 시스템 점검 공지",
+      content:
+        "티켓퐁를 이용해주시는 회원님들께 감사드리며, 시스템 정기 점검에 관한 안내 말씀드립니다. 서비스 품질 향상을 위한 시스템 정기 점검으로 인해 2023년 4월 28일(금) AM 00:00 부터 ~ 05:00 까지, 5시간 동안 티켓퐁 서비스가 일시 중지됨을 알려드리오니, 서비스 이용에 참고하시기 바랍니다.",
+      date: "2024-03-10",
     },
     {
-      id: 3,
-      title: "세 번째 게시글",
-      content: "세 번째 게시글의 내용입니다.",
-      date: "2024-03-21",
+      id: 1,
+      title: "고객지원센터 2024년 4월 휴무일 안내",
+      content:
+        "안녕하세요, 티켓퐁입니다. 3월 중 아래 일정에 고객센터 업무가 진행되지 않을 예정이오니이용에 불편 없으시도록 참고하여 주시기 바랍니다.일정 :- 2023년 3월 1일(화) - 삼일절 - 2023년 3월 9일(수) - 20대 대통령 선거일",
+      date: "2024-03-01",
     },
   ]);
 
@@ -170,7 +138,6 @@ const CommunityBoard = () => {
 
   return (
     <BoardContainer>
-      {/* 게시판 리스트 */}
       {showPostList && (
         <>
           <PostTable>
@@ -182,21 +149,21 @@ const CommunityBoard = () => {
               </tr>
             </thead>
             <tbody>
-              {posts.map((post) => (
+              {posts.map((post, index) => (
                 <tr
                   key={post.id}
                   onClick={() => togglePost(post.id)}
-                  className={selectedPost === post.id ? styled.selectedRow : ""}
+                  className={selectedPost === post.id ? "selectedRow" : ""}
                 >
                   <Td>{post.id}</Td>
                   <Td>{post.title}</Td>
                   <Td>{post.date}</Td>
+                  {index !== posts.length - 1 && <HrBox />}
                 </tr>
               ))}
             </tbody>
           </PostTable>
 
-          {/* 페이지 이동 */}
           <div className="pagination">
             <button onClick={() => handleClick(1)}>&laquo;</button>
             <button onClick={() => handleClick(currentPage - 1)}>&lt;</button>
@@ -223,8 +190,6 @@ const CommunityBoard = () => {
           </div>
         </>
       )}
-
-      {/* 선택된 게시글 내용 */}
       {!showPostList && selectedPost && (
         <div className={styled.postContentContainer}>
           <h3>{posts.find((post) => post.id === selectedPost).title}</h3>

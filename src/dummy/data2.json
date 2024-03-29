@@ -36,7 +36,13 @@
           "_text": "0"
         },
         "area": {
-          "_text": "서울"
+          "_text": "서울 대학로"
+        },
+        "latitude": {
+          "_text": "37.5782763"
+        },
+        "longitude": {
+          "_text": "127.0016013"
         }
       },
       {
@@ -68,7 +74,13 @@
           "_text": "0"
         },
         "area": {
-          "_text": "서울"
+          "_text": "서울 홍대"
+        },
+        "latitude": {
+          "_text": "37.5558499"
+        },
+        "longitude": {
+          "_text": "126.9241498"
         }
       },
       {
@@ -94,13 +106,19 @@
           "_text": "서툰 사람들"
         },
         "cate": {
-          "_text": "연극"
+          "_text": "콘서트"
         },
         "prfdtcnt": {
           "_text": "0"
         },
         "area": {
-          "_text": "서울"
+          "_text": "서울 강남"
+        },
+        "latitude": {
+          "_text": "37.4966645"
+        },
+        "longitude": {
+          "_text": "127.0629804"
         }
       },
       {
@@ -132,7 +150,13 @@
           "_text": "0"
         },
         "area": {
-          "_text": "서울"
+          "_text": "일산"
+        },
+        "latitude": {
+          "_text": "37.6783756"
+        },
+        "longitude": {
+          "_text": "126.7711774"
         }
       },
       {
@@ -158,13 +182,247 @@
           "_text": "레드"
         },
         "cate": {
+          "_text": "공연"
+        },
+        "prfdtcnt": {
+          "_text": "0"
+        },
+        "area": {
+          "_text": "서울 여의도"
+        },
+        "latitude": {
+          "_text": "37.5295808"
+        },
+        "longitude": {
+          "_text": "126.9326803"
+        }
+      },
+      {
+        "prfplcnm": {
+          "_text": "유니플렉스 3관(소극장)"
+        },
+        "seatcnt": {
+          "_text": "181"
+        },
+        "rnum": {
+          "_text": "23"
+        },
+        "poster": {
+          "_text": "/upload/pfmPoster/PF_PF200888_221027_101306.gif"
+        },
+        "prfpd": {
+          "_text": "2022.11.12~2023.03.12"
+        },
+        "mt20id": {
+          "_text": "PF200888"
+        },
+        "prfnm": {
+          "_text": "진짜나쁜소녀"
+        },
+        "cate": {
           "_text": "연극"
         },
         "prfdtcnt": {
           "_text": "0"
         },
         "area": {
-          "_text": "서울"
+          "_text": "서울 대학로"
+        },
+        "latitude": {
+          "_text": "37.5782763"
+        },
+        "longitude": {
+          "_text": "127.0016013"
+        }
+      },
+      {
+        "prfplcnm": {
+          "_text": "서경대학교 공연예술센터 스콘2관"
+        },
+        "seatcnt": {
+          "_text": "264"
+        },
+        "rnum": {
+          "_text": "24"
+        },
+        "poster": {
+          "_text": "/upload/pfmPoster/PF_PF201821_221110_093151.gif"
+        },
+        "prfpd": {
+          "_text": "2022.12.09~2023.02.19"
+        },
+        "mt20id": {
+          "_text": "PF201821"
+        },
+        "prfnm": {
+          "_text": "그때도 오늘"
+        },
+        "cate": {
+          "_text": "연극"
+        },
+        "prfdtcnt": {
+          "_text": "0"
+        },
+        "area": {
+          "_text": "서울 대학로"
+        },
+        "latitude": {
+          "_text": "37.5782763"
+        },
+        "longitude": {
+          "_text": "127.0016013"
+        }
+      },
+      {
+        "prfplcnm": {
+          "_text": "세우아트센터 2관"
+        },
+        "seatcnt": {
+          "_text": "160"
+        },
+        "rnum": {
+          "_text": "25"
+        },
+        "poster": {
+          "_text": "/upload/pfmPoster/PF_PF203237_221129_134339.jpg"
+        },
+        "prfpd": {
+          "_text": "2022.12.03~2022.12.31"
+        },
+        "mt20id": {
+          "_text": "PF203237"
+        },
+        "prfnm": {
+          "_text": "사랑향기"
+        },
+        "cate": {
+          "_text": "연극"
+        },
+        "prfdtcnt": {
+          "_text": "0"
+        },
+        "area": {
+          "_text": "서울 대학로"
+        },
+        "latitude": {
+          "_text": "37.5782763"
+        },
+        "longitude": {
+          "_text": "127.0016013"
+        }
+      },
+      {
+        "prfplcnm": {
+          "_text": "서경대학교 공연예술센터 스콘2관"
+        },
+        "seatcnt": {
+          "_text": "264"
+        },
+        "rnum": {
+          "_text": "26"
+        },
+        "poster": {
+          "_text": "/upload/pfmPoster/PF_PF202460_221118_110504.gif"
+        },
+        "prfpd": {
+          "_text": "2022.12.01~2022.12.04"
+        },
+        "mt20id": {
+          "_text": "PF202460"
+        },
+        "prfnm": {
+          "_text": "오두막"
+        },
+        "cate": {
+          "_text": "연극"
+        },
+        "prfdtcnt": {
+          "_text": "0"
+        },
+        "area": {
+          "_text": "서울 대학로"
+        },
+        "latitude": {
+          "_text": "37.5782763"
+        },
+        "longitude": {
+          "_text": "127.0016013"
+        }
+      },
+      {
+        "prfplcnm": {
+          "_text": "올림아트센터(구.스튜디오76) 올림아트센터(구.스튜디오76)"
+        },
+        "seatcnt": {
+          "_text": "210"
+        },
+        "rnum": {
+          "_text": "28"
+        },
+        "poster": {
+          "_text": "/upload/pfmPoster/PF_PF201560_221107_133216.jpg"
+        },
+        "prfpd": {
+          "_text": "2022.11.24~2022.12.11"
+        },
+        "mt20id": {
+          "_text": "PF201560"
+        },
+        "prfnm": {
+          "_text": "발사 3시간 전"
+        },
+        "cate": {
+          "_text": "연극"
+        },
+        "prfdtcnt": {
+          "_text": "0"
+        },
+        "area": {
+          "_text": "서울 대학로"
+        },
+        "latitude": {
+          "_text": "37.5782763"
+        },
+        "longitude": {
+          "_text": "127.0016013"
+        }
+      },
+      {
+        "prfplcnm": {
+          "_text": "CJ아지트 대학로 (구. SM아트홀) CJ아지트 대학로 (구. SM아트홀)"
+        },
+        "seatcnt": {
+          "_text": "190"
+        },
+        "rnum": {
+          "_text": "30"
+        },
+        "poster": {
+          "_text": "/upload/pfmPoster/PF_PF201106_221031_110808.gif"
+        },
+        "prfpd": {
+          "_text": "2022.11.12~2022.12.11"
+        },
+        "mt20id": {
+          "_text": "PF201106"
+        },
+        "prfnm": {
+          "_text": "메이드 인 제인"
+        },
+        "cate": {
+          "_text": "연극"
+        },
+        "prfdtcnt": {
+          "_text": "0"
+        },
+        "area": {
+          "_text": "서울 대학로"
+        },
+        "latitude": {
+          "_text": "37.5782763"
+        },
+        "longitude": {
+          "_text": "127.0016013"
         }
       }
     ]

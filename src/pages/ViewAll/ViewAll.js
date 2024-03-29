@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import data from "../../dummy/data.json";
 import data2 from "../../dummy/data2.json";
+import data3 from "../../dummy/data3.json";
 import { Link } from "react-router-dom";
 import Img from "../../assets/ViewAllImg/Image20240328164620.jpg";
 
@@ -9,7 +9,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 150px;
+  margin-bottom: 80px;
   text-align: center;
   max-width: 100%;
 `;
@@ -17,7 +17,7 @@ const Container = styled.div`
 const BackgroudImg = styled.image`
   background-image: url(${Img});
   background-size: cover;
-  background-size: 100% 380px;
+  background-size: 100% 400px;
   background-position: top;
   background-repeat: no-repeat;
   align-items: center;
@@ -28,7 +28,7 @@ const BackgroudImg = styled.image`
 // ======================================================================================================================
 // 상단 부분
 const Upper = styled.div`
-  margin-top: 100px;
+  margin-top: 220px;
 `;
 
 const ShortHr = styled.hr`
@@ -54,7 +54,7 @@ const UpperUL = styled.ul`
   justify-content: center;
   list-style-type: none;
   padding: 0;
-  margin: 100px 0;
+  margin: 20px 0;
   flex-wrap: wrap;
   min-width: 1500px;
 `;
@@ -71,8 +71,8 @@ const UpperLI = styled.li`
 
 const UpperImage = styled.img`
   display: block;
-  min-width: 200px;
-  height: 290px;
+  min-width: 260px;
+  height: 320px;
   margin-bottom: 10px;
   object-fit: cover;
   border-radius: 12px;
@@ -82,6 +82,7 @@ const UpperP = styled.p`
   margin: 0;
   font-size: ${(props) => (props.over ? "24px" : "inherit")};
   overflow: hidden;
+  text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: ${(props) => (props.over ? "350px" : "inherit")};
@@ -121,7 +122,9 @@ const Button = styled.button`
   margin-left: 15px;
   cursor: pointer;
   border-radius: 24px;
-  font-size: 18px;
+  line-height: 8px;
+  font-size: 24px;
+  font-weight: bold;
 
   &:focus {
     background-color: #fc1055;
@@ -129,26 +132,28 @@ const Button = styled.button`
   }
 `;
 
-// const GeographyButton = styled.button`
-//   min-width: 120px;
-//   height: 50px;
-//   background-color: #373a42;
-//   color: white;
-//   border: none;
-//   padding: 10px 20px;
-//   margin-top: 100px;
-//   margin-bottom: 10px;
-//   margin-right: 15px;
-//   margin-left: 15px;
-//   cursor: pointer;
-//   border-radius: 24px;
-//   font-size: 18px;
+const GeographyButton = styled.button`
+  min-width: 120px;
+  height: 50px;
+  background-color: #373a42;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 100px;
+  margin-bottom: 10px;
+  margin-right: 15px;
+  margin-left: 15px;
+  cursor: pointer;
+  border-radius: 24px;
+  line-height: 8px;
+  font-size: 24px;
+  font-weight: bold;
 
-//   &:focus {
-//     background-color: #fc1055;
-//     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-//   }
-// `;
+  &:focus {
+    background-color: #fc1055;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+`;
 
 const MoreButton = styled.button`
   min-width: 240px;
@@ -173,7 +178,7 @@ const MoreButton = styled.button`
 `;
 const CategoryContainer = styled.div`
   display: flex;
-  margin-bottom: 80px;
+  margin-bottom: 55px;
   align-items: center;
   justify-content: center;
 `;
@@ -232,63 +237,81 @@ const StyledP = styled.p`
 // =============================================================================================== //
 // 데이터 처리 부문
 
-const ViewAll = ({ item, onClick }) => {
-  // const [jsonData, setJsonData] = useState("");
+const ViewAll = () => {
   const URL = "https://www.kopis.or.kr/";
   const [startIndex, setStartIndex] = useState(0);
   const [showAll, setShowAll] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("전체");
+  const [geographyBased, setGeographyBased] = useState(false); // 위치 기반 필터링 여부 상태
 
   const handleShowAll = () => {
     setShowAll(true);
   };
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch("/data/data.json");
-  //       const jsonData = await response.json();
-  //       setJsonData(jsonData);
-  //     } catch (error) {
-  //       console.error("JSON 데이터를 가져오는 중 오류가 발생했습니다.", error);
-  //     }
-  //   };
+  const jsonData2 = data2; // 위치데이터가 있는 데이터
+  const jsonData3 = data3; // 순위표시용 더미 데이터
 
-  //   fetchData();
-  // }, []);
-
-  const jsonData = data;
-  const jsonData2 = data2;
-
-  const getAllData = () => {
-    return jsonData?.boxofs?.boxof || [];
-  };
   const getAllData2 = () => {
     return jsonData2?.boxofs?.boxof || [];
   };
-
-  const getDisplayedData = () => {
-    if (startIndex === 0) {
-      return getAllData();
-    } else {
-      return jsonData?.boxofs?.boxof?.slice(startIndex, startIndex + 4) || [];
-    }
+  const getDisplayedData3 = () => {
+    return jsonData3?.boxofs?.boxof?.slice(startIndex, startIndex + 5) || [];
   };
+
+  const displayedData3 = getDisplayedData3();
+
   const getDisplayedData2 = () => {
-    if (startIndex === 0) {
-      return getAllData2();
+    if (geographyBased) {
+      // 예시용 위도, 경도 데이터 => 서울 광화문
+      // 나중에 현재 위치를 가져오는 함수를 넣어야할 수도 있음.
+      const userLatitude = 37.572389;
+      const userLongitude = 126.9769117;
+
+      const filteredData =
+        jsonData2?.boxofs?.boxof?.filter((item) => {
+          const distance = Math.sqrt(
+            Math.pow(item.latitude._text - userLatitude, 2) +
+              Math.pow(item.longitude._text - userLongitude, 2)
+          );
+          // =========================================================================================================== //
+          // 숫자를 조정하면 위도, 경도의 범위가 바뀐다.
+          return distance <= 0.1;
+        }) || [];
+
+      return filteredData;
+    } else if (selectedCategory === "전체") {
+      if (startIndex === 0) {
+        return getAllData2();
+      } else {
+        return (
+          jsonData2?.boxofs?.boxof?.slice(startIndex, startIndex + 4) || []
+        );
+      }
     } else {
-      return jsonData2?.boxofs?.boxof?.slice(startIndex, startIndex + 4) || [];
+      const filteredData =
+        jsonData2?.boxofs?.boxof?.filter(
+          (item) => item.cate._text === selectedCategory
+        ) || [];
+      return filteredData;
     }
   };
 
-  const displayedData = getDisplayedData();
   const displayedData2 = getDisplayedData2();
 
-  const handleCategoryChange = (start) => {
-    setStartIndex(start);
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+    setStartIndex(0);
+    setGeographyBased(false);
   };
 
-  // const GeographyChange =
+  const handleGeographyChange = () => {
+    setGeographyBased(true);
+    setSelectedCategory("전체"); // 위치 기반 필터링 시 선택된 장르를 '전체'로 변경
+  };
+
+  const handleLoadMore = () => {
+    setShowAll(true);
+  };
 
   return (
     <>
@@ -298,7 +321,7 @@ const ViewAll = ({ item, onClick }) => {
             <All>공연 / 전시</All>
             <ShortHr />
             <UpperUL>
-              {displayedData2.map((item, index) => {
+              {displayedData3.map((item, index) => {
                 if (!showAll && index >= 5) return null;
                 return (
                   <UpperLI key={index} onClick={() => onclick(item)}>
@@ -312,7 +335,8 @@ const ViewAll = ({ item, onClick }) => {
                       </ImageContainer>
                     </Link>
                     <UpperP over className="over">
-                      이름: {item.prfnm._text}
+                      이름: {item.prfnm._text.slice(0, 13)}
+                      {item.prfnm._text.length > 20 ? "..." : ""}
                     </UpperP>
                     <UpperP>기간: {item.prfpd._text}</UpperP>
                   </UpperLI>
@@ -324,21 +348,21 @@ const ViewAll = ({ item, onClick }) => {
       </Container>
 
       <CategoryContainer>
-        <Button onClick={() => setStartIndex(0)}>전체보기</Button>
-        <Button onClick={() => handleCategoryChange(1)}>연극</Button>
-        <Button onClick={() => handleCategoryChange(5)}>공연</Button>
-        <Button onClick={() => handleCategoryChange(9)}>콘서트</Button>
-        {/* <GeographyButton onClick={() => GeographyChange()}>
+        <Button onClick={() => handleCategoryChange("전체")}>전체보기</Button>
+        <Button onClick={() => handleCategoryChange("연극")}>연극</Button>
+        <Button onClick={() => handleCategoryChange("공연")}>공연</Button>
+        <Button onClick={() => handleCategoryChange("콘서트")}>콘서트</Button>
+        <GeographyButton onClick={handleGeographyChange}>
           위치기반
-        </GeographyButton> */}
+        </GeographyButton>
       </CategoryContainer>
 
       <Bottom>
         <StyledUL>
-          {displayedData.map((item, index) => {
+          {displayedData2.map((item, index) => {
             if (!showAll && index >= 8) return null;
             return (
-              <StyledLI key={index} onclick={() => onclick(item)}>
+              <StyledLI key={index} onClick={() => onclick(item)}>
                 <Link to={`/ticketing/${item.id}`}>
                   <StyledImage src={URL + item.poster._text} alt="포스터" />
                 </Link>
@@ -352,7 +376,7 @@ const ViewAll = ({ item, onClick }) => {
             );
           })}
         </StyledUL>
-        {!showAll && <MoreButton onClick={handleShowAll}>더보기</MoreButton>}
+        {!showAll && <MoreButton onClick={handleLoadMore}>더보기</MoreButton>}
       </Bottom>
     </>
   );
