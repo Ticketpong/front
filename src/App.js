@@ -33,6 +33,12 @@ function App() {
           <Route path="/viewall" element={<ViewAll />} />
           <Route path="/ticketing" element={<Ticketing />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route
+            path="/editmyreview/:prfnmText"
+            element={<EditMyReview />}
+          ></Route>
+          <Route path="/myreview" element={<MyReview />}></Route>
         </Routes>
         {showHF && <Footer />}
       </BrowserRouter>
