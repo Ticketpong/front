@@ -204,7 +204,6 @@ const BookingDetail = () => {
   const handleCellClick = (data) => {
     setSelectedData(data);
     setShowModal(true);
-    console.log(data);
   };
 
   return (
