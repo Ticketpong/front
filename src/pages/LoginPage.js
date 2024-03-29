@@ -23,9 +23,8 @@ const LoginBox = styled.div`
   border: 1px solid rgba(153, 153, 153, 0.5);
   border-radius: 5px;
   text-align: center;
-  /* margin-top: 0; */
   img {
-    width: 192px;
+    width: 100%;
     height: 25px;
     margin-top: 56px;
     margin-bottom: 27px;
@@ -42,7 +41,6 @@ const Input = styled.div`
   }
   input::placeholder {
     color: rgba(153, 153, 153);
-    font-family: "Noto Sans";
     font-weight: 500;
     font-size: 16px;
     line-height: 21.79px;
@@ -67,10 +65,10 @@ const Input = styled.div`
     background-color: #fc1055;
     color: white;
     font-size: 20px;
-    font-family: "Noto Sans";
     font-weight: 500;
     line-height: 21.79px;
     margin-top: 33px;
+    cursor: pointer;
   }
 `;
 
@@ -94,7 +92,7 @@ const Checkbox = styled.div`
     background-size: 100% 100%;
     background-position: 50%;
     background-repeat: no-repeat;
-    background-color: limegreen;
+    background-color: #FC1055;
   }
   label {
     font-size: 16px;
@@ -112,14 +110,13 @@ const Links = styled.div`
     font-size: 16px;
     text-decoration: none;
     margin-right: 10px;
-    font-family: "Noto Sans";
     font-weight: 500;
     line-height: 21.79px;
     color: #373a42;
     margin-top: 10px;
   }
   a:hover {
-    color: blue;
+    font-weight: 700;
   }
   p {
     color: rgba(153, 153, 153, 0.5);
@@ -132,17 +129,15 @@ const Signup = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 20px;
-  width: 293px;
+  width: 323px;
   height: 25px;
   span {
-    font-family: "Noto Sans";
-    font-weight: 300;
+    font-weight: 400;
     font-size: 18px;
     line-height: 24.52px;
     margin-right: 10px;
   }
   a {
-    font-family: "Noto Sans";
     font-weight: 700;
     font-size: 18px;
     line-height: 24.52px;
@@ -150,7 +145,7 @@ const Signup = styled.div`
     text-decoration: none;
   }
   a:hover {
-    color: blue;
+    color: #FC1055;
   }
 `;
 

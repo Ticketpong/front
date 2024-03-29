@@ -17,7 +17,7 @@ const LoginBox = styled.div`
   flex-direction: column;
   align-items: center;
   width: 500px;
-  height: 480px;
+  height: 445px;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid rgba(153, 153, 153, 0.5);
@@ -25,7 +25,7 @@ const LoginBox = styled.div`
   text-align: center;
   /* margin-top: 0; */
   img {
-    width: 192px;
+    width: 100%;
     height: 25px;
     margin-top: 56px;
     margin-bottom: 27px;
@@ -42,7 +42,6 @@ const Input = styled.div`
   }
   input::placeholder {
     color: rgba(153, 153, 153);
-    font-family: "Noto Sans";
     font-weight: 500;
     font-size: 16px;
     line-height: 21.79px;
@@ -67,10 +66,10 @@ const Input = styled.div`
     background-color: #fc1055;
     color: white;
     font-size: 20px;
-    font-family: "Noto Sans";
     font-weight: 500;
     line-height: 21.79px;
     margin-top: 33px;
+    cursor: pointer;
   }
 `;
 
@@ -94,7 +93,7 @@ const Checkbox = styled.div`
     background-size: 100% 100%;
     background-position: 50%;
     background-repeat: no-repeat;
-    background-color: limegreen;
+    background-color: #FC1055;
   }
   label {
     font-size: 16px;
