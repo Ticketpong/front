@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { HeaderContainer, Logo } from "../styles/HeaderStyled";
-import logoImg from "../assets/headerImg/logo.png";
-import NavMenu from "../features/Header/NavMenu";
-import UserMenu from "../features/Header/UserMenu";
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { HeaderContainer, Logo } from '../styles/HeaderStyled';
+import logoImg from '../assets/headerImg/logo.png';
+import NavMenu from '../features/Header/NavMenu';
+import UserMenu from '../features/Header/UserMenu';
 
 const Header = ({ isLoggedIn }) => {
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -63,6 +63,11 @@ const Header = ({ isLoggedIn }) => {
       console.error("로그아웃 요청 중 에러 발생:", error);
     }
   };
+
+  const locationInfo = useLocation();
+
+  if(locationInfo.pathname === "/login" || locationInfo.pathname === "/signup")
+    return null;
 
   return (
     <HeaderContainer>

@@ -81,7 +81,7 @@ const NavMenu = ({ open, isLoggedIn, onClose }) => {
         </NavListItem>
         <NavListItem bold>
           <Icon src={navShowIcon} alt="navShowIcon" />
-          <Link to="/show_all">공연 전시 예매</Link>
+          <Link to="/viewall">공연 전시 예매</Link>
         </NavListItem>
         <NavListItem bold>
           <Icon src={navCommIcon} alt="navCommunityIcon" />
