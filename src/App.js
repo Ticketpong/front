@@ -13,7 +13,8 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import MyReview from "./features/MyPage/MyReview";
 import EditMyReview from "./features/MyPage/EditMyReview";
-import ManageLoginPage from "./pages/ManageLoginPage";
+import ManageLoginPage from "./pages/managepage/ManageLoginPage";
+import ManagePage from "./pages/managepage/ManagePage";
 
 function App() {
   const pathname = window.location.pathname;
@@ -34,6 +35,8 @@ function App() {
           <Route path="/ticketing" element={<Ticketing />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/manage" element={<ManageLoginPage />} />
+          <Route path="/managepage" element={<ManagePage />} />
           <Route
             path="/editmyreview/:prfnmText"
             element={<EditMyReview />}

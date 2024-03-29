@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, json } from "react-router-dom";
 import styled from "styled-components";
-import logo from "../assets/headerImg/logo.png";
+import logo from "../../assets/headerImg/logo.png";
 import axios from "axios";
 const Container = styled.div`
   display: flex;
