@@ -114,9 +114,7 @@
         "area": {
           "_text": "서울 강남"
         },
-        "latitude": {
-          "_text": "37.4966645"
-        },
+        "latitude": {},
         "longitude": {
           "_text": "127.0629804"
         }

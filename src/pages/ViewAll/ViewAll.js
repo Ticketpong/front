@@ -155,6 +155,27 @@ const GeographyButton = styled.button`
   }
 `;
 
+// const GeographyButton = styled.button`
+//   min-width: 120px;
+//   height: 50px;
+//   background-color: #373a42;
+//   color: white;
+//   border: none;
+//   padding: 10px 20px;
+//   margin-top: 100px;
+//   margin-bottom: 10px;
+//   margin-right: 15px;
+//   margin-left: 15px;
+//   cursor: pointer;
+//   border-radius: 24px;
+//   font-size: 18px;
+
+//   &:focus {
+//     background-color: #fc1055;
+//     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+//   }
+// `;
+
 const MoreButton = styled.button`
   min-width: 240px;
   height: 60px;
@@ -244,18 +265,14 @@ const ViewAll = () => {
   const [selectedCategory, setSelectedCategory] = useState("전체");
   const [geographyBased, setGeographyBased] = useState(false); // 위치 기반 필터링 여부 상태
 
-  const handleShowAll = () => {
-    setShowAll(true);
-  };
-
   const jsonData2 = data2; // 위치데이터가 있는 데이터
   const jsonData3 = data3; // 순위표시용 더미 데이터
 
-  const getAllData2 = () => {
-    return jsonData2?.boxofs?.boxof || [];
-  };
   const getDisplayedData3 = () => {
     return jsonData3?.boxofs?.boxof?.slice(startIndex, startIndex + 5) || [];
+  };
+  const getAllData2 = () => {
+    return jsonData2?.boxofs?.boxof || [];
   };
 
   const displayedData3 = getDisplayedData3();
