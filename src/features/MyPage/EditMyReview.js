@@ -137,7 +137,7 @@ const EditMyReview = () => {
   // 수정 버튼 클릭 시
   const handleEditButtonClick = () => {
     setEditMode(true);
-    setEditedContent(data.boxofs.boxof.prfplcnm._text);
+    setEditedContent("수정할 내용 입력");
   };
 
   // 저장 버튼 클릭 시
