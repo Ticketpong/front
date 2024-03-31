@@ -2,17 +2,19 @@ import styled from "styled-components";
 import React, { useState } from "react";
 
 const Container = styled.div`
-  width: 900px;
+  width: 100%;
   margin: 80px auto;
 `;
 
 const Form = styled.form`
   display: flex;
+  align-items: center;
   flex-direction: column;
 `;
 
 const InputContainer = styled.div`
   display: flex;
+  width: 60%;
   align-items: center;
   margin-bottom: 30px;
   margin-left: 100px;
@@ -27,14 +29,19 @@ const InputLabel = styled.label`
 
 const Input = styled.input`
   flex: 1;
-  padding: 5px;
+  height: 40px;
+  padding-left: 10px;
+  border: 1px solid rgba(153, 153, 153, 0.5);
+  border-radius: 3px;
 `;
 
 const GrayInput = styled.input`
   background-color: #f6f8f7;
   flex: 1;
-  padding: 5px;
-  border: 1px solid #999999;
+  height: 40px;
+  padding-left: 10px;
+  border: 1px solid rgba(153, 153, 153, 0.5);
+  border-radius: 3px;
 `;
 const InputWithButtonContainer = styled.div`
   display: flex;
@@ -54,6 +61,7 @@ const Button = styled.button`
 `;
 const HrDiv = styled.div`
   border: 1px solid #999999;
+  width: 100%;
   margin-top: 40px;
 `;
 
@@ -65,6 +73,18 @@ const ButtonContainer = styled.div`
 
 const EndButton = styled.button`
   background-color: #fc1055;
+  color: #fff;
+  width: 250px;
+  height: 70px;
+  border-radius: 3px;
+  border: 0;
+  font-size: 24px;
+  margin-left: 50px;
+  margin-right: 50px;
+`;
+
+const CancelButton = styled.button`
+  background-color: #999999;
   color: #fff;
   width: 250px;
   height: 70px;
@@ -237,13 +257,12 @@ const EditManage = () => {
               placeholder="직급을 입력해주세요."
             />
           </InputContainer>
-
-          <HrDiv />
-          <ButtonContainer>
-            <EndButton type="submit">탈퇴하기</EndButton>
-            <EndButton type="submit">회원 정보 수정</EndButton>
-          </ButtonContainer>
         </Form>
+        <HrDiv />
+        <ButtonContainer>
+          <CancelButton type="submit">탈퇴하기</CancelButton>
+          <EndButton type="submit">회원 정보 수정</EndButton>
+        </ButtonContainer>
       </Container>
     </>
   );
