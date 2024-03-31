@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import {
   MdKeyboardArrowLeft,
   MdKeyboardArrowRight,
@@ -46,10 +45,20 @@ const Button = styled.button`
   border-radius: 3px;
 `;
 
-const AdminManage = () => {
+const AddButton = styled.button`
+  width: 120px;
+  height: 51px;
+  border-radius: 3px;
+  background-color: #fc1055;
+  color: white;
+  border: none;
+  position: absolute;
+  right: 10%;
+`;
+
+const AdminManage = ({ onAddClick, onEditClick }) => {
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
@@ -107,21 +116,17 @@ const AdminManage = () => {
               <Cell>{item.manage_auth}</Cell>
               <Cell>{item.manage_part}</Cell>
               <Cell>
-                <Button
-                  onClick={() => {
-                    navigate(`/manage/manageMain/manageDetail`);
-                  }}
-                >
-                  {" "}
-                  수정
-                </Button>
-                <Button onClick={() => idDelete(item.id)}>삭제</Button>
+                <Button onClick={onEditClick}> 수정</Button>
+                <Button onClick={() => idDelete(item.manage_id)}>삭제</Button>
               </Cell>
             </tr>
           ))}
           <tr></tr>
         </tbody>
       </Container>
+      <AddButton name="add" onClick={onAddClick}>
+        + 추가하기
+      </AddButton>
     </>
   );
 };

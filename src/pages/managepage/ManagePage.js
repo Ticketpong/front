@@ -4,6 +4,9 @@ import BookingDetail from "../../features/MyPage/BookingDetail";
 import MyReview from "../../features/MyPage/MyReview";
 import EditProfile from "../../features/MyPage/EditProfile";
 import AdminManage from "../../features/ManagePage/AdminManage";
+import EditManage from "../../features/ManagePage/EditManage";
+import ManageAdd from "../../features/ManagePage/ManageAdd";
+
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 const Container = styled.div`
@@ -74,6 +77,14 @@ const ManagePage = () => {
     setSelectedItem(num);
   };
 
+  const handleAddClick = () => {
+    setSelectedItem(5);
+  };
+
+  const handleEditClick = () => {
+    setSelectedItem(6);
+  };
+
   return (
     <Container>
       <Sidebar>
@@ -106,7 +117,9 @@ const ManagePage = () => {
           </ArrowIconWrapper>
         </MenuItemWrapper>
         <MenuItemWrapper
-          selected={selectedItem === 4}
+          selected={
+            selectedItem === 4 || selectedItem === 5 || selectedItem === 6
+          }
           onClick={() => handleItemClick(4)}
         >
           <MenuItem>관리자 관리</MenuItem>
@@ -121,11 +134,20 @@ const ManagePage = () => {
           {selectedItem === 2 && "공연 관리"}
           {selectedItem === 3 && "후기 관리"}
           {selectedItem === 4 && "관리자 관리"}
+          {selectedItem === 5 && "관리자 추가"}
+          {selectedItem === 6 && "관리자 수정"}
         </Title>
         {selectedItem === 1 && <BookingDetail />}
         {selectedItem === 2 && <MyReview />}
         {selectedItem === 3 && <EditProfile />}
-        {selectedItem === 4 && <AdminManage />}
+        {selectedItem === 4 && (
+          <AdminManage
+            onAddClick={handleAddClick}
+            onEditClick={handleEditClick}
+          />
+        )}
+        {selectedItem === 5 && <ManageAdd />}
+        {selectedItem === 6 && <EditManage />}
       </Content>
     </Container>
   );
