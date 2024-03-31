@@ -67,7 +67,7 @@ const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
-const MyPage = () => {
+const ManagePage = () => {
   const [selectedItem, setSelectedItem] = useState(1);
 
   const handleItemClick = (num) => {
@@ -107,7 +107,7 @@ const MyPage = () => {
         </MenuItemWrapper>
         <MenuItemWrapper
           selected={selectedItem === 4}
-          onClick={() => handleItemClick(3)}
+          onClick={() => handleItemClick(4)}
         >
           <MenuItem>관리자 관리</MenuItem>
           <ArrowIconWrapper>
@@ -131,4 +131,4 @@ const MyPage = () => {
   );
 };
 
-export default MyPage;
+export default ManagePage;
