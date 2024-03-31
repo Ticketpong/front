@@ -85,6 +85,18 @@ const EndButton = styled.button`
   margin-right: 50px;
 `;
 
+const CancelButton = styled.button`
+  background-color: #999999;
+  color: #fff;
+  width: 250px;
+  height: 70px;
+  border-radius: 3px;
+  border: 0;
+  font-size: 24px;
+  margin-left: 50px;
+  margin-right: 50px;
+`;
+
 const RadioList = styled.div`
   display: flex;
   flex-direction: row;
@@ -240,7 +252,9 @@ const ManageAdd = () => {
         </Form>
         <HrDiv />
         <ButtonContainer>
-          <EndButton type="submit">취소</EndButton>
+          <CancelButton name="cancel" type="submit">
+            취소
+          </CancelButton>
           <EndButton type="submit">완료</EndButton>
         </ButtonContainer>
       </Container>
