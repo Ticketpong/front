@@ -7,17 +7,18 @@ import axios from "axios";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 740px;
+  width: 760px;
   height: auto;
   margin: 0 auto;
+  margin-top: 60px;
 `;
 
 const SignupBox = styled.div`
   border: 1px solid rgba(153, 153, 153, 0.5);
   width: 600px;
-  height: 930px;
+  height: auto;
   border-radius: 5px;
-  padding: 0 76px 0 76px;
+  padding: 0 60px;
 `;
 
 const Head = styled.div`
@@ -26,13 +27,14 @@ const Head = styled.div`
   align-items: center;
   a {
     img {
-      width: 192px;
+      width: 100%;
       height: 25px;
       margin-top: 56px;
       margin-bottom: 27px;
     }
   }
   p {
+    margin-top: 40px;
     span {
       color: #fc1055;
     }
@@ -52,6 +54,7 @@ const Input = styled.div`
     margin-bottom: 20px;
   }
   p {
+    font-size: 15px;
     span {
       color: #fc1055;
     }
@@ -61,15 +64,18 @@ const Input = styled.div`
     border: 1px solid rgba(153, 153, 153, 0.5);
     border-radius: 5px;
   }
-  input:placeholder {
-    color: rgba(153, 153, 153, 0.5);
-  }
+
+  input::placeholder {
+  color: #999;
+  font-size: 15px 
+}
+
   input[name="id"] {
-    width: 330px;
+    width: 300px;
     height: 50px;
     padding: 0;
     text-align: left;
-    padding: 0 10px;
+    padding: 0 30px 0 15px;
     margin-left: 60px;
   }
   input[type="button"] {
@@ -80,6 +86,9 @@ const Input = styled.div`
     border-radius: 5px;
     color: #fc1055;
     background-color: white;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
   }
   input[name="pw"] {
     width: 465px;
@@ -118,12 +127,12 @@ const Input = styled.div`
   }
 
   input[name="email"] {
-    width: 323px;
+    width: 325px;
     height: 50px;
     padding: 0;
     text-align: left;
     padding: 0 10px;
-    margin-left: 50px;
+    margin-left: 57px;
   }
 
   div[id="addr"] {
@@ -133,7 +142,7 @@ const Input = styled.div`
   }
 
   input[name="address"] {
-    width: 325px;
+    width: 329px;
     height: 50px;
     padding: 0;
     text-align: left;
@@ -155,39 +164,41 @@ const Input = styled.div`
 
   input[type="submit"] {
     width: 100%;
-    height: 50px;
+    height: 60px;
     border: none;
     border-radius: 5px;
     background-color: #fc1055;
     color: white;
     font-size: 20px;
-    font-weight: bold;
-    margin-top: 20px;
+    font-weight: 600;
+    margin-bottom: 50px;
+    cursor: pointer;
   }
 `;
 
 const Login = styled.div`
   display: flex;
   justify-content: center;
+  margin-right: 30px;
   span {
     color: #373a42;
     margin-right: 10px;
-    width: 300;
+    width: 300px;
     font-size: 18px;
     line-height: 24.52px;
-    font-family: "Noto sans";
   }
   a {
-    color: #373a42;
-    text-decoration: none;
-    width: 700;
+    font-weight: 700;
     font-size: 18px;
     line-height: 24.52px;
+    color: #373a42;
+    text-decoration: none;
   }
   a:hover {
-    color: blue;
+    color: #FC1055;
   }
 `;
+
 
 const SignupPage = () => {
   const [inputValue, setInputValue] = useState({
@@ -242,18 +253,18 @@ const SignupPage = () => {
           </p>
         </Head>
         <Input>
-          <div>
-            <p>
-              아이디 <span>*</span>
-            </p>
-            <input
-              type="text"
-              name="id"
-              placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합"
-              onChange={inputChangeHandler}
-            />
-            <input type="button" value="중복확인" />
-          </div>
+            <div>
+              <p>
+                아이디 <span>*</span>
+              </p>
+              <input
+                type="text"
+                name="id"
+                placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합"
+                onChange={inputChangeHandler}
+              />
+              <input type="button" value="중복확인" />
+            </div>
           <div>
             <p>
               비밀번호 <span>*</span>
@@ -267,7 +278,7 @@ const SignupPage = () => {
           </div>
           <div>
             <p>
-              비밀번호 확인<span>*</span>
+              비밀번호 확인 <span>*</span>
             </p>
             <input
               type="password"
