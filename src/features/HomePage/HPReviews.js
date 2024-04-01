@@ -29,15 +29,6 @@ const Container = styled.div`
     color: gray;
   }
 
-  .image {
-    display: block;
-    width: 270px;
-    height: 340px;
-    margin: 17px 35px 17px 180px;
-    object-fit: cover;
-    border-radius: 12px;
-  }
-
   .name {
     font-weight: bold;
   }
@@ -56,6 +47,15 @@ const UlContainer = styled.ul`
 const Li = styled.li`
   display: flex;
   align-items: center;
+`;
+
+const Img = styled.img`
+  display: block;
+  min-width: 270px;
+  height: 340px;
+  margin: 17px 35px 17px 180px;
+  object-fit: cover;
+  border-radius: 12px;
 `;
 
 const Text = styled.div`
@@ -148,7 +148,7 @@ const HPReviews = () => {
         <UlContainer>
           <Li>
             {jsonData?.boxofs?.boxof?.[0]?.poster && (
-              <img
+              <Img
                 src={URL + jsonData.boxofs.boxof[0].poster._text}
                 alt="포스터"
                 className="image"
@@ -174,7 +174,7 @@ const HPReviews = () => {
         <UlContainer>
           <Li>
             {jsonData?.boxofs?.boxof?.[1]?.poster && (
-              <img
+              <Img
                 src={URL + jsonData.boxofs.boxof[1].poster._text}
                 alt="포스터"
                 className="image"
@@ -202,7 +202,7 @@ const HPReviews = () => {
         <UlContainer>
           <Li>
             {jsonData?.boxofs?.boxof?.[2]?.poster && (
-              <img
+              <Img
                 src={URL + jsonData.boxofs.boxof[2].poster._text}
                 alt="포스터"
                 className="image"

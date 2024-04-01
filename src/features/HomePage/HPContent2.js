@@ -146,7 +146,7 @@ const StyledViewAllButton = styled.button`
   }
 `;
 
-const HPContent2 = ({ item, onClick }) => {
+const HPContent2 = () => {
   // const [jsonData, setJsonData] = useState("");
   const URL = "https://www.kopis.or.kr/";
   const [startIndex, setStartIndex] = useState(0);
@@ -214,8 +214,8 @@ const HPContent2 = ({ item, onClick }) => {
         </SlideButton>
         <UlContainer>
           {displayedData.map((item, index) => (
-            <ListItem key={index} onClick={() => onClick(item)}>
-              <Link to={`/ticketing/${item.id}`}>
+            <ListItem key={index}>
+              <Link to={`/ticketing/${item.prfnm._text}`}>
                 <ImageContainer>
                   <Image src={URL + item.poster._text} alt="포스터" />
                   <Rank>{startIndex + index + 1}</Rank>

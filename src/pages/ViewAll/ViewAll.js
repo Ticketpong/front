@@ -322,8 +322,8 @@ const ViewAll = () => {
               {displayedData3.map((item, index) => {
                 if (!showAll && index >= 5) return null;
                 return (
-                  <UpperLI key={index} onClick={() => onclick(item)}>
-                    <Link to={`/ticketing/${item.id}`}>
+                  <UpperLI key={index}>
+                    <Link to={`/ticketing/${item.prfnm._text}`}>
                       <ImageContainer>
                         <UpperImage
                           src={URL + item.poster._text}
@@ -360,8 +360,8 @@ const ViewAll = () => {
           {displayedData2.map((item, index) => {
             if (!showAll && index >= 8) return null;
             return (
-              <StyledLI key={index} onClick={() => onclick(item)}>
-                <Link to={`/ticketing/${item.id}`}>
+              <StyledLI key={index}>
+                <Link to={`/ticketing/${item.prfnm._text}`}>
                   <StyledImage src={URL + item.poster._text} alt="포스터" />
                 </Link>
                 <StyledP>장르: {item.cate._text}</StyledP>
