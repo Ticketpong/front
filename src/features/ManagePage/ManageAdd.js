@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { json } from "react-router-dom";
+import axios from "axios";
 
 const Container = styled.div`
   width: 100%;
@@ -101,6 +102,13 @@ const RadioList = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-right: 10px;
+`;
+
+const Radio = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const Labels = styled.label`
@@ -114,8 +122,8 @@ const ManageAdd = () => {
     repassword: "",
     name: "",
     phone: "",
-    auth: "",
     role: "",
+    part: "",
   });
 
   const handleChange = (e) => {
@@ -128,8 +136,34 @@ const ManageAdd = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // 회원 정보 수정 처리 로직
+    try {
+      submit();
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  const url = "http://localhost:8080/manage/manageAdd";
+
+  const submit = async () => {
+    try {
+      // 관리자 추가 처리 로직
+      const response = await axios.post(url, {
+        id: manageInfo.id,
+        password: manageInfo.password,
+        repassword: manageInfo.repassword,
+        name: manageInfo.name,
+        phone: manageInfo.phone,
+        role: manageInfo.role,
+        part: manageInfo.part,
+      });
+      console.log(response);
+      json.stringify(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const Star = () => {
     return <span style={{ color: "#fc1055", fontSize: "1.2em" }}>*</span>;
   };
@@ -208,33 +242,41 @@ const ManageAdd = () => {
               권한
               <Star />
             </InputLabel>
-            <RadioList>
-              <Input
-                type="radio"
-                name="auth"
-                value={manageInfo.auth}
-                id="mainAdmin"
-              />
-              <Labels for="mainAdmin">주관리자</Labels>
-            </RadioList>
-            <RadioList>
-              <Input
-                type="radio"
-                name="auth"
-                value={manageInfo.auth}
-                id="secondAdmin"
-              />
-              <Labels for="secondAdmin">부관리자</Labels>
-            </RadioList>
-            <RadioList>
-              <Input
-                type="radio"
-                name="auth"
-                value={manageInfo.auth}
-                id="admin"
-              />
-              <Labels for="admin">일반관리자</Labels>
-            </RadioList>
+            <Radio>
+              <RadioList>
+                <input
+                  type="radio"
+                  name="role"
+                  value="주관리자"
+                  checked={manageInfo.role === "주관리자"}
+                  id="mainAdmin"
+                  onChange={handleChange}
+                />
+                <label for="mainAdmin">주관리자</label>
+              </RadioList>
+              <RadioList>
+                <input
+                  type="radio"
+                  name="role"
+                  value="부관리자"
+                  checked={manageInfo.role === "부관리자"}
+                  id="secondAdmin"
+                  onChange={handleChange}
+                />
+                <label for="secondAdmin">부관리자</label>
+              </RadioList>
+              <RadioList>
+                <input
+                  type="radio"
+                  name="role"
+                  value="일반관리자"
+                  checked={manageInfo.role === "일반관리자"}
+                  id="admin"
+                  onChange={handleChange}
+                />
+                <label for="admin">일반관리자</label>
+              </RadioList>
+            </Radio>
           </InputContainer>
           <InputContainer>
             <InputLabel>
@@ -243,20 +285,18 @@ const ManageAdd = () => {
             </InputLabel>
             <GrayInput
               type="text"
-              name="role"
-              value={manageInfo.role}
+              name="part"
+              value={manageInfo.part}
               onChange={handleChange}
               placeholder="직급을 입력해주세요."
             />
           </InputContainer>
+          <HrDiv />
+          <ButtonContainer>
+            <CancelButton type="reset">취소</CancelButton>
+            <EndButton type="submit">완료</EndButton>
+          </ButtonContainer>
         </Form>
-        <HrDiv />
-        <ButtonContainer>
-          <CancelButton name="cancel" type="submit">
-            취소
-          </CancelButton>
-          <EndButton type="submit">완료</EndButton>
-        </ButtonContainer>
       </Container>
     </>
   );
