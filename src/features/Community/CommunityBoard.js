@@ -73,6 +73,53 @@ const Td = styled.td`
   }
 `;
 
+const PostContentContainer = styled.div`
+  text-align: left;
+  padding-top: 10px;
+`;
+
+const Textbox = styled.div`
+  display: flex;
+  justify-content: left;
+  margin-bottom: 28px;
+`;
+
+const P1 = styled.span`
+  font-size: 34px;
+  font-weight: bold;
+`;
+
+const P2 = styled.span`
+  font-size: 18px;
+  font-weight: 500;
+  color: #999999;
+  margin-left: 20px;
+  vertical-align: baseline;
+  margin-top: 24px;
+`;
+
+const NameBox = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const P3 = styled.span`
+  font-size: 34px;
+  font-weight: bold;
+  margin-bottom: 10px;
+`;
+
+const P4 = styled.span`
+  font-size: 18px;
+  color: #999999;
+  margin-bottom: 12px;
+`;
+
+const PostContext = styled.div`
+  height: 200px;
+  padding: 20px;
+`;
+
 const GoBackBtn = styled.button`
   float: right;
   width: 120px;
@@ -187,16 +234,23 @@ const CommunityBoard = () => {
         </>
       )}
       {!showPostList && selectedPost && (
-        <div className={styled.postContentContainer}>
-          <h3>{posts.find((post) => post.id === selectedPost).title}</h3>
-          <h5>{posts.find((post) => post.id === selectedPost).date}</h5>
+        <PostContentContainer>
+          <Textbox>
+            <P1>커뮤니티 | </P1>
+            <P2>관람후기</P2>
+          </Textbox>
           <hr />
-          <p className={styled.postContent}>
+          <NameBox>
+            <P3>{posts.find((post) => post.id === selectedPost).title}</P3>
+            <P4>{posts.find((post) => post.id === selectedPost).date}</P4>
+          </NameBox>
+          <hr />
+          <PostContext>
             {posts.find((post) => post.id === selectedPost).content}
-          </p>
+          </PostContext>
           <hr />
           <GoBackBtn onClick={toggleList}>목록</GoBackBtn>
-        </div>
+        </PostContentContainer>
       )}
     </BoardContainer>
   );
