@@ -252,7 +252,7 @@ const BookingDetail = () => {
                   {filtered.selectdate.toLocaleDateString()}{" "}
                   {filtered.selecttime}
                 </Cell>
-                <Cell>{filtered.paid_amount}</Cell>
+                <Cell>{filtered.paid_amount}원</Cell>
                 <Cell>{filtered.people}</Cell>
                 <Cell>
                   {filtered.success === true ? "결제완료" : "결제취소"}

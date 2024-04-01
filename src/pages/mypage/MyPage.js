@@ -91,7 +91,7 @@ const MyPage = () => {
           selected={selectedItem === 2}
           onClick={() => handleItemClick(2)}
         >
-          <MenuItem>관람 후기</MenuItem>
+          <MenuItem>나의 관람 후기</MenuItem>
           <ArrowIconWrapper>
             <MdKeyboardArrowRight />
           </ArrowIconWrapper>
@@ -109,7 +109,7 @@ const MyPage = () => {
       <Content>
         <Title>
           {selectedItem === 1 && "예매 내역"}
-          {selectedItem === 2 && "관람 후기"}
+          {selectedItem === 2 && "나의 관람 후기"}
           {selectedItem === 3 && "회원 정보 수정"}
         </Title>
         {selectedItem === 1 && <BookingDetail />}
