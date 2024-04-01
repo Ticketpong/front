@@ -120,7 +120,7 @@ const Modal = ({ isOpen, onClose, data }) => {
                 {data.selecttime}
               </Td>
               <Th>결제금액</Th>
-              <Td>{data.paid_amount}</Td>
+              <Td>{data.paid_amount}원</Td>
             </tr>
             <tr>
               <Th>좌석번호</Th>

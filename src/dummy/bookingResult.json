@@ -1,0 +1,36 @@
+[
+  {
+    "imp_uid": "imp_uid01",
+    "user_id": "user_id01",
+    "manage_id": "manage_id01",
+    "mt10id": "공연시설01",
+    "prfnm": "공연01",
+    "res_date": "2023-11-01",
+    "paid_amount": 120000,
+    "success": true,
+    "watchstate": true,
+    "prestate": false,
+    "selectdate": "2023-11-01",
+    "selecttime": "14:00",
+    "selectseat": "VIP01, VIP02",
+    "people": 2,
+    "pay_method": "card"
+  },
+  {
+    "imp_uid": "imp_uid02",
+    "user_id": "user_id01",
+    "manage_id": "manage_id02",
+    "mt10id": "공연시설02",
+    "prfnm": "공연02",
+    "res_date": "2023-12-15",
+    "paid_amount": 120000,
+    "success": true,
+    "watchstate": true,
+    "prestate": true,
+    "selectdate": "2024-03-05",
+    "selecttime": "17:00",
+    "selectseat": "S01, S02",
+    "people": 2,
+    "pay_method": "card"
+  }
+]
