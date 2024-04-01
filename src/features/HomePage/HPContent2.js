@@ -108,6 +108,8 @@ const Rank = styled.span`
   left: 5px;
   background-color: none;
   color: white;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+    1px 1px 0 black;
   padding: 5px;
   border-radius: 5px;
   font-size: 48px;

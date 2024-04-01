@@ -59,6 +59,7 @@ const Th = styled.th`
 
 const Td = styled.td`
   padding: 8px;
+  border-bottom: 1px solid #999999;
   text-align: center;
   &:first-child,
   &:last-child {
@@ -68,12 +69,6 @@ const Td = styled.td`
     min-width: 900px;
     text-align: left;
   }
-`;
-
-const TrBox = styled.div``;
-
-const HrBox = styled.div`
-  border-bottom: 1px solid #ccc;
 `;
 
 const GoBackBtn = styled.button`
@@ -143,22 +138,21 @@ const CommunityBoard = () => {
           <PostTable>
             <thead>
               <tr>
-                <Th>번호</Th>
-                <Th>제목</Th>
-                <Th>작성일자</Th>
+                <Th width="20%">번호</Th>
+                <Th width="60%">제목</Th>
+                <Th width="20%">작성일자</Th>
               </tr>
             </thead>
             <tbody>
-              {posts.map((post, index) => (
+              {posts.map((post) => (
                 <tr
                   key={post.id}
                   onClick={() => togglePost(post.id)}
                   className={selectedPost === post.id ? "selectedRow" : ""}
                 >
-                  <Td>{post.id}</Td>
-                  <Td>{post.title}</Td>
-                  <Td>{post.date}</Td>
-                  {index !== posts.length - 1 && <HrBox />}
+                  <Td width="20%">{post.id}</Td>
+                  <Td width="60%">{post.title}</Td>
+                  <Td width="20%">{post.date}</Td>
                 </tr>
               ))}
             </tbody>

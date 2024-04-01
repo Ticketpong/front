@@ -13,6 +13,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import MyReview from "./features/MyPage/MyReview";
 import EditMyReview from "./features/MyPage/EditMyReview";
+import ReviewDetail from "./features/Community/ReviewDetail";
 import ManageLoginPage from "./pages/ManageLoginPage";
 
 function App() {
@@ -39,6 +40,10 @@ function App() {
             element={<EditMyReview />}
           ></Route>
           <Route path="/myreview" element={<MyReview />}></Route>
+          <Route
+            path="/reviewdetail/:prfnmText"
+            element={<ReviewDetail />}
+          ></Route>
         </Routes>
         {showHF && <Footer />}
       </BrowserRouter>

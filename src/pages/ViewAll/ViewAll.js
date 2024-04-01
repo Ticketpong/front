@@ -99,6 +99,8 @@ const Rank = styled.p`
   left: 5px;
   background-color: none;
   color: white;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+    1px 1px 0 black;
   padding: 5px;
   border-radius: 5px;
   border-radius: 5px;
@@ -154,27 +156,6 @@ const GeographyButton = styled.button`
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   }
 `;
-
-// const GeographyButton = styled.button`
-//   min-width: 120px;
-//   height: 50px;
-//   background-color: #373a42;
-//   color: white;
-//   border: none;
-//   padding: 10px 20px;
-//   margin-top: 100px;
-//   margin-bottom: 10px;
-//   margin-right: 15px;
-//   margin-left: 15px;
-//   cursor: pointer;
-//   border-radius: 24px;
-//   font-size: 18px;
-
-//   &:focus {
-//     background-color: #fc1055;
-//     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-//   }
-// `;
 
 const MoreButton = styled.button`
   min-width: 240px;

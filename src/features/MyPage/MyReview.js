@@ -116,30 +116,28 @@ const MyReview = () => {
   const reviewData = reviewJson.filter((item) => item.user_id === "user0001");
   const showDetailData = showDetailJson;
 
-  // 현재 페이지의 데이터 범위를 계산
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, reviewData.length);
 
-  // 시작페이지로 이동
   const goToStartPage = () => {
     setCurrentPage(1);
   };
 
-  // 이전 페이지로 이동
   const goToPrevPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
-  // 다음 페이지로 이동
   const goToNextPage = () => {
     setCurrentPage((prevPage) =>
       Math.min(prevPage + 1, Math.ceil(reviewData?.length / ITEMS_PER_PAGE))
     );
   };
 
-  // 끝 페이지로 이동
   const goToEndPage = () => {
-    setCurrentPage(endIndex);
+    const totalPages = Math.ceil(
+      jsonData?.boxofs?.boxof?.length / ITEMS_PER_PAGE
+    );
+    setCurrentPage(totalPages);
   };
 
   return (
