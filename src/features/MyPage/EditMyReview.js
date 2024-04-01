@@ -91,30 +91,6 @@ const OutputArea = styled.div`
   padding: 50px 0;
 `;
 
-const SaveButton = styled.button`
-  background-color: #fc1055;
-  width: 110px;
-  height: 50px;
-  border-radius: 3px;
-  border: 0;
-  margin-right: 10px;
-  margin-left: 10px;
-  font-size: 18px;
-  color: #ffffff;
-`;
-
-const CancelButton = styled.button`
-  background-color: #ffffff;
-  width: 110px;
-  height: 50px;
-  border-radius: 3px;
-  border: 1px solid black;
-  margin-right: 10px;
-  margin-left: 10px;
-  font-size: 18px;
-  color: black;
-`;
-
 const ReviewInfo = styled.div`
   width: 100%;
   span {
