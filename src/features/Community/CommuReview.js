@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import data from "../../dummy/data.json";
+import data from "../../dummy/ReviewData.json";
 
 const ITEMS_PER_PAGE = 2; // 페이지당 표시할 데이터의 개수
 
@@ -13,15 +13,15 @@ const Container = styled.div`
 
 const ListItem = styled.li`
   display: flex;
-  align-items: flex-start; /* 세로 정렬 시작점으로 설정 */
+  align-items: flex-start;
 
   .imageContainer {
-    margin-right: 20px; /* 이미지와 나머지 내용 사이 간격 조절 */
+    margin-right: 40px;
   }
 
   .contentContainer {
     display: flex;
-    flex-direction: column; /* 세로로 나열하도록 설정 */
+    flex-direction: column;
   }
 
   img {
@@ -39,6 +39,11 @@ const ListItem = styled.li`
     align-items: center;
     padding-top: 16px;
   }
+`;
+
+const Ul = styled.div`
+  margin-top: 20px;
+  padding-left: 0;
 `;
 
 const ButtonContainer = styled.div`
@@ -71,49 +76,62 @@ const WriteBtn = styled.button`
 `;
 
 const HrBox = styled.div`
-  width: 1700px;
+  position: relative;
+  width: 1580px;
   height: 320px;
 `;
 
-const CommuReview = () => {
-  // const [jsonData, setJsonData] = useState("");
+const Name = styled.span`
+  margin-top: 15px;
+  color: #999999;
+  font-size: 18px;
+  margin-bottom: 4px;
+`;
+
+const ReviewName = styled.span`
+  color: black;
+  font-size: 24px;
+`;
+const Rank = styled.span`
+  color: #ffd700;
+`;
+
+const ReviewContent = styled.span`
+  margin-top: 10px;
+  color: #999999;
+  font-size: 18px;
+`;
+
+const CommuReview = ({ isLoggedIn }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const URL = "https://www.kopis.or.kr/";
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch("/data/data.json");
-  //       const jsonData = await response.json();
-  //       setJsonData(jsonData);
-  //     } catch (error) {
-  //       console.error("JSON 데이터를 가져오는 중 오류가 발생했습니다.", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
   const jsonData = data;
 
-  // 현재 페이지의 데이터 범위를 계산
+  const rankStar = (num) => {
+    const stars = [];
+
+    for (let i = 0; i < num; i++) {
+      stars.push(<Rank key={i}>★</Rank>);
+    }
+
+    return stars;
+  };
+
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = Math.min(
     startIndex + ITEMS_PER_PAGE,
     jsonData?.boxofs?.boxof?.length
   );
 
-  // 시작페이지로 이동
   const goToStartPage = () => {
     setCurrentPage(1);
   };
 
-  // 이전 페이지로 이동
   const goToPrevPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
-  // 다음 페이지로 이동
   const goToNextPage = () => {
     setCurrentPage((prevPage) =>
       Math.min(
@@ -123,36 +141,44 @@ const CommuReview = () => {
     );
   };
 
-  // 끝 페이지로 이동
   const goToEndPage = () => {
-    setCurrentPage(endIndex);
+    const totalPages = Math.ceil(
+      jsonData?.boxofs?.boxof?.length / ITEMS_PER_PAGE
+    );
+    setCurrentPage(totalPages);
   };
 
   return (
     <Container>
       <hr style={{ border: "0", borderTop: "2px solid black" }} />
-      <ul>
+      <Ul>
         {jsonData?.boxofs?.boxof
           ?.slice(startIndex, endIndex)
           .map((item, index) => (
             <HrBox key={index}>
               <ListItem key={index}>
                 <div className="imageContainer">
-                  {item.poster && (
-                    <img src={URL + item.poster._text} alt="포스터" />
-                  )}
+                  <Link to={`/reviewdetail/${item.prfnm._text}`}>
+                    {item.poster && (
+                      <img src={URL + item.poster._text} alt="포스터" />
+                    )}
+                  </Link>
                 </div>
                 <div className="contentContainer">
-                  {item.cate && <p>장르: {item.cate._text}</p>}
-                  {item.area && <p>지역: {item.area._text}</p>}
-                  {item.prfnm && <p>이름: {item.prfnm._text}</p>}
-                  {item.prfpd && <p>기간: {item.prfpd._text}</p>}
+                  {item.prfnm && <Name>{item.prfnm._text}</Name>}
+                  {item.prfnm && (
+                    <ReviewName>{item.reviewname._text}</ReviewName>
+                  )}
+                  {item.rank && <p>{rankStar(item.rank._num)}</p>}
+                  {item.review && (
+                    <ReviewContent>내용: {item.review._text}</ReviewContent>
+                  )}
                 </div>
               </ListItem>
               {index <= endIndex - 1 && <hr />}
             </HrBox>
           ))}
-      </ul>
+      </Ul>
       <ButtonContainer>
         <button onClick={goToStartPage}>{"<<"}</button>
         <button onClick={goToPrevPage}>{"<"}</button>
@@ -170,9 +196,17 @@ const CommuReview = () => {
         <button onClick={goToNextPage}>{">"}</button>
         <button onClick={goToEndPage}>{">>"}</button>
       </ButtonContainer>
-      <Link to="/writereview">
-        <WriteBtn>후기 작성</WriteBtn>
-      </Link>
+      {isLoggedIn ? (
+        <>
+          <Link to="/writereview">
+            <WriteBtn>후기 작성</WriteBtn>
+          </Link>
+        </>
+      ) : (
+        <Link to="/login">
+          <WriteBtn>후기 작성</WriteBtn>
+        </Link>
+      )}
     </Container>
   );
 };

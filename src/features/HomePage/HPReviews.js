@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import data from "../../dummy/data.json";
+import data from "../../dummy/ReviewData.json";
 
 const Strong = styled.div`
   text-align: center;
@@ -14,10 +14,14 @@ const Strong = styled.div`
 `;
 
 const Container = styled.div`
+  padding-left: 0;
   .head {
-    border-width: 4px;
-    min-width: 1658px;
+    border-width: 3px;
+    min-width: 1530px;
+    max-width: 1530px;
     color: black;
+    padding-left: 100px;
+    margin-bottom: 10px;
   }
   .normal {
     border-width: 3px;
@@ -25,50 +29,51 @@ const Container = styled.div`
     color: gray;
   }
 
-  .container {
-    list-style-type: none;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* 수직 가운데 정렬 */
-    overflow-x: auto;
-    white-space: nowrap;
-    margin: 0 auto;
-    margin-bottom: 0px;
-  }
-
-  .item {
-    display: flex;
-    align-items: center;
-  }
-
-  .image {
-    display: block;
-    width: 270px;
-    height: 340px;
-    margin-bottom: 10px;
-    object-fit: cover;
-    margin-right: 100px;
-    border-radius: 12px;
-  }
-
-  .text p {
-    margin: 0;
-    font-size: 30px;
-    overflow: hidden;
-    text-overflow: ellipsis; /* 텍스트가 범위를 넘으면 생략 (...) */
-    white-space: nowrap;
-    max-width: 1400px;
-  }
-
   .name {
     font-weight: bold;
   }
 `;
 
+const UlContainer = styled.ul`
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* 수직 가운데 정렬 */
+  margin: 0 auto;
+  width: 1580px;
+  padding-left: 0;
+`;
+
+const Li = styled.li`
+  display: flex;
+  align-items: center;
+`;
+
+const Img = styled.img`
+  display: block;
+  min-width: 270px;
+  height: 340px;
+  margin: 17px 35px 17px 180px;
+  object-fit: cover;
+  border-radius: 12px;
+`;
+
+const Text = styled.div`
+  max-width: 1200px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; /* 최대 줄 수 설정 */
+  text-overflow: ellipsis;
+  white-space: normal;
+`;
+
 const CenterHr = styled.hr`
   color: gray;
   height: 1px;
-  width: 99%;
+  min-width: 1580px;
+  max-width: 1580px;
 `;
 
 const StyledViewAllButton = styled.button`
@@ -101,128 +106,124 @@ const BottomBtn = styled.div`
   margin: 40px auto;
 `;
 
+const Work = styled.span`
+  font-size: 24px;
+  color: #999999;
+`;
+
+const Name = styled.span`
+  font-size: 32px;
+  font-weight: bold;
+`;
+
+const Content = styled.span`
+  font-size: 24px;
+  color: #999999;
+`;
+
+const Rank = styled.span`
+  color: #ffd700;
+  font-size: 24px;
+`;
+
 const HPReviews = () => {
-  // const [jsonData, setJsonData] = useState("");
   const URL = "https://www.kopis.or.kr/";
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch("/data/data.json");
-  //       const jsonData = await response.json();
-  //       setJsonData(jsonData);
-  //     } catch (error) {
-  //       console.error("JSON 데이터를 가져오는 중 오류가 발생했습니다.", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
   const jsonData = data;
+
+  const rankStar = (num) => {
+    const stars = [];
+
+    for (let i = 0; i < num; i++) {
+      stars.push(<Rank key={i}>★</Rank>);
+    }
+
+    return stars;
+  };
 
   return (
     <Container>
       <div className="container">
         <Strong>베스트 관람 후기</Strong>
         <hr className="head" />
-        <ul className="container">
-          <li className="item">
+        <UlContainer>
+          <Li>
             {jsonData?.boxofs?.boxof?.[0]?.poster && (
-              <img
+              <Img
                 src={URL + jsonData.boxofs.boxof[0].poster._text}
                 alt="포스터"
-                className="image" // 이미지 스타일 클래스 적용
+                className="image"
               />
             )}
-            <div className="text">
-              {jsonData?.boxofs?.boxof?.[0]?.cate && (
-                <p>장르: {jsonData.boxofs.boxof[0].cate._text}</p>
-              )}
+            <Text>
               {jsonData?.boxofs?.boxof?.[0]?.prfnm && (
-                <p className="name">
-                  이름: {jsonData.boxofs.boxof[0].prfnm._text}
-                </p>
+                <Work>{jsonData.boxofs.boxof[0].prfnm._text}</Work>
               )}
-              {jsonData?.boxofs?.boxof?.[0]?.area && (
-                <p>지역: {jsonData.boxofs.boxof[0].area._text}</p>
+              {jsonData?.boxofs?.boxof?.[0]?.reviewname && (
+                <Name>{jsonData.boxofs.boxof[0].reviewname._text}</Name>
               )}
-              {jsonData?.boxofs?.boxof?.[0]?.prfpd && (
-                <p>기간: {jsonData.boxofs.boxof[0].prfpd._text}</p>
+              {jsonData?.boxofs?.boxof?.[0]?.rank && (
+                <p>{rankStar(jsonData.boxofs.boxof[0].rank._num)}</p>
               )}
-              <p>
-                후기 내용이 들어가는 영역을 테스트 하기 위한 문구입니다.후기
-                내용이 들어가는 영역을 테스트 하기 위한 문구입니다.후기 내용이
-                들어가는 영역을 테스트 하기 위한 문구입니다.
-              </p>
-            </div>
-          </li>
+              {jsonData?.boxofs?.boxof?.[0]?.review && (
+                <Content> {jsonData.boxofs.boxof[0].review._text}</Content>
+              )}
+            </Text>
+          </Li>
           <CenterHr />
-        </ul>
-        <ul className="container">
-          <li className="item">
+        </UlContainer>
+        <UlContainer>
+          <Li>
             {jsonData?.boxofs?.boxof?.[1]?.poster && (
-              <img
+              <Img
                 src={URL + jsonData.boxofs.boxof[1].poster._text}
                 alt="포스터"
-                className="image" // 이미지 스타일 클래스 적용
+                className="image"
               />
             )}
-            <div className="text">
-              {jsonData?.boxofs?.boxof?.[1]?.cate && (
-                <p>장르: {jsonData.boxofs.boxof[1].cate._text}</p>
-              )}
+            <Text>
               {jsonData?.boxofs?.boxof?.[1]?.prfnm && (
-                <p className="name">
-                  이름: {jsonData.boxofs.boxof[1].prfnm._text}
-                </p>
+                <Work>{jsonData.boxofs.boxof[1].prfnm._text}</Work>
               )}
-              {jsonData?.boxofs?.boxof?.[1]?.area && (
-                <p>지역: {jsonData.boxofs.boxof[1].area._text}</p>
+              {jsonData?.boxofs?.boxof?.[1]?.reviewname && (
+                <Name className="name">
+                  {jsonData.boxofs.boxof[1].reviewname._text}
+                </Name>
               )}
-              {jsonData?.boxofs?.boxof?.[1]?.prfpd && (
-                <p>기간: {jsonData.boxofs.boxof[1].prfpd._text}</p>
+              {jsonData?.boxofs?.boxof?.[1]?.rank && (
+                <p>{rankStar(jsonData.boxofs.boxof[1].rank._num)}</p>
               )}
-              <p>
-                후기 내용이 들어가는 영역을 테스트 하기 위한 문구입니다.후기
-                내용이 들어가는 영역을 테스트 하기 위한 문구입니다.후기 내용이
-                들어가는 영역을 테스트 하기 위한 문구입니다.
-              </p>
-            </div>
-          </li>
+              {jsonData?.boxofs?.boxof?.[1]?.review && (
+                <Content> {jsonData.boxofs.boxof[1].review._text}</Content>
+              )}
+            </Text>
+          </Li>
           <CenterHr />
-        </ul>
-        <ul className="container">
-          <li className="item">
+        </UlContainer>
+        <UlContainer>
+          <Li>
             {jsonData?.boxofs?.boxof?.[2]?.poster && (
-              <img
+              <Img
                 src={URL + jsonData.boxofs.boxof[2].poster._text}
                 alt="포스터"
-                className="image" // 이미지 스타일 클래스 적용
+                className="image"
               />
             )}
-            <div className="text">
-              {jsonData?.boxofs?.boxof?.[2]?.cate && (
-                <p>장르: {jsonData.boxofs.boxof[2].cate._text}</p>
-              )}
+            <Text>
               {jsonData?.boxofs?.boxof?.[2]?.prfnm && (
-                <p className="name">
-                  이름: {jsonData.boxofs.boxof[2].prfnm._text}
-                </p>
+                <Work>{jsonData.boxofs.boxof[2].prfnm._text}</Work>
               )}
-              {jsonData?.boxofs?.boxof?.[2]?.area && (
-                <p>지역: {jsonData.boxofs.boxof[2].area._text}</p>
+              {jsonData?.boxofs?.boxof?.[2]?.reviewname && (
+                <Name>{jsonData.boxofs.boxof[2].reviewname._text}</Name>
               )}
-              {jsonData?.boxofs?.boxof?.[2]?.prfpd && (
-                <p>기간: {jsonData.boxofs.boxof[2].prfpd._text}</p>
+              {jsonData?.boxofs?.boxof?.[2]?.rank && (
+                <p>{rankStar(jsonData.boxofs.boxof[2].rank._num)}</p>
               )}
-              <p>
-                후기 내용이 들어가는 영역을 테스트 하기 위한 문구입니다.후기
-                내용이 들어가는 영역을 테스트 하기 위한 문구입니다.후기 내용이
-                들어가는 영역을 테스트 하기 위한 문구입니다.
-              </p>
-            </div>
-          </li>
-        </ul>
+              {jsonData?.boxofs?.boxof?.[2]?.review && (
+                <Content> {jsonData.boxofs.boxof[2].review._text}</Content>
+              )}
+            </Text>
+          </Li>
+        </UlContainer>
         <BottomBtn>
           <Link to="/community?selectedItem=2">
             <StyledViewAllButton>후기 전체보기</StyledViewAllButton>

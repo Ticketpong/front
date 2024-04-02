@@ -99,6 +99,8 @@ const Rank = styled.p`
   left: 5px;
   background-color: none;
   color: white;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+    1px 1px 0 black;
   padding: 5px;
   border-radius: 5px;
   border-radius: 5px;
@@ -154,27 +156,6 @@ const GeographyButton = styled.button`
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   }
 `;
-
-// const GeographyButton = styled.button`
-//   min-width: 120px;
-//   height: 50px;
-//   background-color: #373a42;
-//   color: white;
-//   border: none;
-//   padding: 10px 20px;
-//   margin-top: 100px;
-//   margin-bottom: 10px;
-//   margin-right: 15px;
-//   margin-left: 15px;
-//   cursor: pointer;
-//   border-radius: 24px;
-//   font-size: 18px;
-
-//   &:focus {
-//     background-color: #fc1055;
-//     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-//   }
-// `;
 
 const MoreButton = styled.button`
   min-width: 240px;
@@ -341,8 +322,8 @@ const ViewAll = () => {
               {displayedData3.map((item, index) => {
                 if (!showAll && index >= 5) return null;
                 return (
-                  <UpperLI key={index} onClick={() => onclick(item)}>
-                    <Link to={`/ticketing/${item.id}`}>
+                  <UpperLI key={index}>
+                    <Link to={`/ticketing/${item.prfnm._text}`}>
                       <ImageContainer>
                         <UpperImage
                           src={URL + item.poster._text}
@@ -379,8 +360,8 @@ const ViewAll = () => {
           {displayedData2.map((item, index) => {
             if (!showAll && index >= 8) return null;
             return (
-              <StyledLI key={index} onClick={() => onclick(item)}>
-                <Link to={`/ticketing/${item.id}`}>
+              <StyledLI key={index}>
+                <Link to={`/ticketing/${item.prfnm._text}`}>
                   <StyledImage src={URL + item.poster._text} alt="포스터" />
                 </Link>
                 <StyledP>장르: {item.cate._text}</StyledP>
