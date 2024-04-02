@@ -2,7 +2,7 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./css/TicketingCalendar.css";
-import jsonDetailData from "../../dummy/show_detail.json";
+import jsonDetailData from "../../dummy/show_sample.json";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 
 const data = jsonDetailData;
@@ -11,7 +11,7 @@ const Calendar = ({ onDataChange }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const dateFrom = new Date(data.prfpdfrom);
-  const dateTO = new Date(data.prfpdto);
+  const dateTo = new Date(data.prfpdto);
 
   const getShowTime = (date) => {
     const year = date.getFullYear();
@@ -32,10 +32,10 @@ const Calendar = ({ onDataChange }) => {
         setSelectedDate(date);
         getShowTime(date);
       }}
-      highlightDates={[dateFrom, dateTO]}
+      highlightDates={[dateFrom, dateTo]}
       inline
       minDate={dateFrom}
-      maxDate={dateTO}
+      maxDate={dateTo}
       renderCustomHeader={({
         date,
         decreaseMonth,
