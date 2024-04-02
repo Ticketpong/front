@@ -15,6 +15,7 @@ import MyReview from "./features/MyPage/MyReview";
 import EditMyReview from "./features/MyPage/EditMyReview";
 import ReviewDetail from "./features/Community/ReviewDetail";
 import ManageLoginPage from "./pages/ManageLoginPage";
+import ApiDataFetcher from "./components/ApiDataFetcher";
 
 function App() {
   const pathname = window.location.pathname;
@@ -44,6 +45,7 @@ function App() {
             path="/reviewdetail/:prfnmText"
             element={<ReviewDetail />}
           ></Route>
+          <Route path="apiData" element={<ApiDataFetcher />}></Route>
         </Routes>
         {showHF && <Footer />}
       </BrowserRouter>
