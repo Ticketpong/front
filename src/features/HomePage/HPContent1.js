@@ -174,7 +174,7 @@ const HPContent1 = () => {
         <UlContainer>
           {displayedData.map((item, index) => (
             <ListItem key={index}>
-              <Link to={`/ticketing/${item.prfnm._text}`}>
+              <Link to={`/ticketing/${item.mt20id._text}`}>
                 <Image src={URL + item.poster._text} alt="포스터" />
               </Link>
               <Text>장르: {item.cate._text}</Text>
