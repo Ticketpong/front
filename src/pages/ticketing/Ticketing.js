@@ -1,6 +1,5 @@
-
-import React, { useState } from "react";
-import { PongButton } from "../../features/Ticketing/TicketingPayment";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Calendar from "../../features/Ticketing/TicketingCalendar";
 import * as S from "../../styles/TicketingStyled";
 import PlaceMap from "../../components/KakaoMap";
@@ -16,11 +15,26 @@ export const dataDetail = ShowDataDetail;
 const dataTime = jsonDataTime;
 
 const Ticketing = () => {
+  const { mt20id } = useParams(); // URL 매개변수 추출
+
   const [selectDate, setSelectDate] = useState("");
   const [showTimes, setShowTimes] = useState([]);
   const [showSeats, setShowSeats] = useState([]);
   const [selectData, setSelectData] = useState([]);
   const [selectedTimeData, setSelectedTimeData] = useState(null);
+  const [selectedShowData, setSelectedShowData] = useState(null); // 선택된 공연 데이터
+
+  useEffect(() => {
+    // mt20id에 해당하는 데이터를 찾아 선택된 공연 데이터로 설정
+    const selectedData = dataDetail.find((item) => item.mt20id === mt20id);
+    setSelectedShowData(selectedData);
+    // 나머지 상태들 초기화
+    setSelectDate("");
+    setShowTimes([]);
+    setShowSeats([]);
+    setSelectData([]);
+    setSelectedTimeData(null);
+  }, [mt20id]);
 
   function convertToTimeFormat(arr) {
     return arr.map((time) => {
@@ -29,6 +43,7 @@ const Ticketing = () => {
       return `${hour}시 ${minute}분`;
     });
   }
+
   const handleDataChange = (newData) => {
     setSelectDate(newData);
     const resultTime = dataTime.filter((data) => data.playDate === newData);
@@ -63,15 +78,19 @@ const Ticketing = () => {
 
   return (
     <S.TicketingWrapper>
-      <S.ContentWrapper>
-        <TicketingHeader headerData={dataDetail} />
-        <S.ContentDetail>
-          <S.ContentDetailPoster>
-            <img src={dataDetail.poster} alt="" />
-          </S.ContentDetailPoster>
-          <TicketingShowInfo showInfoData={dataDetail} />
-        </S.ContentDetail>
-      </S.ContentWrapper>
+      {selectedShowData && (
+        <S.ContentWrapper>
+          <TicketingHeader headerData={selectedShowData} />
+          <S.ContentDetail>
+            <S.ContentDetailPoster>
+              {selectedShowData.poster && (
+                <img src={selectedShowData.poster} alt="" />
+              )}
+            </S.ContentDetailPoster>
+            <TicketingShowInfo showInfoData={selectedShowData} />
+          </S.ContentDetail>
+        </S.ContentWrapper>
+      )}
       <S.SeatWrapper>
         <S.SeatBox style={{ border: "none" }}>
           <S.BoxHeader>
@@ -177,43 +196,36 @@ const Ticketing = () => {
         </S.TicketingTabs>
       </S.ContentWrapper>
       <S.ContentWrapper>
-        {activeTab === 0 && (
+        {activeTab === 0 && selectedShowData && (
           <S.TabContentDetail>
             <S.TabContentWrapper>
               <h2>작품 상세 정보</h2>
               <hr />
               <S.TabContentDetailImg>
-                <img src={dataDetail.styurl} alt="" />
+                {selectedShowData.styurl && (
+                  <img src={selectedShowData.styurl} alt="" />
+                )}
               </S.TabContentDetailImg>
             </S.TabContentWrapper>
           </S.TabContentDetail>
         )}
-        {activeTab === 1 && (
+        {activeTab === 1 && selectedShowData && (
           <S.TabContentReview>
             <S.TabContentWrapper>
-              <TicketingReview mt20id={dataDetail.mt20id} />
+              <TicketingReview mt20id={selectedShowData.mt20id} />
             </S.TabContentWrapper>
           </S.TabContentReview>
         )}
-        {activeTab === 2 && (
+        {activeTab === 2 && selectedShowData && (
           <S.TabContentWrapper>
             <h2>공연장 안내</h2>
             <hr />
-            <p>장소: {dataDetail.fcltynm}</p>
-            <p>문의: {dataDetail.telno}</p>
-            <PlaceMap></PlaceMap>
-            <PongButton
-              onClick={() => {
-                window.open(
-                  `https://map.kakao.com/link/map/공연장소,35.1482786,129.0654385`
-                );
-              }}
-            >
-              길 찾기
-            </PongButton>
+            <p>장소: {selectedShowData.fcltynm}</p>
+            <p>문의: {selectedShowData.telno}</p>
+            <PlaceMap mt10id={selectedShowData.mt10id} />
           </S.TabContentWrapper>
         )}
-        {activeTab === 3 && (
+        {activeTab === 3 && selectedShowData && (
           <S.TabContentNotice>
             <S.TabContentWrapper>
               <h2>예매 유의사항</h2>
@@ -271,7 +283,6 @@ const Ticketing = () => {
       </S.ContentWrapper>
     </S.TicketingWrapper>
   );
-
 };
 
 export default Ticketing;

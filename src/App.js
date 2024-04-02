@@ -32,7 +32,7 @@ function App() {
           <Route path="/community" element={<Community />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/viewall" element={<ViewAll />} />
-          <Route path="/ticketing" element={<Ticketing />} />
+          <Route path="/ticketing/:mt20id" element={<Ticketing />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route
