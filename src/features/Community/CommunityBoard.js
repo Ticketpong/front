@@ -44,11 +44,12 @@ const PostTable = styled.table`
 `;
 
 const Th = styled.th`
-  padding: 8px;
+  padding: 12px;
+  font-size: 24px;
   text-align: center;
   background-color: #f2f2f2;
   &:nth-child(2) {
-    text-align: left;
+    text-align: center;
     width: 60%;
   }
   &:first-child,
@@ -58,7 +59,9 @@ const Th = styled.th`
 `;
 
 const Td = styled.td`
-  padding: 8px;
+  padding: 12px;
+  font-size: 24px;
+  border-bottom: 1px solid #999999;
   text-align: center;
   &:first-child,
   &:last-child {
@@ -66,14 +69,55 @@ const Td = styled.td`
   }
   &:nth-child(2) {
     min-width: 900px;
-    text-align: left;
+    text-align: center;
   }
 `;
 
-const TrBox = styled.div``;
+const PostContentContainer = styled.div`
+  text-align: left;
+  padding-top: 10px;
+`;
 
-const HrBox = styled.div`
-  border-bottom: 1px solid #ccc;
+const Textbox = styled.div`
+  display: flex;
+  justify-content: left;
+  margin-bottom: 28px;
+`;
+
+const P1 = styled.span`
+  font-size: 34px;
+  font-weight: bold;
+`;
+
+const P2 = styled.span`
+  font-size: 18px;
+  font-weight: 500;
+  color: #999999;
+  margin-left: 20px;
+  vertical-align: baseline;
+  margin-top: 24px;
+`;
+
+const NameBox = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const P3 = styled.span`
+  font-size: 34px;
+  font-weight: bold;
+  margin-bottom: 10px;
+`;
+
+const P4 = styled.span`
+  font-size: 18px;
+  color: #999999;
+  margin-bottom: 12px;
+`;
+
+const PostContext = styled.div`
+  height: 200px;
+  padding: 20px;
 `;
 
 const GoBackBtn = styled.button`
@@ -143,22 +187,21 @@ const CommunityBoard = () => {
           <PostTable>
             <thead>
               <tr>
-                <Th>번호</Th>
-                <Th>제목</Th>
-                <Th>작성일자</Th>
+                <Th width="20%">번호</Th>
+                <Th width="60%">제목</Th>
+                <Th width="20%">작성일자</Th>
               </tr>
             </thead>
             <tbody>
-              {posts.map((post, index) => (
+              {posts.map((post) => (
                 <tr
                   key={post.id}
                   onClick={() => togglePost(post.id)}
                   className={selectedPost === post.id ? "selectedRow" : ""}
                 >
-                  <Td>{post.id}</Td>
-                  <Td>{post.title}</Td>
-                  <Td>{post.date}</Td>
-                  {index !== posts.length - 1 && <HrBox />}
+                  <Td width="20%">{post.id}</Td>
+                  <Td width="60%">{post.title}</Td>
+                  <Td width="20%">{post.date}</Td>
                 </tr>
               ))}
             </tbody>
@@ -191,16 +234,23 @@ const CommunityBoard = () => {
         </>
       )}
       {!showPostList && selectedPost && (
-        <div className={styled.postContentContainer}>
-          <h3>{posts.find((post) => post.id === selectedPost).title}</h3>
-          <h5>{posts.find((post) => post.id === selectedPost).date}</h5>
+        <PostContentContainer>
+          <Textbox>
+            <P1>커뮤니티 | </P1>
+            <P2>관람후기</P2>
+          </Textbox>
           <hr />
-          <p className={styled.postContent}>
+          <NameBox>
+            <P3>{posts.find((post) => post.id === selectedPost).title}</P3>
+            <P4>{posts.find((post) => post.id === selectedPost).date}</P4>
+          </NameBox>
+          <hr />
+          <PostContext>
             {posts.find((post) => post.id === selectedPost).content}
-          </p>
+          </PostContext>
           <hr />
           <GoBackBtn onClick={toggleList}>목록</GoBackBtn>
-        </div>
+        </PostContentContainer>
       )}
     </BoardContainer>
   );
