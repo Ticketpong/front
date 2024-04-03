@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -139,6 +140,12 @@ const EditManage = ({ manage_id }) => {
     return <span style={{ color: "#fc1055", fontSize: "1.2em" }}>*</span>;
   };
 
+  const navigate = useNavigate();
+
+  const onClickCancel = () => {
+    navigate(0);
+  };
+
   return (
     <>
       <hr />
@@ -258,7 +265,9 @@ const EditManage = ({ manage_id }) => {
         </Form>
         <HrDiv />
         <ButtonContainer>
-          <CancelButton type="submit">취소</CancelButton>
+          <CancelButton type="submit" onClick={onClickCancel}>
+            취소
+          </CancelButton>
           <EndButton type="submit">회원 정보 수정</EndButton>
         </ButtonContainer>
       </Container>
