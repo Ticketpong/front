@@ -14,7 +14,7 @@ import SignupPage from "./pages/SignupPage";
 import MyReview from "./features/MyPage/MyReview";
 import EditMyReview from "./features/MyPage/EditMyReview";
 import ReviewDetail from "./features/Community/ReviewDetail";
-import ManageLoginPage from "./pages/managepage/managepage/ManageLoginPage";
+import ManageLoginPage from "./pages/managepage/ManageLoginPage";
 import ManagePage from "./pages/managepage/ManagePage";
 import ApiDataFetcher from "./components/ApiDataFetcher";
 
