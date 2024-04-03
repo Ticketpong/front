@@ -105,9 +105,9 @@ const Labels = styled.label`
   margin-right: 20px;
 `;
 
-const EditManage = () => {
+const EditManage = ({ manage_id }) => {
   const [manageInfo, setManageInfo] = useState({
-    id: "",
+    id: manage_id,
     password: "",
     repassword: "",
     name: "",
@@ -124,18 +124,16 @@ const EditManage = () => {
     }));
   };
 
-  const handleEmailDuplicationCheck = () => {
-    // 이메일 중복 확인 로직
-  };
-
-  const handleAddressSearch = () => {
-    // 주소 검색 로직
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     // 회원 정보 수정 처리 로직
   };
+
+  const deleteClick = () => {
+    // 회원 탈퇴 처리 로직
+  };
+
+  const submitUrl = "http://localhost:8080/manage/manageMain/manageEdit";
 
   const Star = () => {
     return <span style={{ color: "#fc1055", fontSize: "1.2em" }}>*</span>;
@@ -260,7 +258,7 @@ const EditManage = () => {
         </Form>
         <HrDiv />
         <ButtonContainer>
-          <CancelButton type="submit">탈퇴하기</CancelButton>
+          <CancelButton type="submit">취소</CancelButton>
           <EndButton type="submit">회원 정보 수정</EndButton>
         </ButtonContainer>
       </Container>

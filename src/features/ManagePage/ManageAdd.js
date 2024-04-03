@@ -46,22 +46,7 @@ const GrayInput = styled.input`
   border: 1px solid rgba(153, 153, 153, 0.5);
   border-radius: 3px;
 `;
-const InputWithButtonContainer = styled.div`
-  display: flex;
-  flex: 1;
-`;
 
-const Button = styled.button`
-  padding: 5px 10px;
-  margin-left: 10px;
-  width: 130px;
-  height: 60px;
-  border-radius: 3px;
-  background-color: #ffffff;
-  color: #fc1055;
-  border: 1px #fc1055 solid;
-  font-size: 18px;
-`;
 const HrDiv = styled.div`
   border: 1px solid #999999;
   width: 100%;
@@ -109,10 +94,6 @@ const Radio = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-`;
-
-const Labels = styled.label`
-  margin-right: 20px;
 `;
 
 const ManageAdd = () => {
