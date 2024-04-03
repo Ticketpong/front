@@ -8,6 +8,7 @@ import EditManage from "../../features/ManagePage/EditManage";
 import ManageAdd from "../../features/ManagePage/ManageAdd";
 
 import { MdKeyboardArrowRight } from "react-icons/md";
+import ReviewsManagement from "../../features/ManagePage/ReviewManage";
 
 const Container = styled.div`
   display: flex;
@@ -141,7 +142,7 @@ const ManagePage = () => {
         </Title>
         {selectedItem === 1 && <BookingDetail />}
         {selectedItem === 2 && <MyReview />}
-        {selectedItem === 3 && <EditProfile />}
+        {selectedItem === 3 && <ReviewsManagement />}
         {selectedItem === 4 && (
           <AdminManage
             onAddClick={handleAddClick}
