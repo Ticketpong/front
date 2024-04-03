@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { json } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Container = styled.div`
@@ -148,6 +148,12 @@ const ManageAdd = () => {
   const Star = () => {
     return <span style={{ color: "#fc1055", fontSize: "1.2em" }}>*</span>;
   };
+
+  const navigate = useNavigate();
+
+  const onClickCancel = () => {
+    navigate(0);
+  };
   return (
     <>
       <hr />
@@ -274,7 +280,9 @@ const ManageAdd = () => {
           </InputContainer>
           <HrDiv />
           <ButtonContainer>
-            <CancelButton type="reset">취소</CancelButton>
+            <CancelButton type="reset" onClick={onClickCancel}>
+              취소
+            </CancelButton>
             <EndButton type="submit">완료</EndButton>
           </ButtonContainer>
         </Form>
