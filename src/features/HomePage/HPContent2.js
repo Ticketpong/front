@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import data from "../../dummy/data.json";
 import { Link } from "react-router-dom";
@@ -146,40 +146,51 @@ const StyledViewAllButton = styled.button`
   }
 `;
 
+const StyleLink = styled(Link)`
+  text-decoration: none;
+  color: black;
+`;
+
 const HPContent2 = () => {
-  // const [jsonData, setJsonData] = useState("");
   const URL = "https://www.kopis.or.kr/";
   const [startIndex, setStartIndex] = useState(0);
+  const [category, setCategory] = useState("연극");
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch("/data/data.json");
-  //       const jsonData = await response.json();
-  //       setJsonData(jsonData);
-  //     } catch (error) {
-  //       console.error("JSON 데이터를 가져오는 중 오류가 발생했습니다.", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
-  const jsonData = data;
-
-  const handleCategoryChange = (start) => {
-    setStartIndex(start);
+  const handleCategoryChange = (categoryName) => {
+    setCategory(categoryName);
+    setStartIndex(0);
   };
 
   const getDisplayedData = () => {
-    return jsonData?.boxofs?.boxof?.slice(startIndex, startIndex + 4) || [];
+    const filteredData =
+      data?.boxofs?.boxof?.filter((item) => item.cate._text === category) || [];
+
+    const totalDataLength = filteredData.length;
+
+    if (totalDataLength <= 4) {
+      return filteredData.slice(startIndex);
+    } else {
+      return filteredData.slice(startIndex, startIndex + 4) || [];
+    }
   };
 
   const displayedData = getDisplayedData();
 
   const handleNext = () => {
-    if (startIndex + 4 < jsonData?.boxofs?.boxof?.length) {
+    const totalDataLength =
+      data?.boxofs?.boxof?.filter((item) => item.cate._text === category)
+        .length || 0;
+    const maxIndex = Math.ceil(totalDataLength / 4) - 1;
+
+    if (startIndex + 4 < totalDataLength) {
       setStartIndex(startIndex + 4);
+    } else if (
+      startIndex + 4 >= totalDataLength &&
+      startIndex !== maxIndex * 4
+    ) {
+      setStartIndex(maxIndex * 4);
+    } else if (totalDataLength <= 4) {
+      setStartIndex(startIndex);
     }
   };
 
@@ -193,13 +204,13 @@ const HPContent2 = () => {
     <Container>
       <Strong>오늘의 인기티켓</Strong>
       <CategoryBtn>
-        <CategoryButton onClick={() => handleCategoryChange(0)}>
+        <CategoryButton onClick={() => handleCategoryChange("연극")}>
           연극
         </CategoryButton>
-        <CategoryButton onClick={() => handleCategoryChange(5)}>
+        <CategoryButton onClick={() => handleCategoryChange("공연")}>
           공연
         </CategoryButton>
-        <CategoryButton onClick={() => handleCategoryChange(10)}>
+        <CategoryButton onClick={() => handleCategoryChange("콘서트")}>
           콘서트
         </CategoryButton>
       </CategoryBtn>
@@ -214,20 +225,20 @@ const HPContent2 = () => {
         </SlideButton>
         <UlContainer>
           {displayedData.map((item, index) => (
-            <ListItem key={index}>
-              <Link to={`/ticketing/${item.mt20id._text}`}>
+            <StyleLink to={`/ticketing/${item.mt20id._text}`}>
+              <ListItem key={index}>
                 <ImageContainer>
                   <Image src={URL + item.poster._text} alt="포스터" />
                   <Rank>{startIndex + index + 1}</Rank>
                 </ImageContainer>
-              </Link>
-              <Text>장르: {item.cate._text}</Text>
-              <Text>지역: {item.area._text}</Text>
-              <Text over className="over">
-                이름: {item.prfnm._text}
-              </Text>
-              <Text>기간: {item.prfpd._text}</Text>
-            </ListItem>
+                <Text>장르: {item.cate._text}</Text>
+                <Text>지역: {item.area._text}</Text>
+                <Text over className="over">
+                  이름: {item.prfnm._text}
+                </Text>
+                <Text>기간: {item.prfpd._text}</Text>
+              </ListItem>
+            </StyleLink>
           ))}
         </UlContainer>
         <SlideButton

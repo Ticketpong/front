@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 // import axios from "axios";
@@ -108,41 +108,69 @@ const Text = styled.p`
   max-width: ${(props) => (props.over ? "350px" : "none")};
 `;
 
+const StyleLink = styled(Link)`
+  text-decoration: none;
+  color: black;
+`;
+
 const HPContent1 = () => {
-  // const [jsonData, setJsonData] = useState("");
   const [startIndex, setStartIndex] = useState(0);
   const URL = "https://www.kopis.or.kr/";
+  const [category, setCategory] = useState("연극");
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get("/data/data.json");
-  //       setJsonData(response.data);
-  //     } catch (error) {
-  //       console.error("JSON 데이터를 가져오는 중 오류가 발생했습니다.", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-  const jsonData = data;
-
-  const handleCategoryChange = (start) => {
-    setStartIndex(start);
+  const handleCategoryChange = (categoryName) => {
+    setCategory(categoryName);
+    setStartIndex(0);
   };
 
   const getDisplayedData = () => {
-    return jsonData?.boxofs?.boxof?.slice(startIndex, startIndex + 4) || [];
+    const filteredData =
+      data?.boxofs?.boxof?.filter((item) => item.cate._text === category) || [];
+
+    const totalDataLength = filteredData.length;
+
+    if (totalDataLength <= 4) {
+      return filteredData.slice(startIndex);
+    } else {
+      return filteredData.slice(startIndex, startIndex + 4) || [];
+    }
   };
 
   const displayedData = getDisplayedData();
 
+  function parseDateRange(dateRangeString) {
+    const dates = dateRangeString
+      .split("~")
+      .map((date) => new Date(date.trim()));
+    return { start: dates[0], end: dates[1] };
+  }
+
+  // 날짜를 비교하여 정렬하는 함수
+  function sortByClosestDate(data) {
+    return data.sort((a, b) => {
+      const startDateA = parseDateRange(a.prfpd._text).start;
+      const startDateB = parseDateRange(b.prfpd._text).start;
+      return startDateA - startDateB;
+    });
+  }
+
   const handleNext = () => {
-    if (startIndex + 4 < jsonData?.boxofs?.boxof?.length) {
+    const totalDataLength =
+      data?.boxofs?.boxof?.filter((item) => item.cate._text === category)
+        .length || 0;
+    const maxIndex = Math.ceil(totalDataLength / 4) - 1;
+
+    if (startIndex + 4 < totalDataLength) {
       setStartIndex(startIndex + 4);
+    } else if (
+      startIndex + 4 >= totalDataLength &&
+      startIndex !== maxIndex * 4
+    ) {
+      setStartIndex(maxIndex * 4);
+    } else if (totalDataLength <= 4) {
+      setStartIndex(startIndex);
     }
   };
-
   const handlePrev = () => {
     if (startIndex - 4 >= 0) {
       setStartIndex(startIndex - 4);
@@ -153,13 +181,13 @@ const HPContent1 = () => {
     <Container>
       <Strong>New 신규오픈!</Strong>
       <CategoryContainer>
-        <CategoryButton onClick={() => handleCategoryChange(0)}>
+        <CategoryButton onClick={() => handleCategoryChange("연극")}>
           연극
         </CategoryButton>
-        <CategoryButton onClick={() => handleCategoryChange(4)}>
+        <CategoryButton onClick={() => handleCategoryChange("공연")}>
           공연
         </CategoryButton>
-        <CategoryButton onClick={() => handleCategoryChange(8)}>
+        <CategoryButton onClick={() => handleCategoryChange("콘서트")}>
           콘서트
         </CategoryButton>
       </CategoryContainer>
@@ -172,18 +200,18 @@ const HPContent1 = () => {
           {"<"}
         </SlideButton>
         <UlContainer>
-          {displayedData.map((item, index) => (
-            <ListItem key={index}>
-              <Link to={`/ticketing/${item.mt20id._text}`}>
+          {sortByClosestDate(displayedData).map((item, index) => (
+            <StyleLink to={`/ticketing/${item.mt20id._text}`}>
+              <ListItem key={index}>
                 <Image src={URL + item.poster._text} alt="포스터" />
-              </Link>
-              <Text>장르: {item.cate._text}</Text>
-              <Text>지역: {item.area._text}</Text>
-              <Text over className="over">
-                이름: {item.prfnm._text}
-              </Text>
-              <Text>기간: {item.prfpd._text}</Text>
-            </ListItem>
+                <Text>장르: {item.cate._text}</Text>
+                <Text over className="over">
+                  {item.prfnm._text}
+                </Text>
+                <Text>{item.area._text}</Text>
+                <Text>{item.prfpd._text}</Text>
+              </ListItem>
+            </StyleLink>
           ))}
         </UlContainer>
         <SlideButton className="nextButton" onClick={handleNext}>
