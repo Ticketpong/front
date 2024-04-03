@@ -116,7 +116,10 @@ const AdminManage = ({ onAddClick, onEditClick }) => {
               <Cell>{item.manage_auth}</Cell>
               <Cell>{item.manage_part}</Cell>
               <Cell>
-                <Button onClick={onEditClick}> 수정</Button>
+                <Button onClick={() => onEditClick(item.manage_id)}>
+                  {" "}
+                  수정
+                </Button>
                 <Button onClick={() => idDelete(item.manage_id)}>삭제</Button>
               </Cell>
             </tr>

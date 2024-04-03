@@ -72,6 +72,7 @@ const Title = styled.h2`
 
 const ManagePage = () => {
   const [selectedItem, setSelectedItem] = useState(1);
+  const [selectedManageId, setSelectedManageId] = useState(null);
 
   const handleItemClick = (num) => {
     setSelectedItem(num);
@@ -81,8 +82,9 @@ const ManagePage = () => {
     setSelectedItem(5);
   };
 
-  const handleEditClick = () => {
+  const handleEditClick = (manageId) => {
     setSelectedItem(6);
+    setSelectedManageId(manageId);
   };
 
   return (
@@ -147,7 +149,7 @@ const ManagePage = () => {
           />
         )}
         {selectedItem === 5 && <ManageAdd />}
-        {selectedItem === 6 && <EditManage />}
+        {selectedItem === 6 && <EditManage manageId={selectedManageId} />}
       </Content>
     </Container>
   );
