@@ -108,6 +108,11 @@ const Text = styled.p`
   max-width: ${(props) => (props.over ? "350px" : "none")};
 `;
 
+const StyleLink = styled(Link)`
+  text-decoration: none;
+  color: black;
+`;
+
 const HPContent1 = () => {
   // const [jsonData, setJsonData] = useState("");
   const [startIndex, setStartIndex] = useState(0);
@@ -173,17 +178,17 @@ const HPContent1 = () => {
         </SlideButton>
         <UlContainer>
           {displayedData.map((item, index) => (
-            <ListItem key={index}>
-              <Link to={`/ticketing/${item.mt20id._text}`}>
+            <StyleLink to={`/ticketing/${item.mt20id._text}`}>
+              <ListItem key={index}>
                 <Image src={URL + item.poster._text} alt="포스터" />
-              </Link>
-              <Text>장르: {item.cate._text}</Text>
-              <Text>지역: {item.area._text}</Text>
-              <Text over className="over">
-                이름: {item.prfnm._text}
-              </Text>
-              <Text>기간: {item.prfpd._text}</Text>
-            </ListItem>
+                <Text>장르: {item.cate._text}</Text>
+                <Text>지역: {item.area._text}</Text>
+                <Text over className="over">
+                  이름: {item.prfnm._text}
+                </Text>
+                <Text>기간: {item.prfpd._text}</Text>
+              </ListItem>
+            </StyleLink>
           ))}
         </UlContainer>
         <SlideButton className="nextButton" onClick={handleNext}>

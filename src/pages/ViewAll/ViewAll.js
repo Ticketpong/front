@@ -236,7 +236,7 @@ const StyledP = styled.p`
   max-width: ${(props) => (props.over ? "350px" : "inherit")};
 `;
 
-const NoneLink = styled(Link)`
+const StyleLink = styled(Link)`
   text-decoration: none;
   color: black;
 `;
@@ -365,7 +365,7 @@ const ViewAll = () => {
           {displayedData2.map((item, index) => {
             if (!showAll && index >= 8) return null;
             return (
-              <NoneLink to={`/ticketing/${item.prfnm._text}`}>
+              <StyleLink to={`/ticketing/${item.prfnm._text}`}>
                 <StyledLI key={index}>
                   <StyledImage src={URL + item.poster._text} alt="포스터" />
                   <StyledP>장르: {item.cate._text}</StyledP>
@@ -375,7 +375,7 @@ const ViewAll = () => {
                   </StyledP>
                   <StyledP>기간: {item.prfpd._text}</StyledP>
                 </StyledLI>
-              </NoneLink>
+              </StyleLink>
             );
           })}
         </StyledUL>
