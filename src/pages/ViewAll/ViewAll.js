@@ -236,6 +236,11 @@ const StyledP = styled.p`
   max-width: ${(props) => (props.over ? "350px" : "inherit")};
 `;
 
+const NoneLink = styled(Link)`
+  text-decoration: none;
+  color: black;
+`;
+
 // =============================================================================================== //
 // 데이터 처리 부문
 
@@ -360,17 +365,17 @@ const ViewAll = () => {
           {displayedData2.map((item, index) => {
             if (!showAll && index >= 8) return null;
             return (
-              <StyledLI key={index}>
-                <Link to={`/ticketing/${item.mt20id._text}`}>
+              <NoneLink to={`/ticketing/${item.prfnm._text}`}>
+                <StyledLI key={index}>
                   <StyledImage src={URL + item.poster._text} alt="포스터" />
-                </Link>
-                <StyledP>장르: {item.cate._text}</StyledP>
-                <StyledP>지역: {item.area._text}</StyledP>
-                <StyledP over className="over">
-                  이름: {item.prfnm._text}
-                </StyledP>
-                <StyledP>기간: {item.prfpd._text}</StyledP>
-              </StyledLI>
+                  <StyledP>장르: {item.cate._text}</StyledP>
+                  <StyledP>지역: {item.area._text}</StyledP>
+                  <StyledP over className="over">
+                    이름: {item.prfnm._text}
+                  </StyledP>
+                  <StyledP>기간: {item.prfpd._text}</StyledP>
+                </StyledLI>
+              </NoneLink>
             );
           })}
         </StyledUL>
