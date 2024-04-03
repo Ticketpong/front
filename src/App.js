@@ -14,9 +14,9 @@ import SignupPage from "./pages/SignupPage";
 import MyReview from "./features/MyPage/MyReview";
 import EditMyReview from "./features/MyPage/EditMyReview";
 import ReviewDetail from "./features/Community/ReviewDetail";
-import ManageLoginPage from "./pages/managepage/ManageLoginPage";
-import ApiDataFetcher from "./components/ApiDataFetcher";
+import ManageLoginPage from "./pages/managepage/managepage/ManageLoginPage";
 import ManagePage from "./pages/managepage/ManagePage";
+import ApiDataFetcher from "./components/ApiDataFetcher";
 
 function App() {
   const pathname = window.location.pathname;
