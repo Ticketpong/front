@@ -225,7 +225,7 @@ const HPReviews = () => {
           </Li>
         </UlContainer>
         <BottomBtn>
-          <Link to="/community?selectedItem=2">
+          <Link to="/community?selectedItem=3">
             <StyledViewAllButton>후기 전체보기</StyledViewAllButton>
           </Link>
         </BottomBtn>

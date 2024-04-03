@@ -45,7 +45,7 @@ const PostTable = styled.table`
 
 const Th = styled.th`
   padding: 12px;
-  font-size: 24px;
+  font-size: 18px;
   text-align: center;
   background-color: #f2f2f2;
   &:nth-child(2) {
@@ -60,7 +60,7 @@ const Th = styled.th`
 
 const Td = styled.td`
   padding: 12px;
-  font-size: 24px;
+  font-size: 18px;
   border-bottom: 1px solid #999999;
   text-align: center;
   &:first-child,
