@@ -138,6 +138,22 @@ const HPContent1 = () => {
 
   const displayedData = getDisplayedData();
 
+  function parseDateRange(dateRangeString) {
+    const dates = dateRangeString
+      .split("~")
+      .map((date) => new Date(date.trim()));
+    return { start: dates[0], end: dates[1] };
+  }
+
+  // 날짜를 비교하여 정렬하는 함수
+  function sortByClosestDate(data) {
+    return data.sort((a, b) => {
+      const startDateA = parseDateRange(a.prfpd._text).start;
+      const startDateB = parseDateRange(b.prfpd._text).start;
+      return startDateA - startDateB;
+    });
+  }
+
   const handleNext = () => {
     const totalDataLength =
       data?.boxofs?.boxof?.filter((item) => item.cate._text === category)
@@ -184,16 +200,16 @@ const HPContent1 = () => {
           {"<"}
         </SlideButton>
         <UlContainer>
-          {displayedData.map((item, index) => (
+          {sortByClosestDate(displayedData).map((item, index) => (
             <StyleLink to={`/ticketing/${item.mt20id._text}`}>
               <ListItem key={index}>
                 <Image src={URL + item.poster._text} alt="포스터" />
                 <Text>장르: {item.cate._text}</Text>
-                <Text>지역: {item.area._text}</Text>
                 <Text over className="over">
-                  이름: {item.prfnm._text}
+                  {item.prfnm._text}
                 </Text>
-                <Text>기간: {item.prfpd._text}</Text>
+                <Text>{item.area._text}</Text>
+                <Text>{item.prfpd._text}</Text>
               </ListItem>
             </StyleLink>
           ))}
