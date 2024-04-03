@@ -134,9 +134,7 @@ const MyReview = () => {
   };
 
   const goToEndPage = () => {
-    const totalPages = Math.ceil(
-      jsonData?.boxofs?.boxof?.length / ITEMS_PER_PAGE
-    );
+    const totalPages = Math.ceil(reviewData?.length / ITEMS_PER_PAGE);
     setCurrentPage(totalPages);
   };
 

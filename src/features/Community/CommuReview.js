@@ -102,6 +102,11 @@ const ReviewContent = styled.span`
   font-size: 18px;
 `;
 
+const StyleLink = styled(Link)`
+  text-decoration: none;
+  color: black;
+`;
+
 const CommuReview = ({ isLoggedIn }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const URL = "https://www.kopis.or.kr/";
@@ -155,28 +160,28 @@ const CommuReview = ({ isLoggedIn }) => {
         {jsonData?.boxofs?.boxof
           ?.slice(startIndex, endIndex)
           .map((item, index) => (
-            <HrBox key={index}>
-              <ListItem key={index}>
-                <div className="imageContainer">
-                  <Link to={`/reviewdetail/${item.prfnm._text}`}>
+            <StyleLink to={`/reviewdetail/${item.prfnm._text}`}>
+              <HrBox key={index}>
+                <ListItem key={index}>
+                  <div className="imageContainer">
                     {item.poster && (
                       <img src={URL + item.poster._text} alt="포스터" />
                     )}
-                  </Link>
-                </div>
-                <div className="contentContainer">
-                  {item.prfnm && <Name>{item.prfnm._text}</Name>}
-                  {item.prfnm && (
-                    <ReviewName>{item.reviewname._text}</ReviewName>
-                  )}
-                  {item.rank && <p>{rankStar(item.rank._num)}</p>}
-                  {item.review && (
-                    <ReviewContent>내용: {item.review._text}</ReviewContent>
-                  )}
-                </div>
-              </ListItem>
-              {index <= endIndex - 1 && <hr />}
-            </HrBox>
+                  </div>
+                  <div className="contentContainer">
+                    {item.prfnm && <Name>{item.prfnm._text}</Name>}
+                    {item.prfnm && (
+                      <ReviewName>{item.reviewname._text}</ReviewName>
+                    )}
+                    {item.rank && <p>{rankStar(item.rank._num)}</p>}
+                    {item.review && (
+                      <ReviewContent>내용: {item.review._text}</ReviewContent>
+                    )}
+                  </div>
+                </ListItem>
+                {index <= endIndex - 1 && <hr />}
+              </HrBox>
+            </StyleLink>
           ))}
       </Ul>
       <ButtonContainer>

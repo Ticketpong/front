@@ -14,7 +14,9 @@ import SignupPage from "./pages/SignupPage";
 import MyReview from "./features/MyPage/MyReview";
 import EditMyReview from "./features/MyPage/EditMyReview";
 import ReviewDetail from "./features/Community/ReviewDetail";
-import ManageLoginPage from "./pages/ManageLoginPage";
+import ManageLoginPage from "./pages/managepage/ManageLoginPage";
+import ManagePage from "./pages/managepage/ManagePage";
+import ApiDataFetcher from "./components/ApiDataFetcher";
 
 function App() {
   const pathname = window.location.pathname;
@@ -32,9 +34,11 @@ function App() {
           <Route path="/community" element={<Community />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/viewall" element={<ViewAll />} />
-          <Route path="/ticketing" element={<Ticketing />} />
+          <Route path="/ticketing/:mt20id" element={<Ticketing />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/manage" element={<ManageLoginPage />} />
+          <Route path="/managepage" element={<ManagePage />} />
           <Route
             path="/editmyreview/:prfnmText"
             element={<EditMyReview />}
@@ -44,6 +48,7 @@ function App() {
             path="/reviewdetail/:prfnmText"
             element={<ReviewDetail />}
           ></Route>
+          <Route path="apiData" element={<ApiDataFetcher />}></Route>
         </Routes>
         {showHF && <Footer />}
       </BrowserRouter>
