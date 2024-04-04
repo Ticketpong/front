@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const ModalWrapper = styled.div`
@@ -75,8 +75,80 @@ const Button = styled.button`
   }
 `;
 
+const ConfirmModalWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ConfirmModalContent = styled.div`
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+
+  p {
+    margin: 3px 0;
+    font-size: 13px;
+  }
+`;
+
+const ConfirmButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`;
+
+const ConfirmButton = styled.button`
+  width: 100px;
+  height: 30px;
+  border: none;
+  border-radius: 3px;
+  font-size: 14px;
+  margin: 0 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #999999;
+    color: #fff;
+  }
+`;
+
 const Modal = ({ isOpen, onClose, data }) => {
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   if (!isOpen || !data) return null; // 모달이 열리지 않았거나 데이터가 없으면 null 반환
+
+  // 현재 날짜 가져오기
+  const currentDate = new Date();
+  // 예매일자 가져오기
+  const selectDate = new Date(data.selectdate);
+
+  const selectDateStr = data.selectdate.toISOString().slice(0, 10);
+  const currentDateStr = currentDate.toISOString().slice(0, 10);
+  // 예매일자와 현재 날짜 비교
+  const isCancelable = selectDateStr > currentDateStr;
+
+  const handleCancelClick = () => {
+    setIsConfirmOpen(true);
+  };
+
+  const handleConfirm = () => {
+    // 예매 취소 동작을 수행합니다.
+    // handleCancelReservation(); // 예매 취소 동작이 구현된 함수 호출
+    setIsConfirmOpen(false);
+    onClose(); // 모달을 닫습니다.
+  };
+
+  const handleCancelConfirm = () => {
+    setIsConfirmOpen(false);
+  };
 
   return (
     <ModalWrapper>
@@ -133,8 +205,19 @@ const Modal = ({ isOpen, onClose, data }) => {
         <Button onClick={onClose} className="close">
           닫기
         </Button>
-        <Button>예매취소</Button>
+        {isCancelable && <Button onClick={handleCancelClick}>예매취소</Button>}
       </ModalContent>
+      {isConfirmOpen && (
+        <ConfirmModalWrapper>
+          <ConfirmModalContent>
+            <p>취소하시겠습니까?</p>
+            <ConfirmButtonWrapper>
+              <ConfirmButton onClick={handleConfirm}>확인</ConfirmButton>
+              <ConfirmButton onClick={handleCancelConfirm}>취소</ConfirmButton>
+            </ConfirmButtonWrapper>
+          </ConfirmModalContent>
+        </ConfirmModalWrapper>
+      )}
     </ModalWrapper>
   );
 };
