@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { PongButton } from "./TicketingPayment";
-import SeatSelectionModal from "./SeatSelectionModal"; 
+import SeatSelectionModal from "./SeatSelectionModal";
 
-const TicketingSelectSeat = () => {
+const TicketingSelectSeat = (showData) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSeats, setSelectedSeats] = useState([]);
 
@@ -25,6 +25,7 @@ const TicketingSelectSeat = () => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onSelect={handleSelectSeats}
+        showData={showData}
       />
     </>
   );
