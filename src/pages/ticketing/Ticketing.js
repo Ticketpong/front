@@ -156,7 +156,15 @@ const Ticketing = () => {
           </>
         </S.SeatBox>
       </S.SeatWrapper>
-      <TicketingSelectSeat />
+      <>
+        {selectedTimeData && (
+          <TicketingSelectSeat
+            showData={selectedShowData}
+            timeData={selectedTimeData}
+          />
+        )}
+      </>
+
       <S.ContentWrapper>
         <S.TicketingTabs>
           <S.TicketingTabList>

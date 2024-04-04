@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Payment, { PongButton } from "./TicketingPayment";
-import { dataDetail } from "../../pages/ticketing/Ticketing";
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -64,8 +63,64 @@ const ButtonContainer = styled.div`
   margin-top: 20px;
 `;
 
-const SeatSelectionModal = ({ isOpen, onClose, onSelect }) => {
+const SelectBox = styled.div`
+  position: relative;
+  width: 90%;
+  padding: 8px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  align-self: center;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  &::before {
+    content: "⌵";
+    position: absolute;
+    top: 1px;
+    right: 8px;
+    color: #49c181;
+    font-size: 20px;
+  }
+`;
+const Label = styled.label`
+  font-size: 14px;
+  margin-left: 4px;
+  text-align: center;
+`;
+const SelectOptions = styled.ul`
+  position: ${(props) => (props.show ? "relative" : "absolute")};
+  list-style: none;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  margin: 3px auto;
+  max-height: ${(props) => (props.show ? "none" : "0")};
+  padding: 0;
+  background-color: #fff;
+`;
+const Option = styled.li`
+  font-size: 14px;
+  padding: 6px 8px;
+  transition: background-color 0.2s ease-in;
+  &:hover {
+    background-color: #fc1055;
+  }
+`;
+
+const SeatSelectionModal = ({ isOpen, onClose, onSelect, showData }) => {
   const [selectedSeats, setSelectedSeats] = useState([]);
+  const [showOptions, setShowOptions] = useState(false);
+  const [currentValue, setCurrentValue] = useState("결제방식");
+  const [discountRate, setDiscountRate] = useState(0);
+  const [selectedCardData, setSelectedCardData] = useState([]);
+
+  const dcData = [
+    { code: "361", card_name: "BC카드", discountrate: 5 },
+    { code: "090", card_name: "카카오뱅크카드", discountrate: 3 },
+  ];
+
+  const handleShow = () => {
+    setShowOptions((prev) => !prev);
+  };
 
   const seatPrices = {
     VIP: 170000,
@@ -90,9 +145,15 @@ const SeatSelectionModal = ({ isOpen, onClose, onSelect }) => {
     }
   };
   const calculateTotalPrice = () => {
-    return selectedSeats.length > 0
-      ? seatPrices[selectedSeats[0].match(/[^\d]+/)[0]] * selectedSeats.length
-      : 0;
+    let totalPrice =
+      selectedSeats.length > 0
+        ? seatPrices[selectedSeats[0].match(/[^\d]+/)[0]] * selectedSeats.length
+        : 0;
+
+    // 선택된 좌석의 총 금액에서 할인율을 적용
+    totalPrice *= (100 - discountRate) / 100;
+
+    return totalPrice;
   };
 
   const seatTypePrices = selectedSeats.reduce((acc, seat) => {
@@ -116,6 +177,22 @@ const SeatSelectionModal = ({ isOpen, onClose, onSelect }) => {
   }, [isOpen]);
 
   if (!isOpen) return null;
+
+  const handleOnChangeSelectValue = (e) => {
+    const selectedCardValue = e.target.getAttribute("value");
+    setCurrentValue(selectedCardValue);
+
+    const selectedCard = dcData.find(
+      (card) => card.card_name === selectedCardValue
+    );
+    setSelectedCardData(selectedCard);
+    if (selectedCard) {
+      setDiscountRate(selectedCard.discountrate);
+    } else {
+      setDiscountRate(0); // 선택된 카드가 없을 경우 할인율을 0으로 설정합니다.
+    }
+    console.log(selectedCardData);
+  };
 
   return (
     <ModalBackground onClick={onClose}>
@@ -150,11 +227,35 @@ const SeatSelectionModal = ({ isOpen, onClose, onSelect }) => {
             {calculateTotalPrice().toLocaleString()}원
           </HighlightText>
         </SelectedSeatsInfo>
+        <SelectBox onClick={handleShow}>
+          <Label>{currentValue}</Label>
+          <SelectOptions show={showOptions}>
+            <Option onClick={handleOnChangeSelectValue} value={"기본결제"}>
+              기본 결제
+            </Option>
+            <Option onClick={handleOnChangeSelectValue} value={"BC카드"}>
+              BC카드 결제 - 전체 금액 5% 할인 적용
+            </Option>
+            <Option
+              onClick={handleOnChangeSelectValue}
+              value={"카카오뱅크카드"}
+            >
+              카카오뱅크카드 결제 - 전체 금액 3% 할인 적용
+            </Option>
+          </SelectOptions>
+        </SelectBox>
+
         <ButtonContainer>
           <PongButton onClick={onClose} className="paymentCancel">
             취소
           </PongButton>
-          <Payment amount={calculateTotalPrice()} prfnm={dataDetail.prfnm} />
+          <Payment
+            amount={calculateTotalPrice()}
+            showData={showData}
+            selectedSeat={selectedSeats.join(", ")}
+            people={selectedSeats.length}
+            cardData={selectedCardData}
+          />
         </ButtonContainer>
       </ModalContainer>
     </ModalBackground>
