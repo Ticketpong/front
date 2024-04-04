@@ -244,7 +244,6 @@ const SeatSelectionModal = ({ isOpen, onClose, onSelect, showData }) => {
             </Option>
           </SelectOptions>
         </SelectBox>
-
         <ButtonContainer>
           <PongButton onClick={onClose} className="paymentCancel">
             취소

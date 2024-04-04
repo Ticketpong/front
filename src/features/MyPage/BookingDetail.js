@@ -159,11 +159,27 @@ const BookingDetail = () => {
       people: 2, //인원
       pay_method: "card",
     },
+    {
+      imp_uid: "imp_uid03", //예매 ID
+      user_id: "user_id01", //ID
+      manage_id: "manage_id02", //ID
+      mt10id: "공연시설03", //공연시설
+      prfnm: "공연03", //공연명
+      res_date: new Date("2024-04-03"), //예매일
+      paid_amount: 120000, //결제금액
+      success: true, //결제상태
+      watchstate: false, //관람상태
+      prestate: false, //후기상태
+      selectdate: new Date("2024-04-30"), //선택날짜
+      selecttime: "17:00", //선택시간
+      selectseat: "S01, S02", //좌석
+      people: 2, //인원
+      pay_method: "card",
+    },
   ]);
 
   useEffect(() => {
-    const today = new Date();
-    const startDate = new Date(today);
+    const startDate = new Date();
 
     switch (selectedPeriod) {
       case "3":
@@ -179,9 +195,7 @@ const BookingDetail = () => {
         startDate.setMonth(startDate.getMonth() - 3); // 기본값
     }
 
-    const filtered = data.filter(
-      (item) => item.selectdate >= startDate && item.selectdate <= today
-    );
+    const filtered = data.filter((item) => item.selectdate >= startDate);
     setFilteredData(filtered);
   }, [data, selectedPeriod]);
 
