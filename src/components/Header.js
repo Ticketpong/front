@@ -1,49 +1,41 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { HeaderContainer, Logo } from '../styles/HeaderStyled';
 import logoImg from '../assets/headerImg/logo.png';
 import NavMenu from '../features/Header/NavMenu';
 import UserMenu from '../features/Header/UserMenu';
+import axios from 'axios'; 
 
-const Header = ({ isLoggedIn }) => {
+const Header = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const navRef = useRef(null);
-  const [user_id, setUser_id] = useState("");
-  const [isLoggedInState, setIsLoggedIn] = useState(isLoggedIn);
+  const [userId, setUserId] = useState("");
+  const [isLogined, setIsLogined] = useState(false);
   const navigate = useNavigate();
+  const locationInfo = useLocation();
 
-  // user_id 가져오기 (엔드포인트url 필요)
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchLoginStatus = async () => {
       try {
-        const response = await fetch("/user_id", {
-          method: "GET",
-          credentials: "include",
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setUser_id(data.user_id);
-        } else {
-          console.error("user_id 가져오기 실패:", response.statusText);
+        const response = await axios.get('http://localhost:8080/login/profile', { withCredentials: true });
+        const { userId, isLogined } = response.data;
+        if (isLogined) {
+          setUserId(userId);
+          setIsLogined(true);
         }
       } catch (error) {
-        console.error("user_id 가져오기 중 에러 발생:", error);
+        console.error("로그인 상태를 확인하는 동안 오류 발생:", error);
       }
     };
 
-    fetchData();
+    fetchLoginStatus();
   }, []);
-
-  useEffect(() => {
-    setIsLoggedIn(isLoggedIn);
-  }, [isLoggedIn]);
 
   // 네비게이션 메뉴 열림/닫힘 상태 토글
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
   };
 
-  // 로그아웃 버튼 클릭 시 로그아웃 (엔드포인트url 필요)
+  // 로그아웃 버튼 클릭 시 로그아웃
   const handleLogout = async () => {
     try {
       const response = await fetch("/logout", {
@@ -52,9 +44,9 @@ const Header = ({ isLoggedIn }) => {
       });
 
       if (response.status === 200) {
-        setIsLoggedIn(false);
+        setIsLogined(false);
         navigate("/");
-      } else if (response.status === 400) {
+      } else if (response.status === 500) {
         console.error("로그아웃 요청 실패:", response.statusText);
       } else {
         console.error("서버에서 오류가 발생했습니다.");
@@ -63,8 +55,6 @@ const Header = ({ isLoggedIn }) => {
       console.error("로그아웃 요청 중 에러 발생:", error);
     }
   };
-
-  const locationInfo = useLocation();
 
   if(locationInfo.pathname === "/login" || locationInfo.pathname === "/signup")
     return null;
@@ -77,12 +67,12 @@ const Header = ({ isLoggedIn }) => {
         </Logo>
       </Link>
       <UserMenu
-        isLoggedIn={isLoggedIn}
+        isLogined={isLogined}
         handleLogout={handleLogout}
-        user_id={user_id}
+        userId={userId}
         toggleNav={toggleNav}
       />
-      <NavMenu open={isNavOpen} onClose={toggleNav} ref={navRef} />
+      <NavMenu open={isNavOpen} onClose={toggleNav} />
     </HeaderContainer>
   );
 };

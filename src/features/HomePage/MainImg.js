@@ -48,7 +48,7 @@ const MainImg = () => {
           isActive={index === currentImage}
         />
       ))}
-      <SearchBar/>
+      <SearchBar isHomepage={true} />
     </Container>
   );
 };
