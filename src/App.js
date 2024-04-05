@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import "./App.css";
 
 import Header from "./components/Header";
@@ -28,13 +29,14 @@ function ScrollToTop() {
   }, [pathname]);
 
   return null;
+}
 
 function App() {
   const pathname = window.location.pathname;
 
-
   // 현재 경로가 login, signup이면 false
   const showHF = !["/login", "/signup"].includes(pathname);
+  
 
   return (
     <div className="App">
