@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import data2 from "../../dummy/data2.json";
-import data3 from "../../dummy/data3.json";
 import { Link } from "react-router-dom";
 import Img from "../../assets/ViewAllImg/Image20240328164620.jpg";
+import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -245,61 +244,88 @@ const StyleLink = styled(Link)`
 // 데이터 처리 부문
 
 const ViewAll = () => {
-  const URL = "https://www.kopis.or.kr/";
+  const URL = "http://localhost:8080/viewall";
+  const rankURL = "http://localhost:8080/viewall/ranking";
   const [startIndex, setStartIndex] = useState(0);
+  const [allPerformances, setAllPerformances] = useState([]); // 전체 공연 데이터
+  const [rankedPerformances, setRankedPerformances] = useState([]); // 순위 데이터
   const [showAll, setShowAll] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("전체");
   const [geographyBased, setGeographyBased] = useState(false); // 위치 기반 필터링 여부 상태
 
-  const jsonData2 = data2; // 위치데이터가 있는 데이터
-  const jsonData3 = data3; // 순위표시용 더미 데이터
+  useEffect(() => {
+    fetchData();
+    fetchRankData();
+  }, []);
 
-  const getDisplayedData3 = () => {
-    return jsonData3?.boxofs?.boxof?.slice(startIndex, startIndex + 5) || [];
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(URL);
+      setAllPerformances(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  const fetchRankData = async () => {
+    try {
+      const response = await axios.get(rankURL);
+      setRankedPerformances(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getRankDisplayedData = () => {
+    return rankedPerformances.slice(startIndex, startIndex + 5) || [];
+  };
+
   const getAllData2 = () => {
-    return jsonData2?.boxofs?.boxof || [];
+    return allPerformances || [];
   };
 
-  const displayedData3 = getDisplayedData3();
+  const rankDisplayedData = getRankDisplayedData();
 
-  const getDisplayedData2 = () => {
+  const getDisplayedData = () => {
     if (geographyBased) {
       // 예시용 위도, 경도 데이터 => 서울 광화문
       // 나중에 현재 위치를 가져오는 함수를 넣어야할 수도 있음.
       const userLatitude = 37.572389;
       const userLongitude = 126.9769117;
-
-      const filteredData =
-        jsonData2?.boxofs?.boxof?.filter((item) => {
+      let filteredData;
+      filteredData =
+        allPerformances.filter((item) => {
           const distance = Math.sqrt(
-            Math.pow(item.latitude._text - userLatitude, 2) +
-              Math.pow(item.longitude._text - userLongitude, 2)
+            Math.pow(item.la - userLatitude, 2) +
+              Math.pow(item.lo - userLongitude, 2)
           );
           // =========================================================================================================== //
           // 숫자를 조정하면 위도, 경도의 범위가 바뀐다.
           return distance <= 0.1;
         }) || [];
-
-      return filteredData;
     } else if (selectedCategory === "전체") {
       if (startIndex === 0) {
         return getAllData2();
       } else {
-        return (
-          jsonData2?.boxofs?.boxof?.slice(startIndex, startIndex + 4) || []
-        );
+        return allPerformances.slice(startIndex, startIndex + 8) || [];
       }
     } else {
-      const filteredData =
-        jsonData2?.boxofs?.boxof?.filter(
-          (item) => item.cate._text === selectedCategory
-        ) || [];
-      return filteredData;
+      let filteredData;
+      if (selectedCategory === "기타") {
+        filteredData = allPerformances.filter(
+          (item) =>
+            item.genrenm === "무용" || item.genrenm === "서양음악(클래식)"
+        );
+      } else {
+        filteredData =
+          allPerformances.filter((item) => item.genrenm === selectedCategory) ||
+          [];
+      }
+      return filteredData || [];
     }
   };
 
-  const displayedData2 = getDisplayedData2();
+  const displayedData2 = getDisplayedData();
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
@@ -324,24 +350,23 @@ const ViewAll = () => {
             <All>공연 / 전시</All>
             <ShortHr />
             <UpperUL>
-              {displayedData3.map((item, index) => {
+              {rankDisplayedData.map((item, index) => {
                 if (!showAll && index >= 5) return null;
                 return (
                   <UpperLI key={index}>
-                    <Link to={`/ticketing/${item.mt20id._text}`}>
+                    <Link to={`/ticketing/${item.mt20id}`}>
                       <ImageContainer>
-                        <UpperImage
-                          src={URL + item.poster._text}
-                          alt="포스터"
-                        />
+                        <UpperImage src={item.poster} alt="포스터" />
                         <Rank>{startIndex + index + 1}</Rank>
                       </ImageContainer>
                     </Link>
                     <UpperP over className="over">
-                      이름: {item.prfnm._text.slice(0, 13)}
-                      {item.prfnm._text.length > 20 ? "..." : ""}
+                      이름: {item.prfnm.slice(0, 13)}
+                      {item.prfnm.length > 20 ? "..." : ""}
                     </UpperP>
-                    <UpperP>기간: {item.prfpd._text}</UpperP>
+                    <UpperP>
+                      기간: {item.prfpdfrom}~{item.prfpdto}
+                    </UpperP>
                   </UpperLI>
                 );
               })}
@@ -353,8 +378,9 @@ const ViewAll = () => {
       <CategoryContainer>
         <Button onClick={() => handleCategoryChange("전체")}>전체보기</Button>
         <Button onClick={() => handleCategoryChange("연극")}>연극</Button>
-        <Button onClick={() => handleCategoryChange("공연")}>공연</Button>
-        <Button onClick={() => handleCategoryChange("콘서트")}>콘서트</Button>
+        <Button onClick={() => handleCategoryChange("뮤지컬")}>뮤지컬</Button>
+        <Button onClick={() => handleCategoryChange("대중음악")}>콘서트</Button>
+        <Button onClick={() => handleCategoryChange("기타")}>기타</Button>
         <GeographyButton onClick={handleGeographyChange}>
           위치기반
         </GeographyButton>
@@ -365,15 +391,20 @@ const ViewAll = () => {
           {displayedData2.map((item, index) => {
             if (!showAll && index >= 8) return null;
             return (
-              <StyleLink to={`/ticketing/${item.prfnm._text}`}>
+              <StyleLink to={`/ticketing/${item.mt20id}`}>
                 <StyledLI key={index}>
-                  <StyledImage src={URL + item.poster._text} alt="포스터" />
-                  <StyledP>장르: {item.cate._text}</StyledP>
-                  <StyledP>지역: {item.area._text}</StyledP>
-                  <StyledP over className="over">
-                    이름: {item.prfnm._text}
+                  <StyledImage src={item.poster} alt="포스터" />
+                  <StyledP>장르: {item.genrenm}</StyledP>
+                  <StyledP>
+                    지역: {item.adres.slice(0, 10)}
+                    {item.adres.length > 20 ? "..." : ""}
                   </StyledP>
-                  <StyledP>기간: {item.prfpd._text}</StyledP>
+                  <StyledP over className="over">
+                    이름: {item.prfnm}
+                  </StyledP>
+                  <StyledP>
+                    기간: {item.prfpdfrom}~{item.prfpdto}
+                  </StyledP>
                 </StyledLI>
               </StyleLink>
             );
