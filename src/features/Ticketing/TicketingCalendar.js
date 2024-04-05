@@ -2,12 +2,9 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./css/TicketingCalendar.css";
-import jsonDetailData from "../../dummy/show_sample.json";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 
-const data = jsonDetailData;
-
-const Calendar = ({ onDataChange }) => {
+const Calendar = ({ onDataChange, data }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const dateFrom = new Date(data.prfpdfrom);
