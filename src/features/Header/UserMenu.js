@@ -48,18 +48,18 @@ const MenuButton = styled.button`
   }
 `;
 
-const UserMenu = ({ isLoggedIn, handleLogout, user_id, toggleNav }) => {
+const UserMenu = ({ isLogined, handleLogout, userId, toggleNav }) => {
   return (
     <UserMenuContainer>
       <ul>
-        {isLoggedIn ? (
+        {isLogined ? (
           <>
             <li>
               <button onClick={handleLogout}>로그아웃</button>
             </li>
             <li>
               <Icon src={HeaderUserIcon} alt="HeaderUserIcon" />
-              {user_id} 님
+              {userId} 님
             </li>
             <li>
               <Link to="/mypage">마이 페이지</Link>
