@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+// import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import searchIcon from '../assets/homeImg/searchIcon_w.png';
 
@@ -35,40 +35,23 @@ const SearchInput = styled.input`
 `;
 
 const SearchIcon = styled.img`
-  width: 5%;
+  width: 6%;
   height: auto;
   cursor: pointer;
 `;
 
-const SearchHomeStyled = ({ onSubmit }) => {
-  const [inputValue, setInputValue] = useState('');
-
-  useEffect(() => {
-    // 새로고침 시 input창 초기화
-    localStorage.removeItem('searchInputValue');
-  }, []);
-
-  const handleChange = (event) => {
-    setInputValue(event.target.value);
-  };
-
-  const handleSearch = () => {
-    onSubmit();
-  };
-
+const SearchHomeStyled = ({ placeholder, value, onChange, onKeyDown, onSubmit }) => {
   return (
     <StyledSearchBar>
       <SearchInput
-        placeholder="공연 전시명을 입력해주세요."
-        value={inputValue}
-        onChange={handleChange}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            handleSearch();
-          }
-        }}
+        type="text"
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        onSubmit={onSubmit}
       />
-      <SearchIcon src={searchIcon} alt="Search Icon" onClick={handleSearch} />
+      <SearchIcon src={searchIcon} alt="Search Icon" onClick={onSubmit} />
     </StyledSearchBar>
   );
 };
