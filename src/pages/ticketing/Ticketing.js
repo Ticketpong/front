@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import Calendar from "../../features/Ticketing/TicketingCalendar";
 import * as S from "../../styles/TicketingStyled";
 import PlaceMap from "../../components/KakaoMap";
+import axios from "axios";
 
 import ShowDataDetail from "../../dummy/show_detail.json";
 import TicketingSelectSeat from "../../features/Ticketing/TicketingSelectSeat";
@@ -23,19 +24,27 @@ const Ticketing = () => {
   const [selectedTimeData, setSelectedTimeData] = useState(null);
   const [selectedShowData, setSelectedShowData] = useState(null); // 선택된 공연 데이터
   const [dataTime, setDataTime] = useState([]);
+  const URL = "http://localhost:8080/viewall";
 
   useEffect(() => {
-    // mt20id에 해당하는 데이터를 찾아 선택된 공연 데이터로 설정
-    const selectedData = dataDetail.find((item) => item.mt20id === mt20id);
-    setSelectedShowData(selectedData);
-    // 나머지 상태들 초기화
-    setSelectDate("");
-    setShowTimes([]);
-    setShowSeats([]);
-    setSelectData([]);
-    setSelectedTimeData(null);
-    setDataTime(ShowSchedule([selectedData]));
+    fetchData();
   }, [mt20id]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(URL);
+      const selectedData = response.data.find((item) => item.mt20id === mt20id);
+      setSelectedShowData(selectedData);
+      // 나머지 상태들 초기화
+      setShowTimes([]);
+      setShowSeats([]);
+      setSelectData([]);
+      setSelectedTimeData(null);
+      setDataTime(ShowSchedule([selectedData]));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   function convertToTimeFormat(arr) {
     return arr.map((time) => {
