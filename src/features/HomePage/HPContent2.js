@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import data from "../../dummy/data.json";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -152,34 +152,37 @@ const StyleLink = styled(Link)`
 `;
 
 const HPContent2 = () => {
-  const URL = "https://www.kopis.or.kr/";
+  const URL = "http://localhost:8080/homepage/ranking";
   const [startIndex, setStartIndex] = useState(0);
-  const [category, setCategory] = useState("연극");
+  const [data, setData] = useState([]);
 
-  const handleCategoryChange = (categoryName) => {
-    setCategory(categoryName);
-    setStartIndex(0);
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(URL);
+      setData(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const getDisplayedData = () => {
-    const filteredData =
-      data?.boxofs?.boxof?.filter((item) => item.cate._text === category) || [];
-
-    const totalDataLength = filteredData.length;
+    const totalDataLength = data.length;
 
     if (totalDataLength <= 4) {
-      return filteredData.slice(startIndex);
+      return data.slice(startIndex);
     } else {
-      return filteredData.slice(startIndex, startIndex + 4) || [];
+      return data.slice(startIndex, startIndex + 4) || [];
     }
   };
 
   const displayedData = getDisplayedData();
 
   const handleNext = () => {
-    const totalDataLength =
-      data?.boxofs?.boxof?.filter((item) => item.cate._text === category)
-        .length || 0;
+    const totalDataLength = data.length || 0;
     const maxIndex = Math.ceil(totalDataLength / 4) - 1;
 
     if (startIndex + 4 < totalDataLength) {
@@ -204,15 +207,7 @@ const HPContent2 = () => {
     <Container>
       <Strong>오늘의 인기티켓</Strong>
       <CategoryBtn>
-        <CategoryButton onClick={() => handleCategoryChange("연극")}>
-          연극
-        </CategoryButton>
-        <CategoryButton onClick={() => handleCategoryChange("공연")}>
-          공연
-        </CategoryButton>
-        <CategoryButton onClick={() => handleCategoryChange("콘서트")}>
-          콘서트
-        </CategoryButton>
+        <CategoryButton>전체</CategoryButton>
       </CategoryBtn>
 
       <SliderContainer>
@@ -225,18 +220,20 @@ const HPContent2 = () => {
         </SlideButton>
         <UlContainer>
           {displayedData.map((item, index) => (
-            <StyleLink to={`/ticketing/${item.mt20id._text}`}>
+            <StyleLink to={`/ticketing/${item.mt20id}`}>
               <ListItem key={index}>
                 <ImageContainer>
-                  <Image src={URL + item.poster._text} alt="포스터" />
+                  <Image src={item.poster} alt="포스터" />
                   <Rank>{startIndex + index + 1}</Rank>
                 </ImageContainer>
-                <Text>장르: {item.cate._text}</Text>
-                <Text>지역: {item.area._text}</Text>
+                <Text>장르: {item.genrenm}</Text>
+                <Text>지역: {item.sidonm}</Text>
                 <Text over className="over">
-                  이름: {item.prfnm._text}
+                  이름: {item.prfnm}
                 </Text>
-                <Text>기간: {item.prfpd._text}</Text>
+                <Text>
+                  기간: {item.prfpdfrom} ~ {item.prfpdto}
+                </Text>
               </ListItem>
             </StyleLink>
           ))}
