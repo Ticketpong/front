@@ -1,4 +1,5 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import "./App.css";
 
 import Header from "./components/Header";
@@ -17,17 +18,31 @@ import ReviewDetail from "./features/Community/ReviewDetail";
 import ManageLoginPage from "./pages/managepage/ManageLoginPage";
 import ManagePage from "./pages/managepage/ManagePage";
 import ApiDataFetcher from "./components/ApiDataFetcher";
+import SearchResult from './pages/searchResult/SearchResult';
+
+// 자동 스크롤 기능 추가
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 function App() {
   const pathname = window.location.pathname;
 
   // 현재 경로가 login, signup이면 false
   const showHF = !["/login", "/signup"].includes(pathname);
+  
 
   return (
     <div className="App">
       <BrowserRouter>
         {showHF && <Header />}
+        <ScrollToTop /> 
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/writereview" element={<WriteReview />} />
@@ -49,6 +64,7 @@ function App() {
             element={<ReviewDetail />}
           ></Route>
           <Route path="apiData" element={<ApiDataFetcher />}></Route>
+          <Route path="/searchresult" element={<SearchResult />} />
         </Routes>
         {showHF && <Footer />}
       </BrowserRouter>
