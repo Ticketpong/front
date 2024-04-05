@@ -76,6 +76,15 @@ const Ticketing = () => {
     setActiveTab(index);
   };
 
+  // 오늘 날짜를 구하는 함수
+  const getTodayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
   return (
     <S.TicketingWrapper>
       {selectedShowData && (
@@ -91,71 +100,80 @@ const Ticketing = () => {
           </S.ContentDetail>
         </S.ContentWrapper>
       )}
-      <S.SeatWrapper>
-        <S.SeatBox style={{ border: "none" }}>
-          <S.BoxHeader>
-            <span style={{ color: "#AB003C" }}>01</span>
-            <span>날짜 선택</span>
-          </S.BoxHeader>
-          <Calendar onDataChange={handleDataChange}></Calendar>
-        </S.SeatBox>
-        <S.SeatBox>
-          <S.BoxHeader>
-            <span style={{ color: "#AB003C" }}>02</span>
-            <span>시간 선택</span>
-          </S.BoxHeader>
-          <S.TimeItemList>
-            {showTimes.map((time) => (
-              <S.TimeItemBtn
-                key={time}
-                onClick={() => handleClick(time)}
-                className={`${select === time ? "select" : ""}`}
-              >
-                {time}
-              </S.TimeItemBtn>
-            ))}
-          </S.TimeItemList>
-        </S.SeatBox>
-        <S.SeatBox style={{ backgroundColor: "#f6f6f6", display: "block" }}>
-          <S.BoxHeader style={{ width: "120px" }}>
-            <span style={{ color: "#AB003C" }}>예매 가능 좌석</span>
-          </S.BoxHeader>
-          <>
-            {selectedTimeData && (
-              <S.SeatList>
-                <S.SeatItem>
-                  <span>VIP석</span>
-                  <span>
-                    <S.SeatTimeData>{selectedTimeData.VIP}</S.SeatTimeData>
-                    <span>석</span>
-                  </span>
-                </S.SeatItem>
-                <S.SeatItem>
-                  <span>R석</span>
-                  <span>
-                    <S.SeatTimeData>{selectedTimeData.R}</S.SeatTimeData>
-                    <span>석</span>
-                  </span>
-                </S.SeatItem>
-                <S.SeatItem>
-                  <span>S석</span>
-                  <span>
-                    <S.SeatTimeData>{selectedTimeData.S}</S.SeatTimeData>
-                    <span>석</span>
-                  </span>
-                </S.SeatItem>
-                <S.SeatItem>
-                  <span>A석</span>
-                  <span>
-                    <S.SeatTimeData>{selectedTimeData.A}</S.SeatTimeData>
-                    <span>석</span>
-                  </span>
-                </S.SeatItem>
-              </S.SeatList>
-            )}
-          </>
-        </S.SeatBox>
-      </S.SeatWrapper>
+      {selectedShowData &&
+      new Date(selectedShowData.prfpdto) >= new Date(getTodayDate()) ? (
+        <S.SeatWrapper>
+          <S.SeatBox style={{ border: "none" }}>
+            <S.BoxHeader>
+              <span style={{ color: "#AB003C" }}>01</span>
+              <span>날짜 선택</span>
+            </S.BoxHeader>
+            <Calendar onDataChange={handleDataChange}></Calendar>
+          </S.SeatBox>
+          <S.SeatBox>
+            <S.BoxHeader>
+              <span style={{ color: "#AB003C" }}>02</span>
+              <span>시간 선택</span>
+            </S.BoxHeader>
+            <S.TimeItemList>
+              {showTimes.map((time) => (
+                <S.TimeItemBtn
+                  key={time}
+                  onClick={() => handleClick(time)}
+                  className={`${select === time ? "select" : ""}`}
+                >
+                  {time}
+                </S.TimeItemBtn>
+              ))}
+            </S.TimeItemList>
+          </S.SeatBox>
+          <S.SeatBox style={{ backgroundColor: "#f6f6f6", display: "block" }}>
+            <S.BoxHeader style={{ width: "120px" }}>
+              <span style={{ color: "#AB003C" }}>예매 가능 좌석</span>
+            </S.BoxHeader>
+            <>
+              {selectedTimeData && (
+                <S.SeatList>
+                  <S.SeatItem>
+                    <span>VIP석</span>
+                    <span>
+                      <S.SeatTimeData>{selectedTimeData.VIP}</S.SeatTimeData>
+                      <span>석</span>
+                    </span>
+                  </S.SeatItem>
+                  <S.SeatItem>
+                    <span>R석</span>
+                    <span>
+                      <S.SeatTimeData>{selectedTimeData.R}</S.SeatTimeData>
+                      <span>석</span>
+                    </span>
+                  </S.SeatItem>
+                  <S.SeatItem>
+                    <span>S석</span>
+                    <span>
+                      <S.SeatTimeData>{selectedTimeData.S}</S.SeatTimeData>
+                      <span>석</span>
+                    </span>
+                  </S.SeatItem>
+                  <S.SeatItem>
+                    <span>A석</span>
+                    <span>
+                      <S.SeatTimeData>{selectedTimeData.A}</S.SeatTimeData>
+                      <span>석</span>
+                    </span>
+                  </S.SeatItem>
+                </S.SeatList>
+              )}
+            </>
+          </S.SeatBox>
+        </S.SeatWrapper>
+      ) : (
+        <S.SeatWrapper>
+          <h1>-</h1>
+          <h1>이미 마감된 공연입니다.</h1>
+          <h1>-</h1>
+        </S.SeatWrapper>
+      )}
       <>
         {selectedTimeData && (
           <TicketingSelectSeat

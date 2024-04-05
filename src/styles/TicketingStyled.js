@@ -80,6 +80,9 @@ export const SeatWrapper = styled.div`
   text-align: center;
   border: 1px solid black;
   border-radius: 15px;
+  h1 {
+    margin: auto;
+  }
 `;
 
 export const SeatBox = styled.div`
