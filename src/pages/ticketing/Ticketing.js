@@ -5,14 +5,13 @@ import * as S from "../../styles/TicketingStyled";
 import PlaceMap from "../../components/KakaoMap";
 
 import ShowDataDetail from "../../dummy/show_detail.json";
-import jsonDataTime from "../../dummy/show_time.json";
 import TicketingSelectSeat from "../../features/Ticketing/TicketingSelectSeat";
 import TicketingReview from "../../features/Ticketing/TicketingReview";
 import TicketingHeader from "../../features/Ticketing/TicketingHeader";
 import TicketingShowInfo from "../../features/Ticketing/TicketingShowInfo";
+import ShowSchedule from "../../features/Ticketing/ShowSchedule";
 
 export const dataDetail = ShowDataDetail;
-const dataTime = jsonDataTime;
 
 const Ticketing = () => {
   const { mt20id } = useParams(); // URL 매개변수 추출
@@ -23,6 +22,7 @@ const Ticketing = () => {
   const [selectData, setSelectData] = useState([]);
   const [selectedTimeData, setSelectedTimeData] = useState(null);
   const [selectedShowData, setSelectedShowData] = useState(null); // 선택된 공연 데이터
+  const [dataTime, setDataTime] = useState([]);
 
   useEffect(() => {
     // mt20id에 해당하는 데이터를 찾아 선택된 공연 데이터로 설정
@@ -34,6 +34,7 @@ const Ticketing = () => {
     setShowSeats([]);
     setSelectData([]);
     setSelectedTimeData(null);
+    setDataTime(ShowSchedule([selectedData]));
   }, [mt20id]);
 
   function convertToTimeFormat(arr) {
