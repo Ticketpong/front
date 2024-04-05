@@ -108,7 +108,10 @@ const Ticketing = () => {
               <span style={{ color: "#AB003C" }}>01</span>
               <span>날짜 선택</span>
             </S.BoxHeader>
-            <Calendar onDataChange={handleDataChange}></Calendar>
+            <Calendar
+              data={selectedShowData}
+              onDataChange={handleDataChange}
+            ></Calendar>
           </S.SeatBox>
           <S.SeatBox>
             <S.BoxHeader>
