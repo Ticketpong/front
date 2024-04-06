@@ -19,9 +19,9 @@ import ManageLoginPage from "./pages/managepage/ManageLoginPage";
 import ManagePage from "./pages/managepage/ManagePage";
 import ApiDataFetcher from "./components/base/ApiDataFetcher";
 import SearchResult from "./pages/searchresult/SearchResult";
-import FindId from './pages/findidpw/FindId';
-import FindPw from './pages/findidpw/FindPw';
-import ConfirmId from './pages/findidpw/ConfirmId';
+import FindId from "./pages/findidpw/FindId";
+import FindPw from "./pages/findidpw/FindPw";
+import ConfirmId from "./pages/findidpw/ConfirmId";
 
 // 자동 스크롤 기능 추가
 function ScrollToTop() {
@@ -35,7 +35,7 @@ function ScrollToTop() {
 }
 
 function App() {
-  document.body.style.margin = '0';
+  document.body.style.margin = "0";
   const pathname = window.location.pathname;
 
   // 현재 경로가 login, signup이면 false
