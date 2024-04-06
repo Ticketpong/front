@@ -67,6 +67,7 @@ const Ticketing = () => {
     setShowSeats(resultTime);
     setSelectData(resultShowTime);
   };
+  console.log(selectedShowData);
 
   const [select, setSelect] = useState("");
   const handleClick = (time) => {
@@ -255,17 +256,15 @@ const Ticketing = () => {
             </S.TabContentWrapper>
           </S.TabContentReview>
         )}
-        {activeTab === 2 &&
-          selectedShowData &&
-          selectedShowData.fcltynm(
-            <S.TabContentWrapper>
-              <h2>공연장 안내</h2>
-              <hr />
-              <p>장소: {selectedShowData.fcltynm}</p>
-              <p>문의: {selectedShowData.telno}</p>
-              <PlaceMap mt10id={selectedShowData.mt10id} />
-            </S.TabContentWrapper>
-          )}
+        {activeTab === 2 && selectedShowData && (
+          <S.TabContentWrapper>
+            <h2>공연장 안내</h2>
+            <hr />
+            <p>장소: {selectedShowData.fcltynm}</p>
+            <p>문의: {selectedShowData.telno}</p>
+            <PlaceMap mt10id={selectedShowData.mt10id} />
+          </S.TabContentWrapper>
+        )}
         {activeTab === 3 && selectedShowData && (
           <S.TabContentNotice>
             <S.TabContentWrapper>

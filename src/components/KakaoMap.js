@@ -1,12 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Map, MapMarker, ZoomControl } from "react-kakao-maps-sdk";
-import ShowPlaceData from "../dummy/show_place.json";
 import { PongButton } from "../features/Ticketing/TicketingPayment";
-
-const dataPlace = ShowPlaceData;
+import { Axios } from "axios";
 
 const PlaceMap = ({ mt10id }) => {
+  const [dataPlace, setDataPlace] = useState(null);
+
+  const URL = "http://localhost:8080/viewall"; //라우팅 경로 시설정보로 변경
   const { kakao } = window;
+
+  useEffect(() => {
+    fetchData();
+  }, [mt10id]);
+
+  const fetchData = async () => {
+    try {
+      const response = await Axios.get(URL);
+      const placeData = response.data.find((item) => item.mt10id === mt10id);
+      setDataPlace(placeData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // mt10id에 해당하는 장소 데이터 필터링
   const selectedPlace = dataPlace.find((place) => place.mt10id === mt10id);
