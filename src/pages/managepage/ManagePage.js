@@ -6,6 +6,10 @@ import EditProfile from "../../features/MyPage/EditProfile";
 import AdminManage from "../../features/ManagePage/AdminManage";
 import EditManage from "../../features/ManagePage/EditManage";
 import ManageAdd from "../../features/ManagePage/ManageAdd";
+import MemberManage              from "../../features/ManagePage/MemberManage";
+import PerformanceReg            from "../../features/ManagePage/PerformanceReg";
+// import PerformanceManageChg         from "../../features/ManagePage/PerformanceManageChg"
+import PerformanceManage         from "../../features/ManagePage/PerformanceManage"
 
 import { MdKeyboardArrowRight } from "react-icons/md";
 import ReviewsManagement from "../../features/ManagePage/ReviewManage";
@@ -79,6 +83,14 @@ const ManagePage = () => {
     setSelectedItem(num);
   };
 
+  const handlePerformanceAddClick = () => {
+    setSelectedItem(7);
+  };
+
+  const handlePerformanceEditClick = () => {
+    setSelectedItem(8);
+  };
+
   const handleAddClick = () => {
     setSelectedItem(5);
   };
@@ -140,8 +152,13 @@ const ManagePage = () => {
           {selectedItem === 5 && "관리자 추가"}
           {selectedItem === 6 && "관리자 수정"}
         </Title>
-        {selectedItem === 1 && <BookingDetail />}
-        {selectedItem === 2 && <MyReview />}
+        {selectedItem === 1 && <MemberManage />}
+        {selectedItem === 2 && <PerformanceManage
+            onAddClick={handlePerformanceAddClick}
+            onEditClick={handlePerformanceEditClick}
+        />}
+         {selectedItem === 7 && <PerformanceReg />}
+        {/* {selectedItem === 8 && <PerformanceManageChg performanceId={selectedperformanceId} />} * 공연수정/}
         {selectedItem === 3 && <ReviewsManagement />}
         {selectedItem === 4 && (
           <AdminManage
