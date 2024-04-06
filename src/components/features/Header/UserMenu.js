@@ -1,5 +1,5 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
+import React from "react";
+import styled, { css } from "styled-components";
 import { Link, useLocation } from "react-router-dom";
 import HeaderUserIcon from "../../../assets/headerImg/header_userIcon.png";
 import menuIcon from "../../../assets/headerImg/menuIcon.png";
@@ -12,9 +12,11 @@ const UserMenuContainer = styled.div`
     margin: 0;
     padding: 0;
     justify-content: center;
-    ${({ isManagePage }) => isManagePage && css`
-      margin-right: 50px;
-    `}
+    ${({ isManagePage }) =>
+      isManagePage &&
+      css`
+        margin-right: 50px;
+      `}
   }
   li {
     height: 60px;
@@ -80,7 +82,10 @@ const UserMenu = ({ isLogined, handleLogout, userId, toggleNav }) => {
             </li>
             <li>
               <UserInfoWrapper>
-                <StyledHeaderUserIcon src={HeaderUserIcon} alt="HeaderUserIcon" />
+                <StyledHeaderUserIcon
+                  src={HeaderUserIcon}
+                  alt="HeaderUserIcon"
+                />
                 <span>{userId}</span> 님
               </UserInfoWrapper>
             </li>
@@ -96,23 +101,23 @@ const UserMenu = ({ isLogined, handleLogout, userId, toggleNav }) => {
               <Link to="/login">로그인</Link>
             </li>
             {locationInfo.pathname.toLowerCase() !== "/managepage" && (
-            <li>
-              <Link to="/signup">회원가입</Link>
-            </li>
+              <li>
+                <Link to="/signup">회원가입</Link>
+              </li>
             )}
             {locationInfo.pathname.toLowerCase() !== "/managepage" && (
-            <li>
-              <Link to="/login">마이페이지</Link>
-            </li>
+              <li>
+                <Link to="/login">마이페이지</Link>
+              </li>
             )}
           </>
         )}
         {locationInfo.pathname.toLowerCase() !== "/managepage" && (
-        <li>
-          <MenuButton onClick={toggleNav}>
-            <img src={menuIcon} alt="menuIcon" />
-          </MenuButton>
-        </li>
+          <li>
+            <MenuButton onClick={toggleNav}>
+              <img src={menuIcon} alt="menuIcon" />
+            </MenuButton>
+          </li>
         )}
       </ul>
     </UserMenuContainer>
