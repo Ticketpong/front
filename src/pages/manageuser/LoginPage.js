@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, json } from "react-router-dom";
 import styled from "styled-components";
-import logo from "../assets/headerImg/logo.png";
+import logo from "../../assets/headerImg/logo.png";
 import axios from "axios";
 const Container = styled.div`
   display: flex;
@@ -92,7 +92,7 @@ const Checkbox = styled.div`
     background-size: 100% 100%;
     background-position: 50%;
     background-repeat: no-repeat;
-    background-color: #FC1055;
+    background-color: #fc1055;
   }
   label {
     font-size: 16px;
@@ -145,7 +145,7 @@ const Signup = styled.div`
     text-decoration: none;
   }
   a:hover {
-    color: #FC1055;
+    color: #fc1055;
   }
 `;
 

@@ -64,20 +64,19 @@
 
 // export default SearchBar;
 
-
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import SearchBarHome from '../styles/SearchHomeStyled';
-import SearchBarAll from '../styles/SearchAllStyled';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import SearchBarHome from "../../styles/SearchHomeStyled";
+import SearchBarAll from "../../styles/SearchAllStyled";
 
 const SearchBar = ({ isHomepage }) => {
   const navigate = useNavigate();
-  const [keyword, setKeyword] = useState('');
-  
+  const [keyword, setKeyword] = useState("");
+
   const handleChange = (event) => {
     setKeyword(event.target.value);
   };
-  
+
   const handleSearch = () => {
     if (keyword.trim()) {
       navigate(`/searchresult?keyword=${encodeURIComponent(keyword)}`);
@@ -85,12 +84,12 @@ const SearchBar = ({ isHomepage }) => {
   };
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       handleSearch();
     }
   };
 
-// isHomepage prop에 따라 적절한 스타일드 컴포넌트를 선택하여 렌더링
+  // isHomepage prop에 따라 적절한 스타일드 컴포넌트를 선택하여 렌더링
   const SearchBarStyled = isHomepage ? SearchBarHome : SearchBarAll;
 
   return (
