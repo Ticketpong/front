@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-// import axios from "axios";
-import data from "../../dummy/data.json";
+import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -115,8 +114,23 @@ const StyleLink = styled(Link)`
 
 const HPContent1 = () => {
   const [startIndex, setStartIndex] = useState(0);
-  const URL = "https://www.kopis.or.kr/";
+  const URL = "http://localhost:8080/homepage/recent";
   const [category, setCategory] = useState("연극");
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(URL);
+
+      setData(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleCategoryChange = (categoryName) => {
     setCategory(categoryName);
@@ -124,8 +138,14 @@ const HPContent1 = () => {
   };
 
   const getDisplayedData = () => {
-    const filteredData =
-      data?.boxofs?.boxof?.filter((item) => item.cate._text === category) || [];
+    let filteredData;
+    if (category === "기타") {
+      filteredData = data.filter(
+        (item) => item.genrenm === "무용" || item.genrenm === "서양음악(클래식)"
+      );
+    } else {
+      filteredData = data.filter((item) => item.genrenm === category) || [];
+    }
 
     const totalDataLength = filteredData.length;
 
@@ -138,26 +158,13 @@ const HPContent1 = () => {
 
   const displayedData = getDisplayedData();
 
-  function parseDateRange(dateRangeString) {
-    const dates = dateRangeString
-      .split("~")
-      .map((date) => new Date(date.trim()));
-    return { start: dates[0], end: dates[1] };
-  }
-
-  // 날짜를 비교하여 정렬하는 함수
-  function sortByClosestDate(data) {
-    return data.sort((a, b) => {
-      const startDateA = parseDateRange(a.prfpd._text).start;
-      const startDateB = parseDateRange(b.prfpd._text).start;
-      return startDateA - startDateB;
-    });
-  }
-
   const handleNext = () => {
-    const totalDataLength =
-      data?.boxofs?.boxof?.filter((item) => item.cate._text === category)
-        .length || 0;
+    const totalDataLength = data.filter(
+      (item) =>
+        item.genrenm === category ||
+        (category === "기타" &&
+          (item.genrenm === "무용" || item.genrenm === "서양음악(클래식)"))
+    ).length;
     const maxIndex = Math.ceil(totalDataLength / 4) - 1;
 
     if (startIndex + 4 < totalDataLength) {
@@ -184,11 +191,14 @@ const HPContent1 = () => {
         <CategoryButton onClick={() => handleCategoryChange("연극")}>
           연극
         </CategoryButton>
-        <CategoryButton onClick={() => handleCategoryChange("공연")}>
-          공연
+        <CategoryButton onClick={() => handleCategoryChange("뮤지컬")}>
+          뮤지컬
         </CategoryButton>
-        <CategoryButton onClick={() => handleCategoryChange("콘서트")}>
+        <CategoryButton onClick={() => handleCategoryChange("대중음악")}>
           콘서트
+        </CategoryButton>
+        <CategoryButton onClick={() => handleCategoryChange("기타")}>
+          기타
         </CategoryButton>
       </CategoryContainer>
       <SliderContainer>
@@ -200,16 +210,18 @@ const HPContent1 = () => {
           {"<"}
         </SlideButton>
         <UlContainer>
-          {sortByClosestDate(displayedData).map((item, index) => (
-            <StyleLink to={`/ticketing/${item.mt20id._text}`}>
+          {displayedData.map((item, index) => (
+            <StyleLink to={`/ticketing/${item.mt20id}`}>
               <ListItem key={index}>
-                <Image src={URL + item.poster._text} alt="포스터" />
-                <Text>장르: {item.cate._text}</Text>
+                <Image src={item.poster} alt="포스터" />
+                <Text>장르: {item.genrenm}</Text>
                 <Text over className="over">
-                  {item.prfnm._text}
+                  {item.prfnm}
                 </Text>
-                <Text>{item.area._text}</Text>
-                <Text>{item.prfpd._text}</Text>
+                <Text>{item.sidonm}</Text>
+                <Text>
+                  {item.prfpdfrom} ~ {item.prfpdto}
+                </Text>
               </ListItem>
             </StyleLink>
           ))}
