@@ -1,9 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Icon } from '../../styles/HeaderStyled';
-import { Link } from 'react-router-dom';
-import HeaderUserIcon from '../../assets/headerImg/header_userIcon.png';
-import menuIcon from '../../assets/headerImg/menuIcon.png';
+import React from "react";
+import styled from "styled-components";
+import { Icon } from "../../../styles/HeaderStyled";
+import { Link } from "react-router-dom";
+import HeaderUserIcon from "../../../assets/headerImg/header_userIcon.png";
+import menuIcon from "../../../assets/headerImg/menuIcon.png";
 
 const UserMenuContainer = styled.div`
   ul {

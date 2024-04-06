@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import mainImg_01 from '../../assets/homeImg/mainImg_01.jpg';
-import mainImg_02 from '../../assets/homeImg/mainImg_02.jpg';
-import SearchBar from "../../components/base/SearchBar";
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import mainImg_01 from "../../../assets/homeImg/mainImg_01.jpg";
+import mainImg_02 from "../../../assets/homeImg/mainImg_02.jpg";
+import SearchBar from "../../base/SearchBar";
 
 const Container = styled.div`
   position: relative;
@@ -31,7 +31,7 @@ const MainImg = () => {
   const fadeTime = 3000;
 
   useEffect(() => {
-    document.body.style.margin = '0';
+    document.body.style.margin = "0";
     const interval = setInterval(() => {
       setCurrentImage((prevImage) => (prevImage + 1) % images.length);
     }, fadeTime);

@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import BookingDetail from "../../features/MyPage/BookingDetail";
-import MyReview from "../../features/MyPage/MyReview";
-import EditProfile from "../../features/MyPage/EditProfile";
-import AdminManage from "../../features/ManagePage/AdminManage";
-import EditManage from "../../features/ManagePage/EditManage";
-import ManageAdd from "../../features/ManagePage/ManageAdd";
+import BookingDetail from "../../components/features/MyPage/BookingDetail";
+import MyReview from "../../components/features/MyPage/MyReview";
+import EditProfile from "../../components/features/MyPage/EditProfile";
+import AdminManage from "../../components/features/ManagePage/AdminManage";
+import EditManage from "../../components/features/ManagePage/EditManage";
+import ManageAdd from "../../components/features/ManagePage/ManageAdd";
 
 import { MdKeyboardArrowRight } from "react-icons/md";
-import ReviewsManagement from "../../features/ManagePage/ReviewManage";
+import ReviewsManagement from "../../components/features/ManagePage/ReviewManage";
 
 const Container = styled.div`
   display: flex;

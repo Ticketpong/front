@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import data from "../../dummy/ReviewData.json";
+import data from "../../../dummy/ReviewData.json";
 
 const Strong = styled.div`
   text-align: center;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import reviewData from "../../dummy/reviews.json";
-import showData from "../../dummy/show_detail.json";
+import reviewData from "../../../dummy/reviews.json";
+import showData from "../../../dummy/show_detail.json";
 import ReviewsTable from "./ReviewDetail";
 
 const ReviewWrapper = styled.div`
