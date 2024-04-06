@@ -243,7 +243,7 @@ const StyleLink = styled(Link)`
 // =============================================================================================== //
 // 데이터 처리 부문
 
-const ViewAll = () => {
+const Performance = () => {
   const URL = "http://localhost:8080/viewall";
   const rankURL = "http://localhost:8080/viewall/ranking";
   const [startIndex, setStartIndex] = useState(0);
@@ -287,42 +287,42 @@ const ViewAll = () => {
   const rankDisplayedData = getRankDisplayedData();
 
   const getDisplayedData = () => {
+    let filteredData = [];
+
     if (geographyBased) {
       // 예시용 위도, 경도 데이터 => 서울 광화문
       // 나중에 현재 위치를 가져오는 함수를 넣어야할 수도 있음.
       const userLatitude = 37.572389;
       const userLongitude = 126.9769117;
-      let filteredData;
-      filteredData =
-        allPerformances.filter((item) => {
-          const distance = Math.sqrt(
-            Math.pow(item.la - userLatitude, 2) +
-              Math.pow(item.lo - userLongitude, 2)
-          );
-          // =========================================================================================================== //
-          // 숫자를 조정하면 위도, 경도의 범위가 바뀐다.
-          return distance <= 0.1;
-        }) || [];
+
+      filteredData = allPerformances.filter((item) => {
+        const distance = Math.sqrt(
+          Math.pow(item.la - userLatitude, 2) +
+            Math.pow(item.lo - userLongitude, 2)
+        );
+        // 숫자를 조정하면 위도, 경도의 범위가 바뀝니다.
+        return distance <= 0.01;
+      });
     } else if (selectedCategory === "전체") {
       if (startIndex === 0) {
-        return getAllData2();
+        filteredData = getAllData2();
       } else {
-        return allPerformances.slice(startIndex, startIndex + 8) || [];
+        filteredData = allPerformances.slice(startIndex, startIndex + 8);
       }
     } else {
-      let filteredData;
       if (selectedCategory === "기타") {
         filteredData = allPerformances.filter(
           (item) =>
             item.genrenm === "무용" || item.genrenm === "서양음악(클래식)"
         );
       } else {
-        filteredData =
-          allPerformances.filter((item) => item.genrenm === selectedCategory) ||
-          [];
+        filteredData = allPerformances.filter(
+          (item) => item.genrenm === selectedCategory
+        );
       }
-      return filteredData || [];
     }
+
+    return filteredData || [];
   };
 
   const displayedData2 = getDisplayedData();
@@ -416,4 +416,4 @@ const ViewAll = () => {
   );
 };
 
-export default ViewAll;
+export default Performance;

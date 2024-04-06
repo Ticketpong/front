@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import reviewJson from "../../dummy/reviews.json";
-import showDetailJson from "../../dummy/show_detail.json";
+import reviewJson from "../../../dummy/reviews.json";
+import showDetailJson from "../../../dummy/show_detail.json";
 import {
   MdKeyboardArrowLeft,
   MdKeyboardArrowRight,
