@@ -67,6 +67,7 @@ const Ticketing = () => {
     setShowSeats(resultTime);
     setSelectData(resultShowTime);
   };
+  console.log(selectedShowData);
 
   const [select, setSelect] = useState("");
   const handleClick = (time) => {
