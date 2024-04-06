@@ -8,7 +8,7 @@ import Ticketing from "./pages/ticketing/Ticketing";
 import Homepage from "./pages/homepage/HomePage";
 import MyPage from "./pages/mypage/MyPage";
 import WriteReview from "./components/base/WriteReview";
-import ViewAll from "./pages/ViewAll/ViewAll";
+import Performance from "./pages/performance/Performance";
 import Community from "./pages/community/Community";
 import LoginPage from "./pages/manageuser/LoginPage";
 import SignupPage from "./pages/manageuser/SignupPage";
@@ -19,9 +19,9 @@ import ManageLoginPage from "./pages/managepage/ManageLoginPage";
 import ManagePage from "./pages/managepage/ManagePage";
 import ApiDataFetcher from "./components/base/ApiDataFetcher";
 import SearchResult from "./pages/searchresult/SearchResult";
-import FindId from './pages/findidpw/FindId';
-import FindPw from './pages/findidpw/FindPw';
-import ConfirmId from './pages/findidpw/ConfirmId';
+import FindId from "./pages/findidpw/FindId";
+import FindPw from "./pages/findidpw/FindPw";
+import ConfirmId from "./pages/findidpw/ConfirmId";
 
 // 자동 스크롤 기능 추가
 function ScrollToTop() {
@@ -50,7 +50,7 @@ function App() {
           <Route path="/writereview" element={<WriteReview />} />
           <Route path="/community" element={<Community />} />
           <Route path="/mypage" element={<MyPage />} />
-          <Route path="/viewall" element={<ViewAll />} />
+          <Route path="/viewall" element={<Performance />} />
           <Route path="/ticketing/:mt20id" element={<Ticketing />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
