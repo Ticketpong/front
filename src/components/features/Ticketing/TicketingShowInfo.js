@@ -1,5 +1,5 @@
 import React from "react";
-import * as S from "../../styles/TicketingStyled";
+import * as S from "../../../styles/TicketingStyled";
 
 const TicketingShowInfo = ({ showInfoData }) => {
   return (

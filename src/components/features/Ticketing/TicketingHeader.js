@@ -1,5 +1,5 @@
 import React from "react";
-import * as S from "../../styles/TicketingStyled";
+import * as S from "../../../styles/TicketingStyled";
 import { useNavigate } from "react-router-dom";
 
 const TicketingHeader = ({ headerData }) => {

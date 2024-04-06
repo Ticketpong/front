@@ -1,6 +1,6 @@
 import React from "react";
 import { Map, MapMarker, ZoomControl } from "react-kakao-maps-sdk";
-import ShowPlaceData from "../dummy/show_place.json";
+import ShowPlaceData from "../../dummy/show_place.json";
 import { PongButton } from "../features/Ticketing/TicketingPayment";
 
 const dataPlace = ShowPlaceData;

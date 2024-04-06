@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { HeaderContainer, Logo } from '../styles/HeaderStyled';
-import logoImg from '../assets/headerImg/logo.png';
-import NavMenu from '../features/Header/NavMenu';
-import UserMenu from '../features/Header/UserMenu';
-import axios from 'axios'; 
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { HeaderContainer, Logo } from "../../styles/HeaderStyled";
+import logoImg from "../../assets/headerImg/logo.png";
+import NavMenu from "../../features/Header/NavMenu";
+import UserMenu from "../../features/Header/UserMenu";
+import axios from "axios";
 
 const Header = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -16,7 +16,10 @@ const Header = () => {
   useEffect(() => {
     const fetchLoginStatus = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/login/profile', { withCredentials: true });
+        const response = await axios.get(
+          "http://localhost:8080/login/profile",
+          { withCredentials: true }
+        );
         const { userId, isLogined } = response.data;
         if (isLogined) {
           setUserId(userId);
@@ -56,7 +59,7 @@ const Header = () => {
     }
   };
 
-  if(locationInfo.pathname === "/login" || locationInfo.pathname === "/signup")
+  if (locationInfo.pathname === "/login" || locationInfo.pathname === "/signup")
     return null;
 
   return (
