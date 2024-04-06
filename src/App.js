@@ -39,7 +39,6 @@ function App() {
 
   // 현재 경로가 login, signup이면 false
   const showHF = !["/login", "/signup"].includes(pathname);
-  
 
   return (
     <div className="App">
