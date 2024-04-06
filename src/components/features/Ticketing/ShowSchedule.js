@@ -1,23 +1,9 @@
 const ShowSchedule = (data) => {
-  // 요일에 대한 숫자 매핑
-  const dayMap = {
-    일: 0,
-    월: 1,
-    화: 2,
-    수: 3,
-    목: 4,
-    금: 5,
-    토: 6,
-  };
-
   // 데이터를 가공하여 출력
   const processedData = data.flatMap((item) => {
     const { mt20id, prfpdfrom, prfpdto, dtguidance } = item;
     const startDate = new Date(prfpdfrom);
     const endDate = new Date(prfpdto);
-
-    // 중복을 제거하기 위한 Set 생성
-    const uniqueSet = new Set();
 
     // 날짜와 요일에 대한 정보를 계산하여 매핑
     const schedule = [];

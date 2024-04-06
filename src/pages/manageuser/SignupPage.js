@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, json } from "react-router-dom";
 import styled from "styled-components";
-import logo from "../assets/headerImg/logo.png";
+import logo from "../../assets/headerImg/logo.png";
 import axios from "axios";
 
 const Container = styled.div`
@@ -66,9 +66,9 @@ const Input = styled.div`
   }
 
   input::placeholder {
-  color: #999;
-  font-size: 15px 
-}
+    color: #999;
+    font-size: 15px;
+  }
 
   input[name="id"] {
     width: 300px;
@@ -195,10 +195,9 @@ const Login = styled.div`
     text-decoration: none;
   }
   a:hover {
-    color: #FC1055;
+    color: #fc1055;
   }
 `;
-
 
 const SignupPage = () => {
   const [inputValue, setInputValue] = useState({
@@ -253,18 +252,18 @@ const SignupPage = () => {
           </p>
         </Head>
         <Input>
-            <div>
-              <p>
-                아이디 <span>*</span>
-              </p>
-              <input
-                type="text"
-                name="id"
-                placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합"
-                onChange={inputChangeHandler}
-              />
-              <input type="button" value="중복확인" />
-            </div>
+          <div>
+            <p>
+              아이디 <span>*</span>
+            </p>
+            <input
+              type="text"
+              name="id"
+              placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합"
+              onChange={inputChangeHandler}
+            />
+            <input type="button" value="중복확인" />
+          </div>
           <div>
             <p>
               비밀번호 <span>*</span>

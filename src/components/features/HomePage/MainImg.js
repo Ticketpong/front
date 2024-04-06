@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import mainImg_01 from '../../assets/homeImg/mainImg_01.jpg';
 import mainImg_02 from '../../assets/homeImg/mainImg_02.jpg';
-import SearchBar from './../../components/SearchBar';
+import SearchBar from "../../components/base/SearchBar";
 
 const Container = styled.div`
   position: relative;
