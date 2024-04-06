@@ -2,23 +2,23 @@ import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import "./App.css";
 
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import Header from "./components/base/Header";
+import Footer from "./components/base/Footer";
 import Ticketing from "./pages/ticketing/Ticketing";
 import Homepage from "./pages/homepage/HomePage";
 import MyPage from "./pages/mypage/MyPage";
-import WriteReview from "./components/WriteReview";
+import WriteReview from "./components/base/WriteReview";
 import ViewAll from "./pages/ViewAll/ViewAll";
 import Community from "./pages/community/Community";
-import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage";
+import LoginPage from "./pages/manageuser/LoginPage";
+import SignupPage from "./pages/manageuser/SignupPage";
 import MyReview from "./features/MyPage/MyReview";
 import EditMyReview from "./features/MyPage/EditMyReview";
 import ReviewDetail from "./features/Community/ReviewDetail";
 import ManageLoginPage from "./pages/managepage/ManageLoginPage";
 import ManagePage from "./pages/managepage/ManagePage";
-import ApiDataFetcher from "./components/ApiDataFetcher";
-import SearchResult from './pages/searchResult/SearchResult';
+import ApiDataFetcher from "./components/base/ApiDataFetcher";
+import SearchResult from "./pages/searchresult/SearchResult";
 
 // 자동 스크롤 기능 추가
 function ScrollToTop() {

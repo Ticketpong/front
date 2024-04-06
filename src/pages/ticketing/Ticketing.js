@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import Calendar from "../../features/Ticketing/TicketingCalendar";
+import Calendar from "../../components/features/Ticketing/TicketingCalendar";
 import * as S from "../../styles/TicketingStyled";
-import PlaceMap from "../../components/KakaoMap";
+import PlaceMap from "../../components/base/KakaoMap";
 import axios from "axios";
 
 import ShowDataDetail from "../../dummy/show_detail.json";
-import TicketingSelectSeat from "../../features/Ticketing/TicketingSelectSeat";
-import TicketingReview from "../../features/Ticketing/TicketingReview";
-import TicketingHeader from "../../features/Ticketing/TicketingHeader";
-import TicketingShowInfo from "../../features/Ticketing/TicketingShowInfo";
-import ShowSchedule from "../../features/Ticketing/ShowSchedule";
+import TicketingSelectSeat from "../../components/features/Ticketing/TicketingSelectSeat";
+import TicketingReview from "../../components/features/Ticketing/TicketingReview";
+import TicketingHeader from "../../components/features/Ticketing/TicketingHeader";
+import TicketingShowInfo from "../../components/features/Ticketing/TicketingShowInfo";
+import ShowSchedule from "../../components/features/Ticketing/ShowSchedule";
 
 export const dataDetail = ShowDataDetail;
 
