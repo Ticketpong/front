@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import reviewJsonData from "../../dummy/reviews.json";
-import showDetailJson from "../../dummy/show_detail.json";
+import reviewJsonData from "../../../dummy/reviews.json";
+import showDetailJson from "../../../dummy/show_detail.json";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Icon } from "../../styles/HeaderStyled";
+import { Icon } from "../../../styles/HeaderStyled";
 import { Link } from "react-router-dom";
-import navUserIcon from "../../assets/headerImg/nav_userIcon.png";
-import navShowIcon from "../../assets/headerImg/nav_showIcon.png";
-import navCommIcon from "../../assets/headerImg/nav_commIcon.png";
+import navUserIcon from "../../../assets/headerImg/nav_userIcon.png";
+import navShowIcon from "../../../assets/headerImg/nav_showIcon.png";
+import navCommIcon from "../../../assets/headerImg/nav_commIcon.png";
 
 const NavMenuContainer = styled.nav`
   position: absolute;

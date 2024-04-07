@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import BookingDetail from "../../features/MyPage/BookingDetail";
-import MyReview from "../../features/MyPage/MyReview";
-import EditProfile from "../../features/MyPage/EditProfile";
+import BookingDetail from "../../components/features/MyPage/BookingDetail";
+import MyReview from "../../components/features/MyPage/MyReview";
+import EditProfile from "../../components/features/MyPage/EditProfile";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 const Container = styled.div`

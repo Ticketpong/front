@@ -1,7 +1,7 @@
-import HPContent1 from "../../features/HomePage/HPContent1";
-import HPReviews from "../../features/HomePage/HPReviews";
-import HPContent2 from "../../features/HomePage/HPContent2";
-import MainImg from '../../features/HomePage/MainImg';
+import HPContent1 from "../../components/features/HomePage/HPContent1";
+import HPReviews from "../../components/features/HomePage/HPReviews";
+import HPContent2 from "../../components/features/HomePage/HPContent2";
+import MainImg from "../../components/features/HomePage/MainImg";
 
 const Homepage = () => {
   return (
