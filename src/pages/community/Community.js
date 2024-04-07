@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import CommuReview from "../../features/Community/CommuReview.js";
-import CommunityBoard from "../../features/Community/CommunityBoard.js";
-import CommunityRules from "../../features/Community/CommunityRules.js";
+import CommuReview from "../../components/features/Community/CommuReview.js";
+import CommunityBoard from "../../components/features/Community/CommunityBoard.js";
+import CommunityRules from "../../components/features/Community/CommunityRules.js";
 import styled from "styled-components";
 import { MdKeyboardArrowRight } from "react-icons/md";
 

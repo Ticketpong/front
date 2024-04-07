@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import BookingDetail from "../../features/MyPage/BookingDetail";
-import MyReview from "../../features/MyPage/MyReview";
-import EditProfile from "../../features/MyPage/EditProfile";
-import AdminManage from "../../features/ManagePage/AdminManage";
-import EditManage from "../../features/ManagePage/EditManage";
-import ManageAdd from "../../features/ManagePage/ManageAdd";
-import MemberManage              from "../../features/ManagePage/MemberManage";
-import PerformanceReg            from "../../features/ManagePage/PerformanceReg";
-// import PerformanceManageChg         from "../../features/ManagePage/PerformanceManageChg"
-import PerformanceManage         from "../../features/ManagePage/PerformanceManage"
+import BookingDetail from "../../components/features/MyPage/BookingDetail";
+import MyReview from "../../components/features/MyPage/MyReview";
+import EditProfile from "../../components/features/MyPage/EditProfile";
+import AdminManage from "../../components/features/ManagePage/AdminManage";
+import EditManage from "../../components/features/ManagePage/EditManage";
+import ManageAdd from "../../components/features/ManagePage/ManageAdd";
+import MemberManage from "../../components/features/ManagePage/MemberManage";
+import PerformanceReg from "../../components/features/ManagePage/PerformanceReg";
+// import PerformanceManageChg         from "../../components/features/ManagePage/PerformanceManageChg"
+import PerformanceManage from "../../components/features/ManagePage/PerformanceManage";
 
 import { MdKeyboardArrowRight } from "react-icons/md";
-import ReviewsManagement from "../../features/ManagePage/ReviewManage";
+import ReviewsManagement from "../../components/features/ManagePage/ReviewManage";
 
 const Container = styled.div`
   display: flex;
@@ -153,12 +153,16 @@ const ManagePage = () => {
           {selectedItem === 6 && "관리자 수정"}
         </Title>
         {selectedItem === 1 && <MemberManage />}
-        {selectedItem === 2 && <PerformanceManage
+        {selectedItem === 2 && (
+          <PerformanceManage
             onAddClick={handlePerformanceAddClick}
             onEditClick={handlePerformanceEditClick}
-        />}
-         {selectedItem === 7 && <PerformanceReg />}
-        {/* {selectedItem === 8 && <PerformanceManageChg performanceId={selectedperformanceId} />} * 공연수정/}
+          />
+        )}
+        {selectedItem === 7 && <PerformanceReg />}
+        {/* {selectedItem === 8 && (
+          <PerformanceManageChg performanceId={selectedperformanceId} />
+        )} */}
         {selectedItem === 3 && <ReviewsManagement />}
         {selectedItem === 4 && (
           <AdminManage

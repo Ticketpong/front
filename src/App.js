@@ -12,9 +12,9 @@ import ViewAll from "./pages/ViewAll/ViewAll";
 import Community from "./pages/community/Community";
 import LoginPage from "./pages/manageuser/LoginPage";
 import SignupPage from "./pages/manageuser/SignupPage";
-import MyReview from "./features/MyPage/MyReview";
-import EditMyReview from "./features/MyPage/EditMyReview";
-import ReviewDetail from "./features/Community/ReviewDetail";
+import MyReview from "./components/features/MyPage/MyReview";
+import EditMyReview from "./components/features/MyPage/EditMyReview";
+import ReviewDetail from "./components/features/Community/ReviewDetail";
 import ManageLoginPage from "./pages/managepage/ManageLoginPage";
 import ManagePage from "./pages/managepage/ManagePage";
 import ApiDataFetcher from "./components/base/ApiDataFetcher";
@@ -36,13 +36,12 @@ function App() {
 
   // 현재 경로가 login, signup이면 false
   const showHF = !["/login", "/signup"].includes(pathname);
-  
 
   return (
     <div className="App">
       <BrowserRouter>
         {showHF && <Header />}
-        <ScrollToTop /> 
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/writereview" element={<WriteReview />} />
