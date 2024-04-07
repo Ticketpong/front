@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import data from "../../dummy/ReviewData.json";
+import data from "../../../dummy/ReviewData.json";
 
 const ITEMS_PER_PAGE = 2; // 페이지당 표시할 데이터의 개수
 
