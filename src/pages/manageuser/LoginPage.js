@@ -171,8 +171,8 @@ const LoginPage = () => {
         id: inputValue.id,
         pw: inputValue.pw,
       });
-      console.log(response);
-      json.stringify(response);
+      const { token } = response.data;
+      localStorage.setItem("token", token); // 토큰 저장
     } catch (error) {
       console.log(error);
     }
