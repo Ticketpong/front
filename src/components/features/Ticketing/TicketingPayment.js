@@ -37,7 +37,7 @@ export const PongButton = styled.button`
 const Payment = ({ amount, showData, selectedSeat, people, cardData }) => {
   const [userId, setUserId] = useState("");
   const [isLogined, setIsLogined] = useState(false);
-  const [userValue, setUserValue] = useState(null);
+  const [userValue, setUserValue] = useState([]);
 
   useEffect(() => {
     const iamport = document.createElement("script");
@@ -63,26 +63,28 @@ const Payment = ({ amount, showData, selectedSeat, people, cardData }) => {
         console.error("로그인 상태를 확인하는 동안 오류 발생:", error);
       }
     };
+
+    fetchLoginStatus();
+  }, []);
+
+  useEffect(() => {
     const postUser = async () => {
+      const Url = "http://localhost:8080/reservation/member";
+      console.log(userId);
       try {
-        const response = await axios.post(
-          "http://localhost:8080/reservation/member",
-          {
-            user_id: userId,
-          }
-        );
+        const response = await axios.post(Url, {
+          user_id: userId,
+        });
         setUserValue(response);
         json.stringify(response);
+        console.log(response);
       } catch (error) {
         console.log(error);
       }
     };
 
-    fetchLoginStatus();
     postUser();
-  }, []);
-  console.log(userId);
-  console.log(userValue);
+  }, [userId]);
 
   const getDate = () => {
     const today = new Date();
@@ -142,7 +144,7 @@ const Payment = ({ amount, showData, selectedSeat, people, cardData }) => {
     if (response.success) {
       alert("결제 성공!");
       console.log(response);
-      navigate(`/ticketing/${showData.showData.mt20id}`);
+      navigate(`/ticketing/${showData.showData.mt20id}`, { replace: true });
     } else {
       alert(`결제 실패! : ${response.error_msg}`);
     }
