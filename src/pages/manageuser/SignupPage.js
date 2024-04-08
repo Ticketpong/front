@@ -212,6 +212,8 @@ const SignupPage = () => {
     detailAddress: "",
   });
   const [isDaumPostcodeOpen, setIsDaumPostcodeOpen] = useState(false);
+  const [isIdCheck, setIsIdCheck] = useState(false);
+  const [isEmailCheck, setIsEmailCheck] = useState(false);
 
   const inputChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -234,6 +236,58 @@ const SignupPage = () => {
 
   const openDaumPostcode = () => {
     setIsDaumPostcodeOpen(true);
+  };
+
+  const idCheckHandler = async () => {
+    try {
+      if (inputValue.id === "") {
+        alert("아이디를 입력해주세요.");
+      } else {
+        const response = await axios.post(
+          "http://localhost:8080/signup/idcheck",
+          {
+            id: inputValue.id,
+          }
+        );
+        console.log(response);
+        if (response.data === "이미 사용중인 아이디입니다.") {
+          alert("이미 사용중인 아이디입니다.");
+          setIsIdCheck(false);
+          window.location.reload();
+        } else if (response.status === 200) {
+          alert("사용 가능한 아이디입니다.");
+          setIsIdCheck(true);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const emailCheckHandler = async () => {
+    try {
+      if (inputValue.email === "") {
+        alert("이메일을 입력해주세요.");
+      } else {
+        const response = await axios.post(
+          "http://localhost:8080/signup/emailcheck",
+          {
+            email: inputValue.email,
+          }
+        );
+        console.log(response);
+        if (response.data === "이미 사용중인 이메일입니다.") {
+          alert("이미 사용중인 이메일입니다.");
+          setIsEmailCheck(false);
+          window.location.reload();
+        } else if (response.status === 200) {
+          alert("사용 가능한 이메일입니다.");
+          setIsEmailCheck(true);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const url = "http://localhost:8080/signup";
@@ -283,7 +337,7 @@ const SignupPage = () => {
               placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합"
               onChange={inputChangeHandler}
             />
-            <input type="button" value="중복확인" />
+            <input type="button" value="중복확인" onClick={idCheckHandler} />
           </div>
           <div>
             <p>
@@ -339,7 +393,7 @@ const SignupPage = () => {
               placeholder="예: example@email.com"
               onChange={inputChangeHandler}
             />
-            <input type="button" value="중복확인" />
+            <input type="button" value="중복확인" onClick={emailCheckHandler} />
           </div>
           <div id="addr">
             <div>
