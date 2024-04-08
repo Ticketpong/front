@@ -1,3 +1,5 @@
+/**공연관리 */
+
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
@@ -116,6 +118,7 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
               <Cell>{item.prfpdto}</Cell>
               <Cell>{item.prfstate}</Cell>
               <Cell>{item.post}</Cell> 
+              {/*수정 삭제 버튼*/}
               <Cell>
                 <Button onClick={() => onEditClick(item.id)}>
                   {" "}
@@ -123,6 +126,7 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
                 </Button>
                 <Button onClick={() => performanceDelete(item.id)}>삭제</Button>
               </Cell>
+
             </tr>
           ))}
           <tr></tr>

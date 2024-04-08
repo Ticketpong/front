@@ -8,7 +8,7 @@ import EditManage from "../../components/features/ManagePage/EditManage";
 import ManageAdd from "../../components/features/ManagePage/ManageAdd";
 import MemberManage from "../../components/features/ManagePage/MemberManage";
 import PerformanceReg from "../../components/features/ManagePage/PerformanceReg";
-// import PerformanceManageChg         from "../../components/features/ManagePage/PerformanceManageChg"
+import PerformanceManageChg from "../../components/features/ManagePage/PerformanceChg"
 import PerformanceManage from "../../components/features/ManagePage/PerformanceManage";
 
 import { MdKeyboardArrowRight } from "react-icons/md";
@@ -78,6 +78,7 @@ const Title = styled.h2`
 const ManagePage = () => {
   const [selectedItem, setSelectedItem] = useState(1);
   const [selectedManageId, setSelectedManageId] = useState(null);
+  const [selectedPerformanceId, setSelectedPerformanceId] = useState(null);
 
   const handleItemClick = (num) => {
     setSelectedItem(num);
@@ -87,8 +88,9 @@ const ManagePage = () => {
     setSelectedItem(7);
   };
 
-  const handlePerformanceEditClick = () => {
+  const handlePerformanceEditClick = (performanceId) => {
     setSelectedItem(8);
+    setSelectedPerformanceId(performanceId);
   };
 
   const handleAddClick = () => {
@@ -160,9 +162,9 @@ const ManagePage = () => {
           />
         )}
         {selectedItem === 7 && <PerformanceReg />}
-        {/* {selectedItem === 8 && (
-          <PerformanceManageChg performanceId={selectedperformanceId} />
-        )} */}
+        {selectedItem === 8 && (
+          <PerformanceManageChg performanceId={selectedPerformanceId} />
+        )}
         {selectedItem === 3 && <ReviewsManagement />}
         {selectedItem === 4 && (
           <AdminManage
