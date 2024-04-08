@@ -7,6 +7,7 @@ import SearchBar from "../../base/SearchBar";
 const Container = styled.div`
   position: relative;
   width: 100%;
+  min-width: 1660px;
   height: 700px;
   overflow: hidden;
   margin: 0;
