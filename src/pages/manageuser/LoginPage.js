@@ -173,6 +173,10 @@ const LoginPage = () => {
       });
       const { token } = response.data;
       localStorage.setItem("token", token); // 토큰 저장
+      if (localStorage.getItem("token")) {
+        alert("로그인 성공");
+        window.location.href = "/";
+      }
     } catch (error) {
       console.log(error);
     }
