@@ -48,6 +48,10 @@ const MenuButton = styled.button`
   }
 `;
 
+const LogoutText = styled.span`
+  cursor: pointer;
+`;
+
 const UserMenu = ({ isLogined, handleLogout, userId, toggleNav }) => {
   return (
     <UserMenuContainer>
@@ -55,7 +59,7 @@ const UserMenu = ({ isLogined, handleLogout, userId, toggleNav }) => {
         {isLogined ? (
           <>
             <li>
-              <button onClick={handleLogout}>로그아웃</button>
+              <LogoutText onClick={handleLogout}>로그아웃</LogoutText>
             </li>
             <li>
               <Icon src={HeaderUserIcon} alt="HeaderUserIcon" />
