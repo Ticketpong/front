@@ -105,6 +105,13 @@ const UpperOver = styled.p`
   max-width: ${(props) => (props.over ? "310px" : "inherit")};
   margin-bottom: 4px;
 `;
+const CategoryContainer = styled.div`
+  display: flex;
+  margin-bottom: 55px;
+  align-items: center;
+  justify-content: center;
+  margin-right: 22px;
+`;
 // 이미지 순위 처리
 const ImageContainer = styled.div`
   position: relative;
@@ -198,12 +205,6 @@ const MoreButton = styled.button`
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     color: #ffffff;
   }
-`;
-const CategoryContainer = styled.div`
-  display: flex;
-  margin-bottom: 55px;
-  align-items: center;
-  justify-content: center;
 `;
 
 // =============================================================================================================
@@ -482,8 +483,12 @@ const Performance = () => {
                     <img src={item.poster} alt="포스터" />
                   </StyledImage>
                   <StyledOver>
-                    {item.genrenm} &nbsp; &lt;{item.prfnm.slice(0, 8)}&gt;
-                    {item.prfnm.length > 20 ? "..." : ""}
+                    {item.genrenm} &nbsp;
+                    {item.prfnm.length > 9 ? (
+                      <>&lt;{item.prfnm.slice(0, 9)}...</>
+                    ) : (
+                      <>&lt;{item.prfnm}&gt;</>
+                    )}
                   </StyledOver>
                   <StyledP>{item.fcltynm}</StyledP>
                   <StyledP>
