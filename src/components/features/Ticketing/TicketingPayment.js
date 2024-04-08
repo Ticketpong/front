@@ -1,6 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import axiosWithAuth from "../../base/axiosWithAuth";
+import axios from "axios";
+import { json } from "react-router-dom";
 
 export const PongButton = styled.button`
   display: block;
@@ -32,6 +35,10 @@ export const PongButton = styled.button`
   }
 `;
 const Payment = ({ amount, showData, selectedSeat, people, cardData }) => {
+  const [userId, setUserId] = useState("");
+  const [isLogined, setIsLogined] = useState(false);
+  const [userValue, setUserValue] = useState(null);
+
   useEffect(() => {
     const iamport = document.createElement("script");
     iamport.src = "https://cdn.iamport.kr/v1/iamport.js";
@@ -41,13 +48,49 @@ const Payment = ({ amount, showData, selectedSeat, people, cardData }) => {
     };
   }, []);
 
+  useEffect(() => {
+    const fetchLoginStatus = async () => {
+      try {
+        const response = await axiosWithAuth().get(
+          "http://localhost:8080/login/profile"
+        );
+        const { id, isLogined } = response.data;
+        if (isLogined) {
+          setUserId(id);
+          setIsLogined(true);
+        }
+      } catch (error) {
+        console.error("로그인 상태를 확인하는 동안 오류 발생:", error);
+      }
+    };
+    const postUser = async () => {
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/reservation/member",
+          {
+            user_id: userId,
+          }
+        );
+        setUserValue(response);
+        json.stringify(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchLoginStatus();
+    postUser();
+  }, []);
+  console.log(userId);
+  console.log(userValue);
+
   const getDate = () => {
     const today = new Date();
-    const year = today.getFullYear(); // 2023
-    const month = (today.getMonth() + 1).toString().padStart(2, "0"); // 06
-    const day = today.getDate().toString().padStart(2, "0"); // 18
+    const year = today.getFullYear();
+    const month = (today.getMonth() + 1).toString().padStart(2, "0");
+    const day = today.getDate().toString().padStart(2, "0");
 
-    const dateString = year + "-" + month + "-" + day; // 2023-06-18
+    const dateString = year + "-" + month + "-" + day;
 
     return dateString;
   };
@@ -70,7 +113,7 @@ const Payment = ({ amount, showData, selectedSeat, people, cardData }) => {
       buyer_addr: "신사동 661-16", // 구매자 주소
 
       custom_data: {
-        user_id: "user0002",
+        user_id: userId,
         mt20id: showData.showData.mt20id,
         mt10id: showData.showData.mt10id,
         selectedSeat: selectedSeat,
