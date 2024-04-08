@@ -191,7 +191,6 @@ const SeatSelectionModal = ({ isOpen, onClose, onSelect, showData }) => {
     } else {
       setDiscountRate(0); // 선택된 카드가 없을 경우 할인율을 0으로 설정합니다.
     }
-    console.log(selectedCardData);
   };
 
   return (
