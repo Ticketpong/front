@@ -13,6 +13,7 @@ import PerformanceManage from "../../components/features/ManagePage/PerformanceM
 
 import { MdKeyboardArrowRight } from "react-icons/md";
 import ReviewsManagement from "../../components/features/ManagePage/ReviewManage";
+import ReviewsManagement from "../../components/features/ManagePage/ReviewManage";
 
 const Container = styled.div`
   display: flex;

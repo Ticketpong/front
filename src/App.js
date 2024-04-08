@@ -9,9 +9,13 @@ import Homepage from "./pages/homepage/HomePage";
 import MyPage from "./pages/mypage/MyPage";
 import WriteReview from "./components/base/WriteReview";
 import Performance from "./pages/performance/Performance";
+import Performance from "./pages/performance/Performance";
 import Community from "./pages/community/Community";
 import LoginPage from "./pages/manageuser/LoginPage";
 import SignupPage from "./pages/manageuser/SignupPage";
+import MyReview from "./components/features/MyPage/MyReview";
+import EditMyReview from "./components/features/MyPage/EditMyReview";
+import ReviewDetail from "./components/features/Community/ReviewDetail";
 import MyReview from "./components/features/MyPage/MyReview";
 import EditMyReview from "./components/features/MyPage/EditMyReview";
 import ReviewDetail from "./components/features/Community/ReviewDetail";
@@ -45,11 +49,13 @@ function App() {
       <BrowserRouter>
         {showHF && <Header />}
         <ScrollToTop />
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/writereview" element={<WriteReview />} />
           <Route path="/community" element={<Community />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/viewall" element={<Performance />} />
           <Route path="/viewall" element={<Performance />} />
           <Route path="/ticketing/:mt20id" element={<Ticketing />} />
           <Route path="/login" element={<LoginPage />} />
