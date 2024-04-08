@@ -58,7 +58,7 @@ const SliderContainer = styled.div`
 `;
 
 const UlContainer = styled.div`
-  min-width: 1350px;
+  min-width: 1570px;
   max-width: 1720px;
 `;
 
@@ -98,7 +98,7 @@ const NextSlideButton = styled.button`
   cursor: pointer;
   border-radius: 50%;
   z-index: 999;
-  ${(props) => (props.direction === "left" ? "left: 0;" : "right: 4px;")}
+  ${(props) => (props.direction === "left" ? "left: 0;" : "right: 9px;")}
 
   &:focus {
     background-color: #fc1055;
@@ -120,6 +120,7 @@ const ImageContainer = styled.div`
 const Image = styled.div`
   display: block;
   min-width: 310px;
+  max-width: 310px;
   height: 390px;
   margin-bottom: 10px;
   object-fit: cover;
