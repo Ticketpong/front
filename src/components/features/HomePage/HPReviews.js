@@ -9,12 +9,12 @@ const Strong = styled.div`
   font-size: 42px;
   margin-bottom: 20px;
   font-weight: bold;
-  margin-top: 45px;
   font-family: "Noto Sans Korean";
 `;
 
 const Container = styled.div`
   padding-left: 0;
+  margin-bottom: 120px;
   .head {
     border-width: 3px;
     min-width: 1530px;
