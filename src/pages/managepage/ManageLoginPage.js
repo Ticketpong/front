@@ -93,7 +93,7 @@ const Checkbox = styled.div`
     background-size: 100% 100%;
     background-position: 50%;
     background-repeat: no-repeat;
-    background-color: #FC1055;
+    background-color: #fc1055;
   }
   label {
     font-size: 16px;
@@ -123,8 +123,12 @@ const ManageLoginPage = () => {
         id: inputValue.id,
         pw: inputValue.pw,
       });
-      console.log(response);
-      json.stringify(response);
+      const { token } = response.data;
+      localStorage.setItem("token", token);
+      if (response.status === 200) {
+        alert("로그인 성공");
+        window.location.href = "/managepage";
+      }
     } catch (error) {
       console.log(error);
     }
