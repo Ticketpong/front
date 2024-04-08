@@ -5,6 +5,7 @@ import logoImg from "../../assets/headerImg/logo.png";
 import NavMenu from "../features/Header/NavMenu";
 import UserMenu from "../features/Header/UserMenu";
 import axios from "axios";
+import axiosWithAuth from "./axiosWithAuth";
 
 const Header = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -16,13 +17,12 @@ const Header = () => {
   useEffect(() => {
     const fetchLoginStatus = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/login/profile",
-          { withCredentials: true }
+        const response = await axiosWithAuth().get(
+          "http://localhost:8080/login/profile"
         );
-        const { userId, isLogined } = response.data;
+        const { id, isLogined } = response.data;
         if (isLogined) {
-          setUserId(userId);
+          setUserId(id);
           setIsLogined(true);
         }
       } catch (error) {
@@ -41,16 +41,18 @@ const Header = () => {
   // 로그아웃 버튼 클릭 시 로그아웃
   const handleLogout = async () => {
     try {
-      const response = await fetch("/logout", {
-        method: "GET",
-        credentials: "include",
-      });
+      const response1 = await axios.get("http://localhost:8080/logout");
+      const response2 = await axios.get(
+        "http://localhost:8080/manage/manageLogout"
+      );
 
-      if (response.status === 200) {
+      if (response1.status === 200 && response2.status === 200) {
         setIsLogined(false);
+        setUserId("");
+        localStorage.removeItem("token");
         navigate("/");
-      } else if (response.status === 500) {
-        console.error("로그아웃 요청 실패:", response.statusText);
+      } else if (response1.status === 500 && response2.status === 500) {
+        console.error("로그아웃 요청 실패:", response2.statusText);
       } else {
         console.error("서버에서 오류가 발생했습니다.");
       }
