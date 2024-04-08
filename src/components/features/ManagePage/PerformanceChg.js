@@ -1,4 +1,4 @@
-// 공연등록
+// 공연수정
 
 import React, { useState } from "react";
 import styled from "styled-components";
@@ -411,7 +411,7 @@ const PerformaceReg = () => {
             <CancelButton type="reset" onClick={onClickCancel}>
               취소
             </CancelButton>
-            <EndButton type="submit">완료</EndButton>
+            <EndButton type="submit">수정 완료</EndButton>
           </ButtonContainer>
         </Form>
       </Container>
