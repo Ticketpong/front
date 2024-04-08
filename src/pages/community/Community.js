@@ -12,7 +12,8 @@ const Container = styled.div`
 `;
 
 const Sidebar = styled.div`
-  width: 200px;
+  min-width: 200px;
+  max-width: 200px;
   background-color: #fff;
   padding: 20px;
   margin-top: 50px;
