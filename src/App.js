@@ -19,6 +19,9 @@ import ManageLoginPage from "./pages/managepage/ManageLoginPage";
 import ManagePage from "./pages/managepage/ManagePage";
 import ApiDataFetcher from "./components/base/ApiDataFetcher";
 import SearchResult from "./pages/searchresult/SearchResult";
+import FindId from './pages/findidpw/FindId';
+import FindPw from './pages/findidpw/FindPw';
+import ConfirmId from './pages/findidpw/ConfirmId';
 
 // 자동 스크롤 기능 추가
 function ScrollToTop() {
@@ -64,6 +67,9 @@ function App() {
           ></Route>
           <Route path="apiData" element={<ApiDataFetcher />}></Route>
           <Route path="/searchresult" element={<SearchResult />} />
+          <Route path="/findid" element={<FindId />} />
+          <Route path="/findpw" element={<FindPw />} />
+          <Route path="/confirmid" element={<ConfirmId />} />
         </Routes>
         {showHF && <Footer />}
       </BrowserRouter>
