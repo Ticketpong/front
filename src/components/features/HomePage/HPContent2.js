@@ -59,7 +59,7 @@ const SliderContainer = styled.div`
 
 const UlContainer = styled.div`
   min-width: 1570px;
-  max-width: 1720px;
+  max-width: 1570px;
 `;
 
 const PrevSlideButton = styled.button`
@@ -153,7 +153,7 @@ const Rank = styled.span`
 
 const Text = styled.p`
   margin: 0;
-  font-size: ${(props) => (props.over ? "24px" : "inherit")};
+  font-size: 18px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -162,7 +162,7 @@ const Text = styled.p`
 
 const TextOver = styled.p`
   margin: 0;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: bold;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -267,8 +267,12 @@ const HPContent2 = () => {
                   <Rank>{startIndex + index + 1}</Rank>
                 </ImageContainer>
                 <TextOver>
-                  {item.genrenm} &nbsp; &lt;{item.prfnm.slice(0, 13)}&gt;
-                  {item.prfnm.length > 20 ? "..." : ""}
+                  {item.genrenm} &nbsp;
+                  {item.prfnm.length > 11 ? (
+                    <>&lt;{item.prfnm.slice(0, 11)}...</>
+                  ) : (
+                    <>&lt;{item.prfnm}&gt;</>
+                  )}
                 </TextOver>
                 <Text>{item.fcltynm}</Text>
                 <Text>

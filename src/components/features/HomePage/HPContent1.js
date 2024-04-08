@@ -133,7 +133,7 @@ const Image = styled.div`
 
 const Text = styled.p`
   margin: 0;
-  font-size: ${(props) => (props.over ? "22px" : "inherit")};
+  font-size: 18px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -142,7 +142,7 @@ const Text = styled.p`
 
 const TextOver = styled.p`
   margin: 0;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: bold;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -256,8 +256,12 @@ const HPContent1 = () => {
                   <img src={item.poster} alt="포스터" />
                 </Image>
                 <TextOver>
-                  {item.genrenm} &nbsp; &lt;{item.prfnm.slice(0, 7)}&gt;
-                  {item.prfnm.length > 20 ? "..." : ""}
+                  {item.genrenm} &nbsp;
+                  {item.prfnm.length > 11 ? (
+                    <>&lt;{item.prfnm.slice(0, 11)}...</>
+                  ) : (
+                    <>&lt;{item.prfnm}&gt;</>
+                  )}
                 </TextOver>
                 <Text>{item.fcltynm}</Text>
                 <Text>
