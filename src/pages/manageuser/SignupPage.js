@@ -3,6 +3,7 @@ import { Link, json } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../../assets/headerImg/logo.png";
 import axios from "axios";
+import DaumPostcode from "react-daum-postcode";
 
 const Container = styled.div`
   display: flex;
@@ -210,6 +211,7 @@ const SignupPage = () => {
     address: "",
     detailAddress: "",
   });
+  const [isDaumPostcodeOpen, setIsDaumPostcodeOpen] = useState(false);
 
   const inputChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -217,6 +219,21 @@ const SignupPage = () => {
       ...inputValue,
       [name]: value,
     });
+  };
+
+  const handleComplete = (data) => {
+    const fullAddress = data.address;
+    const extraAddress = data.addressType === "R" ? "" : data.bname;
+    setInputValue({
+      ...inputValue,
+      address: fullAddress,
+      detailAddress: extraAddress,
+    });
+    setIsDaumPostcodeOpen(false);
+  };
+
+  const openDaumPostcode = () => {
+    setIsDaumPostcodeOpen(true);
   };
 
   const url = "http://localhost:8080/signup";
@@ -333,15 +350,22 @@ const SignupPage = () => {
                 type="text"
                 name="address"
                 placeholder="예: 서울시 강남구 연주로 508"
-                onChange={inputChangeHandler} // 주소 API 연결
+                value={inputValue.address}
+                readOnly
+                onChange={inputChangeHandler}
               />
-              <input type="button" value="주소검색" />
+              <input
+                type="button"
+                value="주소검색"
+                onClick={openDaumPostcode}
+              />
             </div>
             <div id="detailadd">
               <input
                 type="text"
                 name="detailAddress"
                 placeholder="상세주소를 입력해주세요."
+                value={inputValue.detailAddress}
                 onChange={inputChangeHandler}
               />
             </div>
@@ -355,6 +379,49 @@ const SignupPage = () => {
           <Link to="/login">로그인하기</Link>
         </p>
       </Login>
+      {/* 다음 우편번호 API */}
+      {isDaumPostcodeOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            border: "1px solid #000",
+            width: "600px",
+            height: "430px",
+            borderRadius: "5px",
+            boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "white",
+            textAlign: "center",
+          }}
+        >
+          <div
+            style={{
+              position: "relative",
+            }}
+          >
+            <button
+              onClick={() => setIsDaumPostcodeOpen(false)}
+              style={{
+                float: "right",
+                marginRight: "10px",
+                padding: "0",
+                background: "none",
+                border: "none",
+                fontSize: "20px",
+                cursor: "pointer",
+                padding: "0",
+                color: "rgba(0, 0, 0, 0.5)",
+              }}
+            >
+              X
+            </button>
+
+            <DaumPostcode onComplete={handleComplete} autoClose />
+          </div>
+        </div>
+      )}
     </Container>
   );
 };
