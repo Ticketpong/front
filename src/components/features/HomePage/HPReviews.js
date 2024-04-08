@@ -34,13 +34,20 @@ const Container = styled.div`
   }
 `;
 
+const HeadHr = styled.hr`
+  background-color: black;
+  height: 2px;
+  min-width: 1540px;
+  max-width: 1540px;
+`;
 const UlContainer = styled.ul`
   list-style-type: none;
   display: flex;
   flex-direction: column;
   align-items: flex-start; /* 수직 가운데 정렬 */
   margin: 0 auto;
-  width: 1580px;
+  min-width: 1540px;
+  max-width: 1540px;
   padding-left: 0;
 `;
 
@@ -52,13 +59,16 @@ const Li = styled.li`
 const Img = styled.div`
   display: block;
   min-width: 270px;
+  max-width: 270px;
   height: 340px;
-  margin: 17px 35px 17px 180px;
+  margin: 17px 35px 17px 120px;
   object-fit: cover;
   border-radius: 12px;
   img {
     min-height: 100%;
     max-height: 100%;
+    min-width: 100%;
+    max-width: 100%;
     border-radius: 12px;
   }
 `;
@@ -77,8 +87,8 @@ const Text = styled.div`
 const CenterHr = styled.hr`
   color: gray;
   height: 1px;
-  min-width: 1580px;
-  max-width: 1580px;
+  min-width: 1540px;
+  max-width: 1540px;
 `;
 
 const StyledViewAllButton = styled.button`
@@ -149,7 +159,7 @@ const HPReviews = () => {
     <Container>
       <div className="container">
         <Strong>베스트 관람 후기</Strong>
-        <hr className="head" />
+        <HeadHr />
         <UlContainer>
           <Li>
             {jsonData?.boxofs?.boxof?.[0]?.poster && (
@@ -157,7 +167,6 @@ const HPReviews = () => {
                 <img
                   src={URL + jsonData.boxofs.boxof[0].poster._text}
                   alt="포스터"
-                  className="image"
                 />
               </Img>
             )}
@@ -181,11 +190,12 @@ const HPReviews = () => {
         <UlContainer>
           <Li>
             {jsonData?.boxofs?.boxof?.[1]?.poster && (
-              <Img
-                src={URL + jsonData.boxofs.boxof[1].poster._text}
-                alt="포스터"
-                className="image"
-              />
+              <Img>
+                <img
+                  src={URL + jsonData.boxofs.boxof[1].poster._text}
+                  alt="포스터"
+                />
+              </Img>
             )}
             <Text>
               {jsonData?.boxofs?.boxof?.[1]?.prfnm && (
@@ -209,11 +219,12 @@ const HPReviews = () => {
         <UlContainer>
           <Li>
             {jsonData?.boxofs?.boxof?.[2]?.poster && (
-              <Img
-                src={URL + jsonData.boxofs.boxof[2].poster._text}
-                alt="포스터"
-                className="image"
-              />
+              <Img>
+                <img
+                  src={URL + jsonData.boxofs.boxof[2].poster._text}
+                  alt="포스터"
+                />
+              </Img>
             )}
             <Text>
               {jsonData?.boxofs?.boxof?.[2]?.prfnm && (

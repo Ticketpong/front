@@ -257,8 +257,8 @@ const HPContent1 = () => {
                 </Image>
                 <TextOver>
                   {item.genrenm} &nbsp;
-                  {item.prfnm.length > 11 ? (
-                    <>&lt;{item.prfnm.slice(0, 11)}...</>
+                  {item.prfnm.length > 8 ? (
+                    <>&lt;{item.prfnm.slice(0, 8)}...</>
                   ) : (
                     <>&lt;{item.prfnm}&gt;</>
                   )}
