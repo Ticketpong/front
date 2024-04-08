@@ -18,7 +18,7 @@ import ReviewDetail from "./components/features/Community/ReviewDetail";
 import ManageLoginPage from "./pages/managepage/ManageLoginPage";
 import ManagePage from "./pages/managepage/ManagePage";
 import ApiDataFetcher from "./components/base/ApiDataFetcher";
-import SearchResult from "./pages/searchresult/SearchResult";
+import SearchResult from "./pages/searchResult/SearchResult";
 
 // 자동 스크롤 기능 추가
 function ScrollToTop() {
