@@ -74,7 +74,7 @@ const UpperLI = styled.li`
 const UpperImage = styled.div`
   display: block;
   min-width: 270px;
-  height: 340px;
+  height: 360px;
   margin-bottom: 10px;
   object-fit: cover;
   img {
