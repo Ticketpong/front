@@ -47,6 +47,25 @@ const Payment = ({ amount, showData, selectedSeat, people, cardData }) => {
       document.head.removeChild(iamport);
     };
   }, []);
+  
+  useEffect(() => {
+    const postUser = async () => {
+      const Url = "http://localhost:8080/reservation/member";
+      console.log(userId);
+      try {
+        const response = await axios.post(Url, {
+          user_id: userId,
+        });
+        setUserValue(response);
+        json.stringify(response);
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    postUser();
+  }, [userId]);
 
   useEffect(() => {
     const fetchLoginStatus = async () => {
@@ -66,25 +85,6 @@ const Payment = ({ amount, showData, selectedSeat, people, cardData }) => {
 
     fetchLoginStatus();
   }, []);
-
-  useEffect(() => {
-    const postUser = async () => {
-      const Url = "http://localhost:8080/reservation/member";
-      console.log(userId);
-      try {
-        const response = await axios.post(Url, {
-          user_id: userId,
-        });
-        setUserValue(response);
-        json.stringify(response);
-        console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    postUser();
-  }, [userId]);
 
   const getDate = () => {
     const today = new Date();
