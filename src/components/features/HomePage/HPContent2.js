@@ -15,39 +15,39 @@ const Container = styled.div`
 const Strong = styled.strong`
   font-size: 42px;
   font-weight: bold;
-  margin-bottom: 20px;
-`;
-
-const CategoryBtn = styled.div`
-  display: flex;
   margin-bottom: 80px;
 `;
 
-const CategoryButton = styled.button`
-  width: 120px;
-  height: 50px;
-  font-size: 24px;
-  background-color: #373a42;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  margin-right: 15px;
-  margin-left: 15px;
-  cursor: pointer;
-  border-radius: 24px;
-  line-height: 10px;
+// const CategoryBtn = styled.div`
+//   display: flex;
+//   margin-bottom: 80px;
+// `;
 
-  &:focus,
-  :hover {
-    background-color: #fc1055;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    color: #ffffff;
-  }
-  &:active {
-    color: #ffffff;
-    background-color: #fc1055;
-  }
-`;
+// const CategoryButton = styled.button`
+//   width: 120px;
+//   height: 50px;
+//   font-size: 24px;
+//   background-color: #373a42;
+//   color: white;
+//   border: none;
+//   padding: 10px 20px;
+//   margin-right: 15px;
+//   margin-left: 15px;
+//   cursor: pointer;
+//   border-radius: 24px;
+//   line-height: 10px;
+
+//   &:focus,
+//   :hover {
+//     background-color: #fc1055;
+//     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+//     color: #ffffff;
+//   }
+//   &:active {
+//     color: #ffffff;
+//     background-color: #fc1055;
+//   }
+// `;
 const SliderContainer = styled.div`
   position: relative;
   display: flex;
@@ -58,10 +58,11 @@ const SliderContainer = styled.div`
 `;
 
 const UlContainer = styled.div`
-  min-width: 1300px;
+  min-width: 1350px;
+  max-width: 1720px;
 `;
 
-const SlideButton = styled.button`
+const PrevSlideButton = styled.button`
   position: absolute;
   top: 45%;
   width: 70px;
@@ -71,6 +72,7 @@ const SlideButton = styled.button`
   border: none;
   font-size: 40px;
   color: #fc1055;
+  box-shadow: 1px 1px 1px #666;
   cursor: pointer;
   border-radius: 50%;
   z-index: 999;
@@ -78,9 +80,31 @@ const SlideButton = styled.button`
 
   &:focus {
     background-color: #fc1055;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22);
   }
 `;
 
+const NextSlideButton = styled.button`
+  position: absolute;
+  top: 45%;
+  width: 70px;
+  height: 70px;
+  transform: translateY(-50%);
+  background-color: white;
+  border: none;
+  font-size: 40px;
+  color: #fc1055;
+  box-shadow: 1px 1px 1px #666;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 999;
+  ${(props) => (props.direction === "left" ? "left: 0;" : "right: 4px;")}
+
+  &:focus {
+    background-color: #fc1055;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22);
+  }
+`;
 const ListItem = styled.li`
   display: inline-block;
   margin-right: 40px;
@@ -93,13 +117,20 @@ const ImageContainer = styled.div`
   position: relative;
 `;
 
-const Image = styled.img`
+const Image = styled.div`
   display: block;
-  min-width: 350px;
-  height: 450px;
+  min-width: 310px;
+  height: 390px;
   margin-bottom: 10px;
   object-fit: cover;
-  border-radius: 12px;
+  img {
+    min-height: 100%;
+    max-height: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22);
+  }
 `;
 
 const Rank = styled.span`
@@ -122,6 +153,16 @@ const Rank = styled.span`
 const Text = styled.p`
   margin: 0;
   font-size: ${(props) => (props.over ? "24px" : "inherit")};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: ${(props) => (props.over ? "350px" : "none")};
+`;
+
+const TextOver = styled.p`
+  margin: 0;
+  font-size: 22px;
+  font-weight: bold;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -206,45 +247,39 @@ const HPContent2 = () => {
   return (
     <Container>
       <Strong>오늘의 인기티켓</Strong>
-      <CategoryBtn>
+      {/* <CategoryBtn>
         <CategoryButton>전체</CategoryButton>
-      </CategoryBtn>
+      </CategoryBtn> */}
 
       <SliderContainer>
-        <SlideButton
-          className="prevButton"
-          direction="left"
-          onClick={handlePrev}
-        >
+        <PrevSlideButton direction="left" onClick={handlePrev}>
           {"<"}
-        </SlideButton>
+        </PrevSlideButton>
         <UlContainer>
           {displayedData.map((item, index) => (
             <StyleLink to={`/ticketing/${item.mt20id}`}>
               <ListItem key={index}>
                 <ImageContainer>
-                  <Image src={item.poster} alt="포스터" />
+                  <Image>
+                    <img src={item.poster} alt="포스터" />
+                  </Image>
                   <Rank>{startIndex + index + 1}</Rank>
                 </ImageContainer>
-                <Text>장르: {item.genrenm}</Text>
-                <Text>지역: {item.sidonm}</Text>
-                <Text over className="over">
-                  이름: {item.prfnm}
-                </Text>
+                <TextOver>
+                  {item.genrenm} &nbsp; &lt;{item.prfnm.slice(0, 13)}&gt;
+                  {item.prfnm.length > 20 ? "..." : ""}
+                </TextOver>
+                <Text>{item.fcltynm}</Text>
                 <Text>
-                  기간: {item.prfpdfrom} ~ {item.prfpdto}
+                  {item.prfpdfrom} ~ {item.prfpdto}
                 </Text>
               </ListItem>
             </StyleLink>
           ))}
         </UlContainer>
-        <SlideButton
-          className="nextButton"
-          direction="right"
-          onClick={handleNext}
-        >
+        <NextSlideButton direction="right" onClick={handleNext}>
           {">"}
-        </SlideButton>
+        </NextSlideButton>
       </SliderContainer>
       <Link to="/viewall">
         <StyledViewAllButton>티켓 전체보기</StyledViewAllButton>

@@ -49,13 +49,18 @@ const Li = styled.li`
   align-items: center;
 `;
 
-const Img = styled.img`
+const Img = styled.div`
   display: block;
   min-width: 270px;
   height: 340px;
   margin: 17px 35px 17px 180px;
   object-fit: cover;
   border-radius: 12px;
+  img {
+    min-height: 100%;
+    max-height: 100%;
+    border-radius: 12px;
+  }
 `;
 
 const Text = styled.div`
@@ -148,11 +153,13 @@ const HPReviews = () => {
         <UlContainer>
           <Li>
             {jsonData?.boxofs?.boxof?.[0]?.poster && (
-              <Img
-                src={URL + jsonData.boxofs.boxof[0].poster._text}
-                alt="포스터"
-                className="image"
-              />
+              <Img>
+                <img
+                  src={URL + jsonData.boxofs.boxof[0].poster._text}
+                  alt="포스터"
+                  className="image"
+                />
+              </Img>
             )}
             <Text>
               {jsonData?.boxofs?.boxof?.[0]?.prfnm && (

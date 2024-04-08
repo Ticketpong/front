@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Img from "../../assets/ViewAllImg/Image20240328164620.jpg";
 import axios from "axios";
+// import Geolocation from "../../components/base/GeoLocation";
 
 const Container = styled.div`
   display: flex;
@@ -55,7 +56,8 @@ const UpperUL = styled.ul`
   padding: 0;
   margin: 20px 0;
   flex-wrap: wrap;
-  min-width: 1500px;
+  min-width: 1600px;
+  max-width: 1600px;
 `;
 
 const UpperLI = styled.li`
@@ -65,37 +67,57 @@ const UpperLI = styled.li`
   display: inline-block;
   margin-right: 20px;
   vertical-align: top;
-  min-width: 200px;
+  min-width: 290px;
+  max-width: 290px;
 `;
 
-const UpperImage = styled.img`
+const UpperImage = styled.div`
   display: block;
-  min-width: 260px;
-  height: 320px;
+  min-width: 270px;
+  height: 340px;
   margin-bottom: 10px;
   object-fit: cover;
-  border-radius: 12px;
+  img {
+    max-height: 100%;
+    min-width: 285px;
+    border-radius: 12px;
+  }
 `;
 
 const UpperP = styled.p`
   margin: 0;
-  font-size: ${(props) => (props.over ? "24px" : "inherit")};
+  font-size: ${(props) => (props.over ? "18px" : "inherit")};
   overflow: hidden;
   text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: ${(props) => (props.over ? "350px" : "inherit")};
+  max-width: ${(props) => (props.over ? "310px" : "inherit")};
 `;
 
+const UpperOver = styled.p`
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: ${(props) => (props.over ? "310px" : "inherit")};
+  margin-bottom: 4px;
+`;
 // 이미지 순위 처리
 const ImageContainer = styled.div`
   position: relative;
+  min-width: 290px;
+  max-width: 290px;
+  max-width: 300px;
+  max-height: 410px;
 `;
 
 const Rank = styled.p`
   position: absolute;
   bottom: -50px;
-  left: 5px;
+  left: 10px;
   background-color: none;
   color: white;
   text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
@@ -103,7 +125,7 @@ const Rank = styled.p`
   padding: 5px;
   border-radius: 5px;
   border-radius: 5px;
-  font-size: 48px;
+  font-size: 54px;
   font-family: "Roboto", sans-serif;
   font-weight: 700;
   font-style: italic;
@@ -216,18 +238,33 @@ const StyledLI = styled.li`
   min-height: 350px;
 `;
 
-const StyledImage = styled.img`
+const StyledImage = styled.div`
   display: block;
-  min-width: 350px;
-  height: 450px;
+  min-width: 330px;
+  height: 390px;
   margin-bottom: 10px;
   object-fit: cover;
-  border-radius: 12px;
+  img {
+    min-height: 100%;
+    max-height: 100%;
+    border-radius: 12px;
+  }
 `;
 
 const StyledP = styled.p`
   margin: 0;
-  font-size: 28px;
+  font-size: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+  max-width: ${(props) => (props.over ? "350px" : "inherit")};
+`;
+
+const StyledOver = styled.p`
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -252,8 +289,45 @@ const Performance = () => {
   const [showAll, setShowAll] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("전체");
   const [geographyBased, setGeographyBased] = useState(false); // 위치 기반 필터링 여부 상태
+  const [location, setLocation] = useState({
+    loaded: false,
+    coordinates: { lat: "", long: "" },
+    error: null,
+  });
+
+  const onSuccess = (location) => {
+    setLocation((prevState) => ({
+      ...prevState,
+      loaded: true,
+      coordinates: {
+        lat: location.coords.latitude,
+        long: location.coords.longitude,
+      },
+      error: null,
+    }));
+  };
+
+  const onError = (error) => {
+    setLocation((prevState) => ({
+      ...prevState,
+      loaded: true,
+      error: {
+        code: error.code,
+        message: error.message,
+      },
+    }));
+  };
 
   useEffect(() => {
+    if (!("geolocation" in navigator)) {
+      onError({
+        code: 0,
+        message: "Geolocation not supported",
+      });
+    } else {
+      navigator.geolocation.getCurrentPosition(onSuccess, onError);
+    }
+
     fetchData();
     fetchRankData();
   }, []);
@@ -286,22 +360,28 @@ const Performance = () => {
 
   const rankDisplayedData = getRankDisplayedData();
 
+  if (!location.loaded) {
+    return null;
+  }
+
+  if (location.error) {
+    alert(`Error: ${location.error.message}`);
+    return null;
+  }
+
+  const { lat, long } = location.coordinates;
+
   const getDisplayedData = () => {
     let filteredData = [];
 
     if (geographyBased) {
-      // 예시용 위도, 경도 데이터 => 서울 광화문
-      // 나중에 현재 위치를 가져오는 함수를 넣어야할 수도 있음.
-      const userLatitude = 37.572389;
-      const userLongitude = 126.9769117;
-
       filteredData = allPerformances.filter((item) => {
         const distance = Math.sqrt(
-          Math.pow(item.la - userLatitude, 2) +
-            Math.pow(item.lo - userLongitude, 2)
+          Math.pow(item.la - lat, 2) + Math.pow(item.lo - long, 2)
         );
-        // 숫자를 조정하면 위도, 경도의 범위가 바뀝니다.
-        return distance <= 0.01;
+        // 0.1당 대략 반경 11km 이내
+        console.log(lat, long);
+        return distance <= 0.1;
       });
     } else if (selectedCategory === "전체") {
       if (startIndex === 0) {
@@ -356,16 +436,18 @@ const Performance = () => {
                   <UpperLI key={index}>
                     <Link to={`/ticketing/${item.mt20id}`}>
                       <ImageContainer>
-                        <UpperImage src={item.poster} alt="포스터" />
-                        <Rank>{startIndex + index + 1}</Rank>
+                        <UpperImage>
+                          <img src={item.poster} alt="포스터" />
+                          <Rank>{startIndex + index + 1}</Rank>
+                        </UpperImage>
                       </ImageContainer>
                     </Link>
-                    <UpperP over className="over">
-                      이름: {item.prfnm.slice(0, 13)}
+                    <UpperOver>
+                      {item.prfnm.slice(0, 17)}
                       {item.prfnm.length > 20 ? "..." : ""}
-                    </UpperP>
+                    </UpperOver>
                     <UpperP>
-                      기간: {item.prfpdfrom}~{item.prfpdto}
+                      {item.prfpdfrom}~{item.prfpdto}
                     </UpperP>
                   </UpperLI>
                 );
@@ -393,17 +475,16 @@ const Performance = () => {
             return (
               <StyleLink to={`/ticketing/${item.mt20id}`}>
                 <StyledLI key={index}>
-                  <StyledImage src={item.poster} alt="포스터" />
-                  <StyledP>장르: {item.genrenm}</StyledP>
+                  <StyledImage>
+                    <img src={item.poster} alt="포스터" />
+                  </StyledImage>
+                  <StyledOver>
+                    {item.genrenm} &nbsp; &lt;{item.prfnm.slice(0, 8)}&gt;
+                    {item.prfnm.length > 20 ? "..." : ""}
+                  </StyledOver>
+                  <StyledP>{item.fcltynm}</StyledP>
                   <StyledP>
-                    지역: {item.adres.slice(0, 10)}
-                    {item.adres.length > 20 ? "..." : ""}
-                  </StyledP>
-                  <StyledP over className="over">
-                    이름: {item.prfnm}
-                  </StyledP>
-                  <StyledP>
-                    기간: {item.prfpdfrom}~{item.prfpdto}
+                    {item.prfpdfrom}~{item.prfpdto}
                   </StyledP>
                 </StyledLI>
               </StyleLink>
