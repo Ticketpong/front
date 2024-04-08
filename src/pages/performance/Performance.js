@@ -214,7 +214,7 @@ const Bottom = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 1780px;
+  min-width: 1600px;
   max-width: 1600px;
   margin: 80px auto;
 `;
@@ -232,8 +232,8 @@ const StyledLI = styled.li`
   display: inline-block;
   vertical-align: top;
   margin-bottom: 80px;
-  margin-left: 40px;
-  margin-right: 40px;
+  margin-left: 24px;
+  margin-right: 24px;
   min-width: 350px;
   min-height: 350px;
 `;
@@ -241,12 +241,15 @@ const StyledLI = styled.li`
 const StyledImage = styled.div`
   display: block;
   min-width: 330px;
+  max-width: 330px;
   height: 390px;
   margin-bottom: 10px;
   object-fit: cover;
   img {
     min-height: 100%;
     max-height: 100%;
+    min-width: 100%;
+    max-width: 100%;
     border-radius: 12px;
   }
 `;
