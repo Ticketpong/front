@@ -134,17 +134,24 @@ const BookingDetail = () => {
     const fetchShowNameData = async () => {
       try {
         const response = await axios.get("http://localhost:8080/viewall");
-        const selectedShowData = response.data.find(
-          (item) => item.mt20id === selectedData.mt20id
-        );
 
-        console.log(selectedShowData);
-        setShowName(selectedShowData.prfnm); // 공연 이름 설정
+        const showNameData = response.data;
+        const updatedFilteredData = filteredData.map((item) => {
+          const selectedShowData = showNameData.find(
+            (show) => show.mt20id === item.mt20id
+          );
+          return {
+            ...item,
+            showName: selectedShowData ? selectedShowData.prfnm : "", // 공연 이름 추가
+          };
+        });
+        console.log(updatedFilteredData);
+        setFilteredData(updatedFilteredData);
       } catch (error) {
         console.log(error);
       }
     };
-    if (selectedData) {
+    if (bookingData) {
       // 선택된 데이터가 있을 때만 공연 데이터 가져오기
       fetchShowNameData();
     }
@@ -286,32 +293,32 @@ const BookingDetail = () => {
               <NoDataCell colSpan="7">등록된 예매 내역이 없습니다.</NoDataCell>
             </tr>
           ) : (
-            Data.map((filtered) => (
-              <tr
-                key={filtered.imp_uid}
-                onClick={() => handleCellClick(filtered)}
-              >
-                <Cell>{formatDate(filtered.res_date)}</Cell>
-                <Cell>{showName}</Cell>
+            Data.map((item) => (
+              <tr key={item.imp_uid} onClick={() => handleCellClick(item)}>
+                <Cell>{formatDate(item.res_date)}</Cell>
                 <Cell>
-                  {formatDate(filtered.selectdate)}{" "}
-                  {formatTime(filtered.selecttime)}
+                  {item.showName && item.showName.length > 20
+                    ? `${item.showName.slice(0, 20)}..`
+                    : item.showName}
                 </Cell>
-                <Cell>{filtered.paid_amount}원</Cell>
-                <Cell>{filtered.people}</Cell>
                 <Cell>
-                  {filtered.success.data[0] === 1 ? "결제완료" : "결제취소"}
+                  {formatDate(item.selectdate)} {formatTime(item.selecttime)}
+                </Cell>
+                <Cell>{item.paid_amount}원</Cell>
+                <Cell>{item.people}</Cell>
+                <Cell>
+                  {item.success.data[0] === 1 ? "결제완료" : "결제취소"}
                 </Cell>
                 <Cell>
                   <ReviewStatus
-                    status={filtered.prestate.data[0]}
+                    status={item.prestate.data[0]}
                     onClick={
-                      filtered.prestate.data[0] === 0
+                      item.prestate.data[0] === 0
                         ? () => navigate("/writereview")
                         : undefined
                     }
                   >
-                    {filtered.prestate.data[0] === 1 ? "작성완료" : "작성하기"}
+                    {item.prestate.data[0] === 1 ? "작성완료" : "작성하기"}
                   </ReviewStatus>
                 </Cell>
               </tr>
@@ -327,7 +334,7 @@ const BookingDetail = () => {
           <MdKeyboardArrowLeft color="#999999" />
         </button>
         {Array.from(
-          { length: Math.ceil(bookingData.length / ITEMS_PER_PAGE) },
+          { length: Math.ceil(filteredData.length / ITEMS_PER_PAGE) },
           (_, i) => (
             <strong key={i + 1} onClick={() => setCurrentPage(i + 1)}>
               {i + 1}
