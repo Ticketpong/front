@@ -250,7 +250,7 @@ const SeatSelectionModal = ({ isOpen, onClose, onSelect, showData }) => {
           <Payment
             amount={calculateTotalPrice()}
             showData={showData}
-            selectedSeat={selectedSeats.join(", ")}
+            selectedseat={selectedSeats.join(", ")}
             people={selectedSeats.length}
             cardData={selectedCardData}
           />
