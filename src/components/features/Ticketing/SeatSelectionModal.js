@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Payment, { PongButton } from "./TicketingPayment";
+import axios from "axios";
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -109,14 +110,42 @@ const Option = styled.li`
 const SeatSelectionModal = ({ isOpen, onClose, onSelect, showData }) => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [showOptions, setShowOptions] = useState(false);
-  const [currentValue, setCurrentValue] = useState("결제방식");
+  const [currentValue, setCurrentValue] = useState(null);
+  const [currentName, setCurrentName] = useState("결제방식");
   const [discountRate, setDiscountRate] = useState(0);
   const [selectedCardData, setSelectedCardData] = useState([]);
+  const [dcData, setDcData] = useState(null);
 
-  const dcData = [
-    { code: "361", card_name: "BC카드", discountrate: 5 },
-    { code: "090", card_name: "카카오뱅크카드", discountrate: 3 },
-  ];
+  useEffect(() => {
+    if (currentValue) {
+      const postDcData = async () => {
+        const Url = "http://localhost:8080/reservation/discount";
+        try {
+          const response = await axios.post(Url, {
+            code: currentValue,
+          });
+          setDcData(response.data);
+        } catch (error) {
+          console.log(error);
+          // 요청이 실패했을 때 대비하여 discountRate를 0으로 설정
+          setDiscountRate(0);
+        }
+      };
+
+      postDcData();
+    } else {
+      setDiscountRate(0); // currentValue가 없을 경우 할인율을 0으로 설정
+    }
+  }, [currentValue]);
+
+  useEffect(() => {
+    if (dcData && dcData.length > 0) {
+      setDiscountRate(dcData[0].discountrate);
+    } else {
+      setDcData(null);
+      setDiscountRate(0);
+    }
+  }, [dcData]);
 
   const handleShow = () => {
     setShowOptions((prev) => !prev);
@@ -145,12 +174,21 @@ const SeatSelectionModal = ({ isOpen, onClose, onSelect, showData }) => {
     }
   };
   const calculateTotalPrice = () => {
-    let totalPrice =
-      selectedSeats.length > 0
-        ? seatPrices[selectedSeats[0].match(/[^\d]+/)[0]] * selectedSeats.length
-        : 0;
+    // 선택된 좌석이 없을 경우 0을 반환
+    if (selectedSeats.length === 0) {
+      return 0;
+    }
 
-    // 선택된 좌석의 총 금액에서 할인율을 적용
+    let totalPrice = 0;
+
+    // 선택된 좌석에 대한 가격을 누적해서 계산
+    selectedSeats.forEach((seat) => {
+      const seatType = seat.match(/[^\d]+/)[0];
+      totalPrice += seatPrices[seatType];
+    });
+
+    // 할인율을 적용
+
     totalPrice *= (100 - discountRate) / 100;
 
     return totalPrice;
@@ -182,15 +220,8 @@ const SeatSelectionModal = ({ isOpen, onClose, onSelect, showData }) => {
     const selectedCardValue = e.target.getAttribute("value");
     setCurrentValue(selectedCardValue);
 
-    const selectedCard = dcData.find(
-      (card) => card.card_name === selectedCardValue
-    );
-    setSelectedCardData(selectedCard);
-    if (selectedCard) {
-      setDiscountRate(selectedCard.discountrate);
-    } else {
-      setDiscountRate(0); // 선택된 카드가 없을 경우 할인율을 0으로 설정합니다.
-    }
+    const selectedCardName = e.target.getAttribute("name");
+    setCurrentName(selectedCardName);
   };
 
   return (
@@ -227,17 +258,26 @@ const SeatSelectionModal = ({ isOpen, onClose, onSelect, showData }) => {
           </HighlightText>
         </SelectedSeatsInfo>
         <SelectBox onClick={handleShow}>
-          <Label>{currentValue}</Label>
+          <Label>{currentName}</Label>
           <SelectOptions show={showOptions}>
-            <Option onClick={handleOnChangeSelectValue} value={"기본결제"}>
+            <Option
+              onClick={handleOnChangeSelectValue}
+              name={"기본결제"}
+              value={"기본결제"}
+            >
               기본 결제
             </Option>
-            <Option onClick={handleOnChangeSelectValue} value={"BC카드"}>
+            <Option
+              onClick={handleOnChangeSelectValue}
+              name={"BC카드 결제"}
+              value={"361"}
+            >
               BC카드 결제 - 전체 금액 5% 할인 적용
             </Option>
             <Option
               onClick={handleOnChangeSelectValue}
-              value={"카카오뱅크카드"}
+              name={"카카오뱅크카드 결제"}
+              value={"090"}
             >
               카카오뱅크카드 결제 - 전체 금액 3% 할인 적용
             </Option>
@@ -252,7 +292,7 @@ const SeatSelectionModal = ({ isOpen, onClose, onSelect, showData }) => {
             showData={showData}
             selectedseat={selectedSeats.join(", ")}
             people={selectedSeats.length}
-            cardData={selectedCardData}
+            cardData={dcData}
           />
         </ButtonContainer>
       </ModalContainer>

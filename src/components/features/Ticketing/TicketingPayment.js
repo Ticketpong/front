@@ -158,10 +158,11 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
     };
 
     if (cardData) {
+      console.log(cardData[0]);
       // cardData가 존재하는 경우 추가 카드 정보를 포함하여 결제 요청
       data.card = {
         direct: {
-          code: cardData.code,
+          code: cardData[0].code,
         },
       };
     }
@@ -175,7 +176,7 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
       submitPayment(response);
       alert("결제 성공!");
 
-      navigate(`/ticketing/${showData.showData.mt20id}`, { replace: true });
+      window.location.reload();
     } else {
       alert(`결제 실패! : ${response.error_msg}`);
     }
