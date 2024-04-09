@@ -200,7 +200,7 @@ const Modal = ({ isOpen, onClose, data }) => {
               <Th>예매번호</Th>
               <Td>{data.imp_uid}</Td>
               <Th>공연명</Th>
-              <Td>{data.prfnm}</Td>
+              <Td>{data.showName}</Td>
             </tr>
             <tr>
               <Th>관람일자</Th>
