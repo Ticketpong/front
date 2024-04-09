@@ -8,6 +8,8 @@ import {
   MdKeyboardDoubleArrowRight,
 } from "react-icons/md";
 import Modal from "./BookingDetailModal";
+import axiosWithAuth from "../../../components/base/axiosWithAuth";
+import axios from "axios";
 
 const Container = styled.table`
   margin: 20px auto;
@@ -31,7 +33,7 @@ const Cell = styled.td`
   text-align: center;
   font-weight: 500;
   font-size: 14px;
-  cursor: pointer; /* 추가: 클릭 가능한 커서 스타일 */
+  cursor: pointer;
   &:last-child {
     border-right: none;
   }
@@ -102,9 +104,9 @@ const ReviewStatus = styled.button`
   margin: 0 auto;
   background-color: ${({ status }) => {
     switch (status) {
-      case false:
+      case 0:
         return "#fc1055";
-      case true:
+      case 1:
         return "#999999";
       default:
         return "#999999";
@@ -113,91 +115,109 @@ const ReviewStatus = styled.button`
   cursor: ${({ status }) => (status === false ? "pointer" : "default")};
 `;
 
-// 항목 수
 const ITEMS_PER_PAGE = 7;
 
 const BookingDetail = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [userId, setUserId] = useState("");
+  const [isLogined, setIsLogined] = useState(false);
+  const [bookingData, setBookingData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState("3");
-  const [showModal, setShowModal] = useState(false); // 모달 제어 상태 추가
-  const [selectedData, setSelectedData] = useState(null); // 선택된 데이터 상태 추가
+  const [showModal, setShowModal] = useState(false);
+  const [selectedData, setSelectedData] = useState(null);
+  const [showName, setShowName] = useState(null);
+
   const navigate = useNavigate();
 
-  const [data, setData] = useState([
-    {
-      imp_uid: "imp_uid01", //예매 ID
-      user_id: "user_id01", //ID
-      manage_id: "manage_id01", //ID
-      mt10id: "공연시설01", //공연시설
-      prfnm: "공연01", //공연명
-      res_date: new Date("2023-11-01"), //예매일
-      paid_amount: 120000, //결제금액
-      success: true, //결제상태
-      watchstate: true, //관람상태
-      prestate: false, //후기상태
-      selectdate: new Date("2023-11-01"), //선택날짜
-      selecttime: "14:00", //선택시간
-      selectseat: "VIP01, VIP02", //좌석
-      people: 2, //인원
-      pay_method: "card",
-    },
-    {
-      imp_uid: "imp_uid02", //예매 ID
-      user_id: "user_id01", //ID
-      manage_id: "manage_id02", //ID
-      mt10id: "공연시설02", //공연시설
-      prfnm: "공연02", //공연명
-      res_date: new Date("2023-12-15"), //예매일
-      paid_amount: 120000, //결제금액
-      success: true, //결제상태
-      watchstate: true, //관람상태
-      prestate: true, //후기상태
-      selectdate: new Date("2024-03-05"), //선택날짜
-      selecttime: "17:00", //선택시간
-      selectseat: "S01, S02", //좌석
-      people: 2, //인원
-      pay_method: "card",
-    },
-    {
-      imp_uid: "imp_uid03", //예매 ID
-      user_id: "user_id01", //ID
-      manage_id: "manage_id02", //ID
-      mt10id: "공연시설03", //공연시설
-      prfnm: "공연03", //공연명
-      res_date: new Date("2024-04-03"), //예매일
-      paid_amount: 120000, //결제금액
-      success: true, //결제상태
-      watchstate: false, //관람상태
-      prestate: false, //후기상태
-      selectdate: new Date("2024-04-30"), //선택날짜
-      selecttime: "17:00", //선택시간
-      selectseat: "S01, S02", //좌석
-      people: 2, //인원
-      pay_method: "card",
-    },
-  ]);
+  useEffect(() => {
+    const fetchShowNameData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/viewall");
+
+        const showNameData = response.data;
+        const updatedFilteredData = filteredData.map((item) => {
+          const selectedShowData = showNameData.find(
+            (show) => show.mt20id === item.mt20id
+          );
+          return {
+            ...item,
+            showName: selectedShowData ? selectedShowData.prfnm : "", // 공연 이름 추가
+          };
+        });
+        console.log(updatedFilteredData);
+        setFilteredData(updatedFilteredData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (bookingData) {
+      // 선택된 데이터가 있을 때만 공연 데이터 가져오기
+      fetchShowNameData();
+    }
+  }, [bookingData]);
 
   useEffect(() => {
-    const startDate = new Date();
+    const fetchLoginStatus = async () => {
+      try {
+        const response = await axiosWithAuth().get(
+          "http://localhost:8080/login/profile"
+        );
+        const { id, isLogined } = response.data;
+        if (isLogined) {
+          setUserId(id);
+          setIsLogined(true);
+        }
+      } catch (error) {
+        console.error("로그인 상태를 확인하는 동안 오류 발생:", error);
+      }
+    };
+    fetchLoginStatus();
+  }, []);
 
-    switch (selectedPeriod) {
-      case "3":
-        startDate.setMonth(startDate.getMonth() - 3);
-        break;
-      case "6":
-        startDate.setMonth(startDate.getMonth() - 6);
-        break;
-      case "12":
-        startDate.setMonth(startDate.getMonth() - 12);
-        break;
-      default:
-        startDate.setMonth(startDate.getMonth() - 3); // 기본값
+  useEffect(() => {
+    fetchBookingData();
+  }, [userId, selectedPeriod]);
+
+  const fetchBookingData = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/reservation/list",
+        {
+          id: userId,
+        }
+      );
+      const newData = response.data.map((item, index) => ({
+        ...item,
+        number: (currentPage - 1) * ITEMS_PER_PAGE + index + 1,
+      }));
+      setBookingData(newData);
+
+      const startDate = new Date();
+      switch (selectedPeriod) {
+        case "3":
+          startDate.setMonth(startDate.getMonth() - 3);
+          break;
+        case "6":
+          startDate.setMonth(startDate.getMonth() - 6);
+          break;
+        case "12":
+          startDate.setMonth(startDate.getMonth() - 12);
+          break;
+        default:
+          startDate.setMonth(startDate.getMonth() - 3); // 기본값
+      }
+
+      const filtered = newData.filter((item) => {
+        const itemDate = new Date(item.selectdate);
+        return itemDate >= startDate;
+      });
+      setFilteredData(filtered); // setData 호출 이후에 filteredData 설정
+      // console.log(filteredData);
+    } catch (error) {
+      console.error("예매 내역을 불러오는 동안 오류 발생:", error);
     }
-
-    const filtered = data.filter((item) => item.selectdate >= startDate);
-    setFilteredData(filtered);
-  }, [data, selectedPeriod]);
+  };
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, filteredData.length);
@@ -208,7 +228,7 @@ const BookingDetail = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   const goToNextPage = () =>
     setCurrentPage((prevPage) =>
-      Math.min(prevPage + 1, Math.ceil(data.length / ITEMS_PER_PAGE))
+      Math.min(prevPage + 1, Math.ceil(bookingData.length / ITEMS_PER_PAGE))
     );
   const goToEndPage = () =>
     setCurrentPage(Math.ceil(filteredData.length / ITEMS_PER_PAGE));
@@ -219,6 +239,24 @@ const BookingDetail = () => {
     setSelectedData(data);
     setShowModal(true);
   };
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    if (month < 10) {
+      month = "0" + month;
+    }
+    let day = date.getDate();
+    if (day < 10) {
+      day = "0" + day;
+    }
+    return `${year}-${month}-${day}`;
+  }
+  function formatTime(timeString) {
+    const [hours, minutes, seconds] = timeString.split(":");
+    return `${hours}:${minutes}`;
+  }
 
   return (
     <>
@@ -255,32 +293,32 @@ const BookingDetail = () => {
               <NoDataCell colSpan="7">등록된 예매 내역이 없습니다.</NoDataCell>
             </tr>
           ) : (
-            Data.map((filtered) => (
-              <tr
-                key={filtered.imp_uid}
-                onClick={() => handleCellClick(filtered)}
-              >
-                <Cell>{filtered.res_date.toLocaleDateString()}</Cell>
-                <Cell>{filtered.prfnm}</Cell>
+            Data.map((item) => (
+              <tr key={item.imp_uid} onClick={() => handleCellClick(item)}>
+                <Cell>{formatDate(item.res_date)}</Cell>
                 <Cell>
-                  {filtered.selectdate.toLocaleDateString()}{" "}
-                  {filtered.selecttime}
+                  {item.showName && item.showName.length > 20
+                    ? `${item.showName.slice(0, 20)}..`
+                    : item.showName}
                 </Cell>
-                <Cell>{filtered.paid_amount}원</Cell>
-                <Cell>{filtered.people}</Cell>
                 <Cell>
-                  {filtered.success === true ? "결제완료" : "결제취소"}
+                  {formatDate(item.selectdate)} {formatTime(item.selecttime)}
+                </Cell>
+                <Cell>{item.paid_amount}원</Cell>
+                <Cell>{item.people}</Cell>
+                <Cell>
+                  {item.success.data[0] === 1 ? "결제완료" : "결제취소"}
                 </Cell>
                 <Cell>
                   <ReviewStatus
-                    status={filtered.prestate}
+                    status={item.prestate.data[0]}
                     onClick={
-                      filtered.prestate === false
+                      item.prestate.data[0] === 0
                         ? () => navigate("/writereview")
                         : undefined
                     }
                   >
-                    {filtered.prestate === true ? "작성완료" : "작성하기"}
+                    {item.prestate.data[0] === 1 ? "작성완료" : "작성하기"}
                   </ReviewStatus>
                 </Cell>
               </tr>
@@ -296,7 +334,7 @@ const BookingDetail = () => {
           <MdKeyboardArrowLeft color="#999999" />
         </button>
         {Array.from(
-          { length: Math.ceil(data.length / ITEMS_PER_PAGE) },
+          { length: Math.ceil(filteredData.length / ITEMS_PER_PAGE) },
           (_, i) => (
             <strong key={i + 1} onClick={() => setCurrentPage(i + 1)}>
               {i + 1}
