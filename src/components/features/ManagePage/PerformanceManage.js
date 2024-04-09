@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import testData from "../../../dummy/show_detail.json";
 import {
   MdKeyboardArrowLeft,
   MdKeyboardArrowRight,
@@ -58,6 +59,15 @@ const AddButton = styled.button`
   right: 10%;
 `;
 
+const Previous = styled.span`
+    color: rebeccapurple;
+    width: 50px; /* 사이즈 */
+    height: 50px; /* 사이즈 */
+    border-top: 5px solid #000; /* 선 두께 */
+    border-right: 5px solid #000; /* 선 두께 */
+    transform: rotate(225deg); /* 각도 */
+`;
+
 const PerformanceManage = ({ onAddClick, onEditClick }) => {
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
@@ -68,15 +78,16 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/경로` // 공연 리스트 불러오는 백엔드 url
-      );
+      // const response = await axios.get( // await => 동기 함수
+      //   `http://localhost:8080/경로` // 공연 리스트 불러오는 백엔드 url
+      // );
 
-      const newData = response.data.map((item, index) => ({
+      const newData = testData.map((item, index) => ({
         ...item,
         number: (page - 1) * 7 + index + 1,
       }));
         setData(newData);
+        setPage(newData);
     } catch (error) {
       console.error(error);
     }
@@ -99,25 +110,26 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
       <Container>
         <thead>
           <tr>
-            <Header>번호</Header>
             <Header>공연제목</Header>
             <Header>장르</Header>
             <Header>시작일</Header>
             <Header>종료일</Header>
             <Header>공연상태</Header>
             <Header>게시여부</Header>
+            <Header></Header>
+            <Header></Header>
           </tr>
         </thead>
         <tbody>
           {data.map((item) => (
-            <tr key={item.id}>
-              <Cell>{item.performance.num}</Cell>
+            console.log("item: " + JSON.stringify(item, null,2)),
+            <tr key={item.mt20id}>
               <Cell>{item.prfnm}</Cell>
               <Cell>{item.genrenm}</Cell>
               <Cell>{item.prfpdfrom}</Cell>
               <Cell>{item.prfpdto}</Cell>
               <Cell>{item.prfstate}</Cell>
-              <Cell>{item.post}</Cell> 
+              <Cell>{item.post ? 'y' : 'n'}</Cell>
               {/*수정 삭제 버튼*/}
               <Cell>
                 <Button onClick={() => onEditClick(item.id)}>
@@ -131,7 +143,10 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
           ))}
           <tr></tr>
         </tbody>
+        
+
       </Container>
+      <Previous></Previous>
       <AddButton name="add" onClick={onAddClick}>
         공연추가하기
       </AddButton>
