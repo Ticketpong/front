@@ -32,7 +32,6 @@ const MainImg = () => {
   const fadeTime = 3000;
 
   useEffect(() => {
-    document.body.style.margin = '0';
     const interval = setInterval(() => {
       setCurrentImage((prevImage) => (prevImage + 1) % images.length);
     }, fadeTime);

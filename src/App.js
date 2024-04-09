@@ -35,6 +35,7 @@ function ScrollToTop() {
 }
 
 function App() {
+  document.body.style.margin = '0';
   const pathname = window.location.pathname;
 
   // 현재 경로가 login, signup이면 false
