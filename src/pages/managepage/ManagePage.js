@@ -110,7 +110,7 @@ const ManagePage = () => {
           selected={selectedItem === 1}
           onClick={() => handleItemClick(1)}
         >
-          <MenuItem>회원 관리</MenuItem>
+          <MenuItem>회원 관리</MenuItem> {/** 회원관리 1번 */}
           <ArrowIconWrapper>
             <MdKeyboardArrowRight />
           </ArrowIconWrapper>
