@@ -8,6 +8,8 @@ import {
   MdKeyboardDoubleArrowRight,
 } from "react-icons/md";
 import Modal from "./BookingDetailModal";
+import axiosWithAuth from "../../../components/base/axiosWithAuth";
+import axios from "axios";
 
 const Container = styled.table`
   margin: 20px auto;
@@ -118,65 +120,56 @@ const ITEMS_PER_PAGE = 7;
 
 const BookingDetail = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [userId, setUserId] = useState(""); // 추가: 사용자 ID 상태 추가
+  const [isLogined, setIsLogined] = useState(false); // 추가: 로그인 상태 상태 추가
+  const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState("3");
   const [showModal, setShowModal] = useState(false); // 모달 제어 상태 추가
   const [selectedData, setSelectedData] = useState(null); // 선택된 데이터 상태 추가
   const navigate = useNavigate();
 
-  const [data, setData] = useState([
-    {
-      imp_uid: "imp_uid01", //예매 ID
-      user_id: "user_id01", //ID
-      manage_id: "manage_id01", //ID
-      mt10id: "공연시설01", //공연시설
-      prfnm: "공연01", //공연명
-      res_date: new Date("2023-11-01"), //예매일
-      paid_amount: 120000, //결제금액
-      success: true, //결제상태
-      watchstate: true, //관람상태
-      prestate: false, //후기상태
-      selectdate: new Date("2023-11-01"), //선택날짜
-      selecttime: "14:00", //선택시간
-      selectseat: "VIP01, VIP02", //좌석
-      people: 2, //인원
-      pay_method: "card",
-    },
-    {
-      imp_uid: "imp_uid02", //예매 ID
-      user_id: "user_id01", //ID
-      manage_id: "manage_id02", //ID
-      mt10id: "공연시설02", //공연시설
-      prfnm: "공연02", //공연명
-      res_date: new Date("2023-12-15"), //예매일
-      paid_amount: 120000, //결제금액
-      success: true, //결제상태
-      watchstate: true, //관람상태
-      prestate: true, //후기상태
-      selectdate: new Date("2024-03-05"), //선택날짜
-      selecttime: "17:00", //선택시간
-      selectseat: "S01, S02", //좌석
-      people: 2, //인원
-      pay_method: "card",
-    },
-    {
-      imp_uid: "imp_uid03", //예매 ID
-      user_id: "user_id01", //ID
-      manage_id: "manage_id02", //ID
-      mt10id: "공연시설03", //공연시설
-      prfnm: "공연03", //공연명
-      res_date: new Date("2024-04-03"), //예매일
-      paid_amount: 120000, //결제금액
-      success: true, //결제상태
-      watchstate: false, //관람상태
-      prestate: false, //후기상태
-      selectdate: new Date("2024-04-30"), //선택날짜
-      selecttime: "17:00", //선택시간
-      selectseat: "S01, S02", //좌석
-      people: 2, //인원
-      pay_method: "card",
-    },
-  ]);
+  useEffect(() => {
+    const fetchLoginStatus = async () => {
+      try {
+        const response = await axiosWithAuth().get(
+          "http://localhost:8080/login/profile"
+        );
+        const { id, isLogined } = response.data;
+        if (isLogined) {
+          setUserId(id);
+          setIsLogined(true);
+        }
+      } catch (error) {
+        console.error("로그인 상태를 확인하는 동안 오류 발생:", error);
+      }
+    };
+    fetchLoginStatus();
+  }, []);
+
+  useEffect(() => {
+    fetchBookingData();
+  }, [currentPage]);
+
+  const fetchBookingData = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/reservation/list",
+        {
+          id: userId,
+        }
+      );
+      console.log(response);
+      const newData = response.data.map((item, index) => ({
+        ...item,
+        number: (currentPage - 1) * ITEMS_PER_PAGE + index + 1,
+      }));
+      console.log(newData);
+      setData(newData);
+    } catch (error) {
+      console.error("예매 내역을 불러오는 동안 오류 발생:", error);
+    }
+  };
 
   useEffect(() => {
     const startDate = new Date();
