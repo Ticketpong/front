@@ -33,7 +33,7 @@ const Cell = styled.td`
   text-align: center;
   font-weight: 500;
   font-size: 14px;
-  cursor: pointer; /* 추가: 클릭 가능한 커서 스타일 */
+  cursor: pointer;
   &:last-child {
     border-right: none;
   }
@@ -104,9 +104,9 @@ const ReviewStatus = styled.button`
   margin: 0 auto;
   background-color: ${({ status }) => {
     switch (status) {
-      case false:
+      case 0:
         return "#fc1055";
-      case true:
+      case 1:
         return "#999999";
       default:
         return "#999999";
@@ -115,19 +115,40 @@ const ReviewStatus = styled.button`
   cursor: ${({ status }) => (status === false ? "pointer" : "default")};
 `;
 
-// 항목 수
 const ITEMS_PER_PAGE = 7;
 
 const BookingDetail = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [userId, setUserId] = useState(""); // 추가: 사용자 ID 상태 추가
-  const [isLogined, setIsLogined] = useState(false); // 추가: 로그인 상태 상태 추가
-  const [data, setData] = useState([]);
+  const [userId, setUserId] = useState("");
+  const [isLogined, setIsLogined] = useState(false);
+  const [bookingData, setBookingData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState("3");
-  const [showModal, setShowModal] = useState(false); // 모달 제어 상태 추가
-  const [selectedData, setSelectedData] = useState(null); // 선택된 데이터 상태 추가
+  const [showModal, setShowModal] = useState(false);
+  const [selectedData, setSelectedData] = useState(null);
+  const [showName, setShowName] = useState(null);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchShowNameData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/viewall");
+        const selectedShowData = response.data.find(
+          (item) => item.mt20id === selectedData.mt20id
+        );
+
+        console.log(selectedShowData);
+        setShowName(selectedShowData.prfnm); // 공연 이름 설정
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (selectedData) {
+      // 선택된 데이터가 있을 때만 공연 데이터 가져오기
+      fetchShowNameData();
+    }
+  }, [bookingData]);
 
   useEffect(() => {
     const fetchLoginStatus = async () => {
@@ -149,7 +170,7 @@ const BookingDetail = () => {
 
   useEffect(() => {
     fetchBookingData();
-  }, [currentPage]);
+  }, [userId, selectedPeriod]);
 
   const fetchBookingData = async () => {
     try {
@@ -159,38 +180,37 @@ const BookingDetail = () => {
           id: userId,
         }
       );
-      console.log(response);
       const newData = response.data.map((item, index) => ({
         ...item,
         number: (currentPage - 1) * ITEMS_PER_PAGE + index + 1,
       }));
-      console.log(newData);
-      setData(newData);
+      setBookingData(newData);
+
+      const startDate = new Date();
+      switch (selectedPeriod) {
+        case "3":
+          startDate.setMonth(startDate.getMonth() - 3);
+          break;
+        case "6":
+          startDate.setMonth(startDate.getMonth() - 6);
+          break;
+        case "12":
+          startDate.setMonth(startDate.getMonth() - 12);
+          break;
+        default:
+          startDate.setMonth(startDate.getMonth() - 3); // 기본값
+      }
+
+      const filtered = newData.filter((item) => {
+        const itemDate = new Date(item.selectdate);
+        return itemDate >= startDate;
+      });
+      setFilteredData(filtered); // setData 호출 이후에 filteredData 설정
+      // console.log(filteredData);
     } catch (error) {
       console.error("예매 내역을 불러오는 동안 오류 발생:", error);
     }
   };
-
-  useEffect(() => {
-    const startDate = new Date();
-
-    switch (selectedPeriod) {
-      case "3":
-        startDate.setMonth(startDate.getMonth() - 3);
-        break;
-      case "6":
-        startDate.setMonth(startDate.getMonth() - 6);
-        break;
-      case "12":
-        startDate.setMonth(startDate.getMonth() - 12);
-        break;
-      default:
-        startDate.setMonth(startDate.getMonth() - 3); // 기본값
-    }
-
-    const filtered = data.filter((item) => item.selectdate >= startDate);
-    setFilteredData(filtered);
-  }, [data, selectedPeriod]);
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, filteredData.length);
@@ -201,7 +221,7 @@ const BookingDetail = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   const goToNextPage = () =>
     setCurrentPage((prevPage) =>
-      Math.min(prevPage + 1, Math.ceil(data.length / ITEMS_PER_PAGE))
+      Math.min(prevPage + 1, Math.ceil(bookingData.length / ITEMS_PER_PAGE))
     );
   const goToEndPage = () =>
     setCurrentPage(Math.ceil(filteredData.length / ITEMS_PER_PAGE));
@@ -212,6 +232,24 @@ const BookingDetail = () => {
     setSelectedData(data);
     setShowModal(true);
   };
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    if (month < 10) {
+      month = "0" + month;
+    }
+    let day = date.getDate();
+    if (day < 10) {
+      day = "0" + day;
+    }
+    return `${year}-${month}-${day}`;
+  }
+  function formatTime(timeString) {
+    const [hours, minutes, seconds] = timeString.split(":");
+    return `${hours}:${minutes}`;
+  }
 
   return (
     <>
@@ -253,27 +291,27 @@ const BookingDetail = () => {
                 key={filtered.imp_uid}
                 onClick={() => handleCellClick(filtered)}
               >
-                <Cell>{filtered.res_date.toLocaleDateString()}</Cell>
-                <Cell>{filtered.prfnm}</Cell>
+                <Cell>{formatDate(filtered.res_date)}</Cell>
+                <Cell>{showName}</Cell>
                 <Cell>
-                  {filtered.selectdate.toLocaleDateString()}{" "}
-                  {filtered.selecttime}
+                  {formatDate(filtered.selectdate)}{" "}
+                  {formatTime(filtered.selecttime)}
                 </Cell>
                 <Cell>{filtered.paid_amount}원</Cell>
                 <Cell>{filtered.people}</Cell>
                 <Cell>
-                  {filtered.success === true ? "결제완료" : "결제취소"}
+                  {filtered.success.data[0] === 1 ? "결제완료" : "결제취소"}
                 </Cell>
                 <Cell>
                   <ReviewStatus
-                    status={filtered.prestate}
+                    status={filtered.prestate.data[0]}
                     onClick={
-                      filtered.prestate === false
+                      filtered.prestate.data[0] === 0
                         ? () => navigate("/writereview")
                         : undefined
                     }
                   >
-                    {filtered.prestate === true ? "작성완료" : "작성하기"}
+                    {filtered.prestate.data[0] === 1 ? "작성완료" : "작성하기"}
                   </ReviewStatus>
                 </Cell>
               </tr>
@@ -289,7 +327,7 @@ const BookingDetail = () => {
           <MdKeyboardArrowLeft color="#999999" />
         </button>
         {Array.from(
-          { length: Math.ceil(data.length / ITEMS_PER_PAGE) },
+          { length: Math.ceil(bookingData.length / ITEMS_PER_PAGE) },
           (_, i) => (
             <strong key={i + 1} onClick={() => setCurrentPage(i + 1)}>
               {i + 1}

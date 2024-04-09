@@ -130,8 +130,8 @@ const Modal = ({ isOpen, onClose, data }) => {
   // 예매일자 가져오기
   const selectDate = new Date(data.selectdate);
 
-  const selectDateStr = data.selectdate.toISOString().slice(0, 10);
-  const currentDateStr = currentDate.toISOString().slice(0, 10);
+  const selectDateStr = data.selectdate;
+  const currentDateStr = currentDate;
   // 예매일자와 현재 날짜 비교
   const isCancelable = selectDateStr > currentDateStr;
 
@@ -149,6 +149,23 @@ const Modal = ({ isOpen, onClose, data }) => {
   const handleCancelConfirm = () => {
     setIsConfirmOpen(false);
   };
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    if (month < 10) {
+      month = "0" + month;
+    }
+    let day = date.getDate();
+    if (day < 10) {
+      day = "0" + day;
+    }
+    return `${year}-${month}-${day}`;
+  }
+  function formatTime(timeString) {
+    const [hours, minutes, seconds] = timeString.split(":");
+    return `${hours}:${minutes}`;
+  }
 
   return (
     <ModalWrapper>
@@ -158,15 +175,15 @@ const Modal = ({ isOpen, onClose, data }) => {
           <tbody>
             <tr>
               <Th>예매일</Th>
-              <Td>{data.res_date.toLocaleDateString()}</Td>
+              <Td>{formatDate(data.res_date)}</Td>
               <Th>결제상태</Th>
-              <Td>{data.success === true ? "결제완료" : "결제취소"}</Td>
+              <Td>{data.success.data[0] === 1 ? "결제완료" : "결제취소"}</Td>
             </tr>
             <tr>
               <Th>결제수단</Th>
               <Td>{data.pay_method === "card" ? "신용카드" : "무통장입금"}</Td>
               <Th>관람상태</Th>
-              <Td>{data.watchstate === true ? "관람완료" : "관람전"}</Td>
+              <Td>{data.watchstate.data[0] === 1 ? "관람완료" : "관람전"}</Td>
             </tr>
           </tbody>
         </Table>
@@ -188,8 +205,8 @@ const Modal = ({ isOpen, onClose, data }) => {
             <tr>
               <Th>관람일자</Th>
               <Td>
-                {data.selectdate.toLocaleDateString()}
-                {data.selecttime}
+                {formatDate(data.selectdate)}
+                {formatTime(data.selecttime)}
               </Td>
               <Th>결제금액</Th>
               <Td>{data.paid_amount}원</Td>
