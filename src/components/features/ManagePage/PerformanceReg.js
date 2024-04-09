@@ -309,7 +309,7 @@ const PerformaceReg = () => {
               name="region"
               value={performance.region}
               onChange={handleChange}
-              placeholder="지역을 입력해주세요. ex)부산"
+              placeholder="지역을 입력해주세요. ex) 부산"
             />
           </InputContainer>
           <InputContainer>
@@ -373,7 +373,7 @@ const PerformaceReg = () => {
               name="telNo"
               value={performance.telNo}
               onChange={handleChange}
-              placeholder="번호을 입력해주세요."
+              placeholder="번호를 입력해주세요."
             />
           </InputContainer>
           <InputContainer>
@@ -391,7 +391,7 @@ const PerformaceReg = () => {
                   id="selYn"
                   onChange={handleChange}
                 />
-                <label for="selYn">판매중</label>
+                <label for="selYn">판매 중</label>
               </RadioList>
               <RadioList>
                 <input
