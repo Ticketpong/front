@@ -1,6 +1,6 @@
 // 공연수정
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { json, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -55,7 +55,6 @@ const HrDiv = styled.div`
   margin-top: 40px;
 `;
 
-
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -99,7 +98,6 @@ const Radio = styled.div`
   align-items: center;
 `;
 
-
 const PerformaceReg = () => {
   const [performance, setPerformance] = useState({
     name: "",
@@ -132,19 +130,13 @@ const PerformaceReg = () => {
     }
   };
 
-  const url = "http://localhost:8080/경로"; // 공연 등록 백엔드 url
+  const url = `http://localhost:8080/manage/manageMain/performanceEdit`; // 공연 수정 url
 
   const submit = async () => {
     try {
       // 관리자 추가 처리 로직
-      const response = await axios.post(url, { // 수정
-        id: performance.id,
-        password: performance.password,
-        repassword: performance.repassword,
-        name: performance.name,
-        phone: performance.phone,
-        role: performance.role,
-        part: performance.part,
+      const response = await axios.post(url, {
+        // 수정
       });
       console.log(response);
       json.stringify(response);
@@ -164,8 +156,8 @@ const PerformaceReg = () => {
   };
 
   // 공연 시작일, 종료일 정의
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   return (
     <>
       <hr />
@@ -177,7 +169,8 @@ const PerformaceReg = () => {
               <Star />
             </InputLabel>
             <GrayInput
-              type="text"InputLabel
+              type="text"
+              InputLabel
               name="name"
               value={performance.name}
               onChange={handleChange}
@@ -301,9 +294,7 @@ const PerformaceReg = () => {
             />
           </InputContainer>
           <InputContainer>
-            <InputLabel>
-              지역
-            </InputLabel>
+            <InputLabel>지역</InputLabel>
             <GrayInput
               type="text"
               name="region"
@@ -313,9 +304,7 @@ const PerformaceReg = () => {
             />
           </InputContainer>
           <InputContainer>
-            <InputLabel>
-              공연장
-            </InputLabel>
+            <InputLabel>공연장</InputLabel>
             <GrayInput
               type="text"
               name="performanceId"
@@ -325,18 +314,20 @@ const PerformaceReg = () => {
             />
           </InputContainer>
           <InputContainer>
-            <InputLabel>
-              시작일
-            </InputLabel>
-            <GrayInput type="date"
-             name="startDate"
-             value={startDate}
-             onChange={(e) => setStartDate(e.target.value)}/>
-              종료일
-            <GrayInput type="date"
-             name="endDate"
-             value={endDate}
-             onChange={(e) => setEndDate(e.target.value)}/>
+            <InputLabel>시작일</InputLabel>
+            <GrayInput
+              type="date"
+              name="startDate"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+            종료일
+            <GrayInput
+              type="date"
+              name="endDate"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
           </InputContainer>
           <InputContainer>
             <InputLabel>
@@ -365,9 +356,7 @@ const PerformaceReg = () => {
             />
           </InputContainer>
           <InputContainer>
-            <InputLabel>
-              문의전화
-            </InputLabel>
+            <InputLabel>문의전화</InputLabel>
             <GrayInput
               type="text"
               name="telNo"
@@ -406,7 +395,7 @@ const PerformaceReg = () => {
               </RadioList>
             </Radio>
           </InputContainer>
-                   <HrDiv />
+          <HrDiv />
           <ButtonContainer>
             <CancelButton type="reset" onClick={onClickCancel}>
               취소
