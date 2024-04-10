@@ -1,5 +1,9 @@
 import styled from "styled-components";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axiosWithAuth from "../../base/axiosWithAuth";
+import axios from "axios";
+import DaumPostcode from "react-daum-postcode";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 900px;
@@ -63,6 +67,18 @@ const ButtonContainer = styled.div`
   margin-top: 40px;
 `;
 
+const DeleteButton = styled.button`
+  background-color: #999999;
+  color: #fff;
+  width: 250px;
+  height: 70px;
+  border-radius: 3px;
+  border: 0;
+  font-size: 24px;
+  margin-left: 50px;
+  margin-right: 50px;
+`;
+
 const EndButton = styled.button`
   background-color: #fc1055;
   color: #fff;
@@ -86,6 +102,53 @@ const EditProfile = () => {
     address: "",
     detailedAddress: "",
   });
+  const [userId, setUserId] = useState("");
+  const [isLogined, setIsLogined] = useState(false);
+  const [isEmailCheck, setIsEmailCheck] = useState(false);
+  const [isDaumPostcodeOpen, setIsDaumPostcodeOpen] = useState(false);
+  const navigate = useNavigate(); // 페이지 이동을 위한 hook
+
+  useEffect(() => {
+    // 회원 정보 가져오기 로직
+    fetchLoginStatus();
+  }, []);
+
+  const fetchLoginStatus = async () => {
+    const response = await axiosWithAuth().get(
+      "http://localhost:8080/login/profile"
+    ); //로그인 상태 확인
+    const { id, isLogined } = response.data;
+    if (isLogined) {
+      setUserId(id);
+      setIsLogined(isLogined);
+    } else {
+      console.log("로그인 상태가 아닙니다.");
+    }
+  };
+
+  useEffect(() => {
+    // 회원 정보 가져오기 로직
+    fetchUserInfo();
+  }, []);
+
+  const fetchUserInfo = async () => {
+    const response = await axios.post("http://localhost:8080/main/member", {
+      id: userId,
+    });
+
+    const newData = response.data;
+    setUserInfo((prevState) => ({
+      ...prevState,
+      id: newData.user_id,
+      name: newData.user_name,
+      phoneNumber: newData.user_phone,
+      email: newData.user_email,
+      address: newData.address,
+      detailedAddress: newData.detailAddress,
+    }));
+  };
+
+  console.log(userInfo);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -95,17 +158,78 @@ const EditProfile = () => {
     }));
   };
 
-  const handleEmailDuplicationCheck = () => {
+  const handleEmailDuplicationCheck = async () => {
     // 이메일 중복 확인 로직
+    const response = await axios.get(
+      "http://localhost:8080/signup/emailcheck",
+      {
+        email: userInfo.email,
+      }
+    );
+    if (response.status === 200) {
+      alert("사용 가능한 이메일입니다.");
+      setIsEmailCheck(true);
+    } else {
+      alert("이미 사용 중인 이메일입니다.");
+      setIsEmailCheck(false);
+      userInfo.email = userInfo.email;
+    }
   };
 
-  const handleAddressSearch = () => {
-    // 주소 검색 로직
+  const deletMember = async () => {
+    // 회원 탈퇴 로직
+    const response = await axios.delete("http://localhost:8080/main/delete", {
+      id: userId,
+    });
+    if (response.status === 200) {
+      alert("회원 탈퇴가 완료되었습니다.");
+      setIsLogined(false);
+      localStorage.removeItem("token");
+    } else {
+      alert("회원 탈퇴에 실패했습니다.");
+    }
   };
 
-  const handleSubmit = (e) => {
+  const openDaumPostcode = () => {
+    // 우편 검색 API 로직 (다음 우편번호 API)
+    setIsDaumPostcodeOpen(true);
+  };
+
+  const handleComplete = (data) => {
+    let fullAddress = data.address;
+    let extraAddress = data.addressType === "R" ? "" : data.bname;
+
+    setUserInfo((prevState) => ({
+      ...prevState,
+      address: fullAddress,
+    }));
+    setIsDaumPostcodeOpen(false);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // 회원 정보 수정 처리 로직
+    if (userInfo.password !== userInfo.confirmPassword) {
+      alert("비밀번호가 일치하지 않습니다.");
+    } else if (!isEmailCheck) {
+      alert("이메일 중복 확인을 해주세요.");
+    } else {
+      const response = await axios.put("http://localhost:8080/main/edit", {
+        id: userId,
+        pw: userInfo.password,
+        repw: userInfo.confirmPassword,
+        email: userInfo.email,
+        address: userInfo.address,
+        detailAddress: userInfo.detailedAddress,
+      });
+      if (response.status === 200) {
+        alert("회원 정보 수정이 완료되었습니다.");
+        navigate(0);
+      } else {
+        alert("회원 정보 수정에 실패했습니다.");
+        window.location.reload();
+      }
+    }
   };
 
   const Star = () => {
@@ -117,17 +241,8 @@ const EditProfile = () => {
       <Container>
         <Form onSubmit={handleSubmit}>
           <InputContainer>
-            <InputLabel>
-              아이디
-              <Star />
-            </InputLabel>
-            <GrayInput
-              type="text"
-              name="id"
-              value={userInfo.id}
-              onChange={handleChange}
-              placeholder="아이디를 입력하세요."
-            />
+            <InputLabel>아이디</InputLabel>
+            <GrayInput type="text" name="id" value={userInfo.id} readOnly />
           </InputContainer>
           <InputContainer>
             <InputLabel>
@@ -156,29 +271,16 @@ const EditProfile = () => {
             />
           </InputContainer>
           <InputContainer>
-            <InputLabel>
-              이름
-              <Star />
-            </InputLabel>
-            <GrayInput
-              type="text"
-              name="name"
-              value={userInfo.name}
-              onChange={handleChange}
-              placeholder="이름을 입력하세요."
-            />
+            <InputLabel>이름</InputLabel>
+            <GrayInput type="text" name="name" value={userInfo.name} readOnly />
           </InputContainer>
           <InputContainer>
-            <InputLabel>
-              연락처
-              <Star />
-            </InputLabel>
-            <Input
+            <InputLabel>연락처</InputLabel>
+            <GrayInput
               type="text"
               name="phoneNumber"
               value={userInfo.phoneNumber}
-              onChange={handleChange}
-              placeholder="010-1234-5678"
+              readOnly
             />
           </InputContainer>
           <InputContainer>
@@ -192,7 +294,6 @@ const EditProfile = () => {
                 name="email"
                 value={userInfo.email}
                 onChange={handleChange}
-                placeholder="예:example@email.com"
               />
               <Button type="button" onClick={handleEmailDuplicationCheck}>
                 중복 확인
@@ -210,9 +311,9 @@ const EditProfile = () => {
                 name="address"
                 value={userInfo.address}
                 onChange={handleChange}
-                placeholder="예: 서울특별시 강남구 연주로 508"
+                readOnly
               />
-              <Button type="button" onClick={handleAddressSearch}>
+              <Button type="button" onClick={openDaumPostcode}>
                 주소 검색
               </Button>
             </InputWithButtonContainer>
@@ -229,10 +330,55 @@ const EditProfile = () => {
           </InputContainer>
           <HrDiv />
           <ButtonContainer>
-            <EndButton type="submit">탈퇴하기</EndButton>
+            <DeleteButton type="button" onClick={deletMember}>
+              탈퇴하기
+            </DeleteButton>
             <EndButton type="submit">회원 정보 수정</EndButton>
           </ButtonContainer>
         </Form>
+        {/* 다음 우편번호 API */}
+        {isDaumPostcodeOpen && (
+          <div
+            style={{
+              position: "fixed",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              border: "1px solid #000",
+              width: "600px",
+              height: "430px",
+              borderRadius: "5px",
+              boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+              backgroundColor: "white",
+              textAlign: "center",
+            }}
+          >
+            <div
+              style={{
+                position: "relative",
+              }}
+            >
+              <button
+                onClick={() => setIsDaumPostcodeOpen(false)}
+                style={{
+                  float: "right",
+                  marginRight: "10px",
+                  padding: "0",
+                  background: "none",
+                  border: "none",
+                  fontSize: "20px",
+                  cursor: "pointer",
+                  padding: "0",
+                  color: "rgba(0, 0, 0, 0.5)",
+                }}
+              >
+                X
+              </button>
+
+              <DaumPostcode onComplete={handleComplete} autoClose />
+            </div>
+          </div>
+        )}
       </Container>
     </>
   );

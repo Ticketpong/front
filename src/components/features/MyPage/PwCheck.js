@@ -92,6 +92,7 @@ const PwCheck = () => {
       setShowEditProfile(true); //수정페이지 보여주기
     } else {
       alert("비밀번호가 일치하지 않습니다.");
+      window.location.reload();
     }
   };
   return (
