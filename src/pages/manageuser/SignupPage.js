@@ -3,6 +3,7 @@ import { Link, json } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../../assets/headerImg/logo.png";
 import axios from "axios";
+import DaumPostcode from "react-daum-postcode";
 
 const Container = styled.div`
   display: flex;
@@ -210,6 +211,9 @@ const SignupPage = () => {
     address: "",
     detailAddress: "",
   });
+  const [isDaumPostcodeOpen, setIsDaumPostcodeOpen] = useState(false);
+  const [isIdCheck, setIsIdCheck] = useState(false);
+  const [isEmailCheck, setIsEmailCheck] = useState(false);
 
   const inputChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -217,6 +221,73 @@ const SignupPage = () => {
       ...inputValue,
       [name]: value,
     });
+  };
+
+  const handleComplete = (data) => {
+    const fullAddress = data.address;
+    const extraAddress = data.addressType === "R" ? "" : data.bname;
+    setInputValue({
+      ...inputValue,
+      address: fullAddress,
+      detailAddress: extraAddress,
+    });
+    setIsDaumPostcodeOpen(false);
+  };
+
+  const openDaumPostcode = () => {
+    setIsDaumPostcodeOpen(true);
+  };
+
+  const idCheckHandler = async () => {
+    try {
+      if (inputValue.id === "") {
+        alert("아이디를 입력해주세요.");
+      } else {
+        const response = await axios.post(
+          "http://localhost:8080/signup/idcheck",
+          {
+            id: inputValue.id,
+          }
+        );
+        console.log(response);
+        if (response.data === "이미 사용중인 아이디입니다.") {
+          alert("이미 사용중인 아이디입니다.");
+          setIsIdCheck(false);
+          window.location.reload();
+        } else if (response.status === 200) {
+          alert("사용 가능한 아이디입니다.");
+          setIsIdCheck(true);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const emailCheckHandler = async () => {
+    try {
+      if (inputValue.email === "") {
+        alert("이메일을 입력해주세요.");
+      } else {
+        const response = await axios.post(
+          "http://localhost:8080/signup/emailcheck",
+          {
+            email: inputValue.email,
+          }
+        );
+        console.log(response);
+        if (response.data === "이미 사용중인 이메일입니다.") {
+          alert("이미 사용중인 이메일입니다.");
+          setIsEmailCheck(false);
+          window.location.reload();
+        } else if (response.status === 200) {
+          alert("사용 가능한 이메일입니다.");
+          setIsEmailCheck(true);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const url = "http://localhost:8080/signup";
@@ -266,7 +337,7 @@ const SignupPage = () => {
               placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합"
               onChange={inputChangeHandler}
             />
-            <input type="button" value="중복확인" />
+            <input type="button" value="중복확인" onClick={idCheckHandler} />
           </div>
           <div>
             <p>
@@ -322,7 +393,7 @@ const SignupPage = () => {
               placeholder="예: example@email.com"
               onChange={inputChangeHandler}
             />
-            <input type="button" value="중복확인" />
+            <input type="button" value="중복확인" onClick={emailCheckHandler} />
           </div>
           <div id="addr">
             <div>
@@ -333,15 +404,22 @@ const SignupPage = () => {
                 type="text"
                 name="address"
                 placeholder="예: 서울시 강남구 연주로 508"
-                onChange={inputChangeHandler} // 주소 API 연결
+                value={inputValue.address}
+                readOnly
+                onChange={inputChangeHandler}
               />
-              <input type="button" value="주소검색" />
+              <input
+                type="button"
+                value="주소검색"
+                onClick={openDaumPostcode}
+              />
             </div>
             <div id="detailadd">
               <input
                 type="text"
                 name="detailAddress"
                 placeholder="상세주소를 입력해주세요."
+                value={inputValue.detailAddress}
                 onChange={inputChangeHandler}
               />
             </div>
@@ -355,6 +433,49 @@ const SignupPage = () => {
           <Link to="/login">로그인하기</Link>
         </p>
       </Login>
+      {/* 다음 우편번호 API */}
+      {isDaumPostcodeOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            border: "1px solid #000",
+            width: "600px",
+            height: "430px",
+            borderRadius: "5px",
+            boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "white",
+            textAlign: "center",
+          }}
+        >
+          <div
+            style={{
+              position: "relative",
+            }}
+          >
+            <button
+              onClick={() => setIsDaumPostcodeOpen(false)}
+              style={{
+                float: "right",
+                marginRight: "10px",
+                padding: "0",
+                background: "none",
+                border: "none",
+                fontSize: "20px",
+                cursor: "pointer",
+                padding: "0",
+                color: "rgba(0, 0, 0, 0.5)",
+              }}
+            >
+              X
+            </button>
+
+            <DaumPostcode onComplete={handleComplete} autoClose />
+          </div>
+        </div>
+      )}
     </Container>
   );
 };
