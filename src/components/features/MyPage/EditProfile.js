@@ -114,7 +114,6 @@ const EditProfile = () => {
 
   return (
     <>
-      <hr />
       <Container>
         <Form onSubmit={handleSubmit}>
           <InputContainer>

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import BookingDetail from "../../components/features/MyPage/BookingDetail";
 import MyReview from "../../components/features/MyPage/MyReview";
 import EditProfile from "../../components/features/MyPage/EditProfile";
+import PwCheck from "../../components/features/MyPage/PwCheck";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 const Container = styled.div`
@@ -69,6 +70,7 @@ const Title = styled.h2`
 
 const MyPage = () => {
   const [selectedItem, setSelectedItem] = useState(1);
+  const [showPwCheck, setShowPwCheck] = useState(false); // 비밀번호 확인 모달
 
   const handleItemClick = (num) => {
     setSelectedItem(num);
@@ -97,7 +99,7 @@ const MyPage = () => {
           </ArrowIconWrapper>
         </MenuItemWrapper>
         <MenuItemWrapper
-          selected={selectedItem === 3}
+          selected={selectedItem === 3 || selectedItem === 4}
           onClick={() => handleItemClick(3)}
         >
           <MenuItem>회원 정보 수정</MenuItem>
@@ -110,11 +112,13 @@ const MyPage = () => {
         <Title>
           {selectedItem === 1 && "예매 내역"}
           {selectedItem === 2 && "나의 관람 후기"}
-          {selectedItem === 3 && "회원 정보 수정"}
+          {selectedItem === 3 && "비밀번호 확인"}
+          {selectedItem === 4 && "회원 정보 수정"}
         </Title>
         {selectedItem === 1 && <BookingDetail />}
         {selectedItem === 2 && <MyReview />}
-        {selectedItem === 3 && <EditProfile />}
+        {selectedItem === 3 && <PwCheck />}
+        {selectedItem === 4 && <EditProfile />}
       </Content>
     </Container>
   );
