@@ -1,9 +1,10 @@
 // 공연등록
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { json, useNavigate } from "react-router-dom";
 import axios from "axios";
+import axiosWithAuth from "../../base/axiosWithAuth";
 
 const Container = styled.div`
   width: 100%;
@@ -55,7 +56,6 @@ const HrDiv = styled.div`
   margin-top: 40px;
 `;
 
-
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -99,7 +99,6 @@ const Radio = styled.div`
   align-items: center;
 `;
 
-
 const PerformaceReg = () => {
   const [performance, setPerformance] = useState({
     name: "",
@@ -115,6 +114,9 @@ const PerformaceReg = () => {
     telNo: "",
     selYn: "",
   });
+  const [manageId, setManageId] = useState("");
+  const [isLogined, setIsLogined] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPerformance((prevState) => ({
@@ -132,19 +134,47 @@ const PerformaceReg = () => {
     }
   };
 
-  const url = "http://localhost:8080/경로"; // 공연 등록 백엔드 url
+  useEffect(() => {
+    fetchLoginState();
+  }, []);
+
+  const fetchLoginState = async () => {
+    try {
+      const response = await axiosWithAuth().get(
+        "http://localhost:8080/login/profile"
+      );
+      const { id, isLogined } = response.data;
+      if (isLogined) {
+        setManageId(id);
+        setIsLogined(true);
+      }
+    } catch (error) {
+      console.error("로그인 상태를 확인하는 동안 오류 발생:", error);
+    }
+  };
+
+  const url = "http://localhost:8080/manage/manageMain/performanceAdd"; // 공연 등록 백엔드 url
 
   const submit = async () => {
     try {
       // 관리자 추가 처리 로직
-      const response = await axios.post(url, { // 수정
-        id: performance.id,
-        password: performance.password,
-        repassword: performance.repassword,
-        name: performance.name,
-        phone: performance.phone,
-        role: performance.role,
-        part: performance.part,
+      const response = await axios.post(url, {
+        // 등록할 공연 정보
+        mt20id: performance.mt20id,
+        manage_id: manageId,
+        mt10id: performance.mt10id,
+        prfnm: performance.prfnm,
+        prfpdfrom: performance.prfpdfrom,
+        prfpdto: performance.prfpdto,
+        prfruntime: performance.prfruntime,
+        pcseguidance: performance.pcseguidance,
+        genrenm: performance.genrenm,
+        prfstate: performance.prfstate,
+        poster: performance.poster,
+        styurl: performance.styurl,
+        dtguidance: performance.dtguidance,
+        post: performance.post,
+        prfage: performance.prfage,
       });
       console.log(response);
       json.stringify(response);
@@ -164,8 +194,8 @@ const PerformaceReg = () => {
   };
 
   // 공연 시작일, 종료일 정의
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   return (
     <>
       <hr />
@@ -177,7 +207,8 @@ const PerformaceReg = () => {
               <Star />
             </InputLabel>
             <GrayInput
-              type="text"InputLabel
+              type="text"
+              InputLabel
               name="name"
               value={performance.name}
               onChange={handleChange}
@@ -301,9 +332,7 @@ const PerformaceReg = () => {
             />
           </InputContainer>
           <InputContainer>
-            <InputLabel>
-              지역
-            </InputLabel>
+            <InputLabel>지역</InputLabel>
             <GrayInput
               type="text"
               name="region"
@@ -313,9 +342,7 @@ const PerformaceReg = () => {
             />
           </InputContainer>
           <InputContainer>
-            <InputLabel>
-              공연장
-            </InputLabel>
+            <InputLabel>공연장</InputLabel>
             <GrayInput
               type="text"
               name="performanceId"
@@ -325,18 +352,20 @@ const PerformaceReg = () => {
             />
           </InputContainer>
           <InputContainer>
-            <InputLabel>
-              시작일
-            </InputLabel>
-            <GrayInput type="date"
-             name="startDate"
-             value={startDate}
-             onChange={(e) => setStartDate(e.target.value)}/>
-              종료일
-            <GrayInput type="date"
-             name="endDate"
-             value={endDate}
-             onChange={(e) => setEndDate(e.target.value)}/>
+            <InputLabel>시작일</InputLabel>
+            <GrayInput
+              type="date"
+              name="startDate"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+            종료일
+            <GrayInput
+              type="date"
+              name="endDate"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
           </InputContainer>
           <InputContainer>
             <InputLabel>
@@ -365,9 +394,7 @@ const PerformaceReg = () => {
             />
           </InputContainer>
           <InputContainer>
-            <InputLabel>
-              문의전화
-            </InputLabel>
+            <InputLabel>문의전화</InputLabel>
             <GrayInput
               type="text"
               name="telNo"
@@ -406,7 +433,7 @@ const PerformaceReg = () => {
               </RadioList>
             </Radio>
           </InputContainer>
-                   <HrDiv />
+          <HrDiv />
           <ButtonContainer>
             <CancelButton type="reset" onClick={onClickCancel}>
               취소

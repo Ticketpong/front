@@ -67,14 +67,14 @@ const MemberManage = ({ onAddClick, onEditClick }) => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/경로` // 유저 리스트 불러오는 백엔드 url
+        `http://localhost:8080/manage/manageMain/memberList` // 유저 리스트 불러오는 백엔드 url
       );
 
       const newData = response.data.map((item, index) => ({
         ...item,
         number: (page - 1) * 7 + index + 1,
       }));
-        setData(newData);
+      setData(newData);
     } catch (error) {
       console.error(error);
     }
@@ -88,7 +88,6 @@ const MemberManage = ({ onAddClick, onEditClick }) => {
             <Header>번호</Header>
             <Header>이름</Header>
             <Header>아이디</Header>
-            <Header>가입날짜</Header>
             <Header>연락처</Header>
             <Header>이메일</Header>
             <Header>예매횟수</Header>
@@ -97,13 +96,12 @@ const MemberManage = ({ onAddClick, onEditClick }) => {
         <tbody>
           {data.map((item) => (
             <tr key={item.id}>
-              <Cell>{item.user_num}</Cell>
+              <Cell>{item.number}</Cell>
               <Cell>{item.user_name}</Cell>
               <Cell>{item.user_id}</Cell>
-              <Cell>{item.reg_dt}</Cell>
               <Cell>{item.user_phone}</Cell>
               <Cell>{item.user_email}</Cell>
-              <Cell>{item.ticketing_cnt}</Cell> 
+              <Cell>{item.ticketing_cnt}</Cell>
             </tr>
           ))}
           <tr></tr>
