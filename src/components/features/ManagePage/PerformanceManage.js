@@ -95,9 +95,9 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
 
   const url = `http://localhost:8080/manage/manageMain/performanceDelete`; // 공연 삭제 백엔드 url
 
-  const performanceDelete = async (id) => {
+  const performanceDelete = async (mt20id) => {
     try {
-      const response = await axios.delete(url, { data: { id } });
+      const response = await axios.delete(url, { data: { mt20id } });
       console.log(response);
       fetchData();
     } catch (error) {
@@ -111,6 +111,7 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
         <thead>
           <tr>
             <Header>번호</Header>
+            <Header>공연ID</Header>
             <Header>공연제목</Header>
             <Header>장르</Header>
             <Header>시작일</Header>
@@ -125,6 +126,7 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
           {data.map((item) => (
             <tr key={item.mt20id}>
               <Cell>{item.number}</Cell>
+              <Cell>{item.mt20id}</Cell>
               <Cell>{item.prfnm}</Cell>
               <Cell>{item.genrenm}</Cell>
               <Cell>{item.prfpdfrom}</Cell>
