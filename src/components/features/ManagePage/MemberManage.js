@@ -101,7 +101,7 @@ const MemberManage = ({ onAddClick, onEditClick }) => {
               <Cell>{item.user_id}</Cell>
               <Cell>{item.user_phone}</Cell>
               <Cell>{item.user_email}</Cell>
-              <Cell>{item.ticketing_cnt}</Cell>
+              <Cell>{item.res_count}</Cell>
             </tr>
           ))}
           <tr></tr>
