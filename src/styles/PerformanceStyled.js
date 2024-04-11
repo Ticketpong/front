@@ -125,6 +125,20 @@ export const Rank = styled.p`
   @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 `;
 
+export const UpperCategory = styled.p`
+  position: absolute;
+  top: 21px;
+  left: 15px;
+  background-color: white;
+  color: #fc1055;
+  font-size: 11px;
+  border: 1px solid #fc1055;
+  border-radius: 12px;
+  width: 55px;
+  height: 18px;
+  text-align: center;
+`;
+
 export const Button = styled.button`
   min-width: 120px;
   height: 50px;
@@ -193,7 +207,6 @@ export const MoreButton = styled.button`
   }
 `;
 // 중단 라벨바
-
 export const LabelContainer = styled.div`
   display: flex;
   justify-content: flex-end;

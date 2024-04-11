@@ -197,6 +197,7 @@ const Performance = () => {
                     <StyleLink to={`/ticketing/${item.mt20id}`}>
                       <S.ImageContainer>
                         <S.UpperImage>
+                          <S.UpperCategory>{item.genrenm}</S.UpperCategory>
                           <img src={item.poster} alt="포스터" />
                           <S.Rank>{startIndex + index + 1}</S.Rank>
                         </S.UpperImage>
