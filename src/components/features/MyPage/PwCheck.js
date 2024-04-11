@@ -118,7 +118,7 @@ const PwCheck = () => {
             </ButtonContainer>
           </>
         ) : (
-          <EditProfile />
+          <EditProfile Id={userId} />
         )}
       </Container>
     </>
