@@ -8,10 +8,9 @@ import DaumPostcode from "react-daum-postcode";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 760px;
-  height: auto;
-  margin: 0 auto;
-  margin-top: 60px;
+  align-items: center;
+  justify-content: center;
+  margin: 200px auto;
 `;
 
 const SignupBox = styled.div`
@@ -56,6 +55,7 @@ const Input = styled.div`
   }
   p {
     font-size: 15px;
+    font-weight: 700;
     span {
       color: #fc1055;
     }
