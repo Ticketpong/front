@@ -56,6 +56,16 @@ const AddButton = styled.button`
   right: 10%;
 `;
 
+const Pagination = styled.div`
+  margin-top: 20px;
+  text-align: center;
+`;
+
+const PageButton = styled(Button)`
+  width: 40px;
+  height: 36px;
+`;
+
 const AdminManage = ({ onAddClick, onEditClick }) => {
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
@@ -92,6 +102,41 @@ const AdminManage = ({ onAddClick, onEditClick }) => {
     }
   };
 
+  
+   // 페이징 구현
+   const handlePreviousPage = () => {
+    setPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setPage((prevPage) =>
+      Math.min(prevPage + 1, Math.ceil(data.length / 10))
+    );
+  };
+
+  const handlePageClick = (page) => {
+    setPage(page);
+  };
+
+  const renderPageButtons = () => {
+    const totalPageCount = Math.ceil(data.length / 10);
+    const pageButtons = [];
+
+    for (let i = 1; i <= totalPageCount; i++) {
+      pageButtons.push(
+        <PageButton
+          key={i}
+          onClick={() => handlePageClick(i)}
+          disabled={page === i}
+        >
+          {i}
+        </PageButton>
+      );
+    }
+ 
+    return pageButtons;
+  };
+
   return (
     <>
       <Container>
@@ -107,7 +152,9 @@ const AdminManage = ({ onAddClick, onEditClick }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
+          {data
+          .slice((page - 1) * 10, page * 10)
+          .map((item) => (
             <tr key={item.id}>
               <Cell>{item.number}</Cell>
               <Cell>{item.manage_id}</Cell>
@@ -127,6 +174,16 @@ const AdminManage = ({ onAddClick, onEditClick }) => {
           <tr></tr>
         </tbody>
       </Container>
+         {/* 페이지네이션 버튼 */}
+         <Pagination>
+        <Button onClick={handlePreviousPage}>
+          <MdKeyboardArrowLeft />
+        </Button>
+        {renderPageButtons()}
+        <Button onClick={handleNextPage}>
+          <MdKeyboardArrowRight />
+        </Button>
+      </Pagination>
       <AddButton name="add" onClick={onAddClick}>
         + 추가하기
       </AddButton>
