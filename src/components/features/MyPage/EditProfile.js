@@ -203,6 +203,7 @@ const EditProfile = (props) => {
       });
       if (response.status === 200) {
         alert("회원 정보 수정이 완료되었습니다.");
+        window.location.reload();
       } else {
         alert("회원 정보 수정에 실패했습니다.");
         window.location.reload();
