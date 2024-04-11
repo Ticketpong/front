@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const Container = styled.div`
   width: 900px;
-  margin: 80px auto;
+  margin: 200px auto;
 `;
 
 const Content = styled.div`

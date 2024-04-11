@@ -60,10 +60,15 @@ export const UpperImage = styled.div`
   height: 360px;
   margin-bottom: 10px;
   object-fit: cover;
+  transition: transform 0.3s ease;
   img {
     max-height: 100%;
     min-width: 285px;
     border-radius: 12px;
+  }
+  &:hover {
+    transform: scale(1.05);
+    overflow: hidden;
   }
 `;
 
@@ -261,12 +266,17 @@ export const StyledImage = styled.div`
   height: 390px;
   margin-bottom: 10px;
   object-fit: cover;
+  transition: transform 0.3s ease;
   img {
     min-height: 100%;
     max-height: 100%;
     min-width: 100%;
     max-width: 100%;
     border-radius: 12px;
+  }
+  &:hover {
+    transform: scale(1.05);
+    overflow: hidden;
   }
 `;
 

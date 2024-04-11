@@ -82,6 +82,7 @@ const PrevSlideButton = styled.button`
   &:focus {
     background-color: #fc1055;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22);
+    color: white;
   }
 `;
 
@@ -104,6 +105,7 @@ const NextSlideButton = styled.button`
   &:focus {
     background-color: #fc1055;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22);
+    color: white;
   }
 `;
 
@@ -119,8 +121,11 @@ const Image = styled.div`
   min-width: 310px;
   max-width: 310px;
   height: 390px;
+  margin-top: 10px;
   margin-bottom: 10px;
   object-fit: cover;
+  overflow: hidden;
+  transition: transform 0.3s ease;
   img {
     min-height: 100%;
     max-height: 100%;
@@ -128,6 +133,9 @@ const Image = styled.div`
     max-width: 100%;
     border-radius: 12px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22);
+  }
+  &:hover {
+    transform: scale(1.05);
   }
 `;
 

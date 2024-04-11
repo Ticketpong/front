@@ -48,6 +48,7 @@ const Strong = styled.strong`
 //     background-color: #fc1055;
 //   }
 // `;
+
 const SliderContainer = styled.div`
   position: relative;
   display: flex;
@@ -81,6 +82,7 @@ const PrevSlideButton = styled.button`
   &:focus {
     background-color: #fc1055;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22);
+    color: white;
   }
 `;
 
@@ -103,6 +105,7 @@ const NextSlideButton = styled.button`
   &:focus {
     background-color: #fc1055;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22);
+    color: white;
   }
 `;
 const ListItem = styled.li`
@@ -122,8 +125,10 @@ const Image = styled.div`
   min-width: 310px;
   max-width: 310px;
   height: 390px;
+  margin-top: 10px;
   margin-bottom: 10px;
   object-fit: cover;
+  transition: transform 0.3s ease;
   img {
     min-height: 100%;
     max-height: 100%;
@@ -131,6 +136,10 @@ const Image = styled.div`
     max-width: 100%;
     border-radius: 12px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22);
+  }
+  &:hover {
+    transform: scale(1.05);
+    overflow: hidden;
   }
 `;
 
@@ -149,6 +158,11 @@ const Rank = styled.span`
   font-weight: 700;
   font-style: italic;
   @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 
 const Text = styled.p`
@@ -263,8 +277,8 @@ const HPContent2 = () => {
                 <ImageContainer>
                   <Image>
                     <img src={item.poster} alt="포스터" />
+                    <Rank>{startIndex + index + 1}</Rank>
                   </Image>
-                  <Rank>{startIndex + index + 1}</Rank>
                 </ImageContainer>
                 <TextOver>
                   {item.genrenm} &nbsp;
