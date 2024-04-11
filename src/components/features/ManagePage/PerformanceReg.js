@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { json, useNavigate } from "react-router-dom";
 import axios from "axios";
 import axiosWithAuth from "../../base/axiosWithAuth";
+import dummydata from "../../../dummy/performance.json";
 
 const Container = styled.div`
   width: 100%;
@@ -99,21 +100,27 @@ const Radio = styled.div`
   align-items: center;
 `;
 
+// 공연 정보 저장
 const PerformaceReg = () => {
   const [performance, setPerformance] = useState({
-    name: "",
+    mt20id: "",
+    manage_id: "",
+    mt10id: "",
+    prfnm: "",
+    prfpdfrom: "",
+    prfpdto: "",
+    prfruntime: "",
+    pcseguidance: "",
     genrenm: "",
-    ScreeningGrade: "",
+    prfstate: "",
+    updatedate: "",
     poster: "",
-    region: "",
-    performanceId: "",
-    startDate: "",
-    endDate: "",
-    runingTime: "",
-    price: "",
-    telNo: "",
-    selYn: "",
+    styurl: "",
+    dtguidance: "",
+    post: "",
+    prfage: ""
   });
+
   const [manageId, setManageId] = useState("");
   const [isLogined, setIsLogined] = useState(false);
 
