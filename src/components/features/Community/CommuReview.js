@@ -68,16 +68,16 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const WriteBtn = styled.button`
-  float: right;
-  width: 120px;
-  height: 50px;
-  border-radius: 3px;
-  color: #ffffff;
-  background-color: #fc1055;
-  border: none;
-  font-size: 18px;
-`;
+// const WriteBtn = styled.button`
+//   float: right;
+//   width: 120px;
+//   height: 50px;
+//   border-radius: 3px;
+//   color: #ffffff;
+//   background-color: #fc1055;
+//   border: none;
+//   font-size: 18px;
+// `;
 
 const HrBox = styled.div`
   position: relative;
@@ -214,7 +214,7 @@ const CommuReview = ({ isLoggedIn }) => {
         <button onClick={goToNextPage}>{">"}</button>
         <button onClick={goToEndPage}>{">>"}</button>
       </ButtonContainer>
-      {isLoggedIn ? (
+      {/* {isLoggedIn ? (
         <>
           <Link to="/writereview">
             <WriteBtn>후기 작성</WriteBtn>
@@ -224,7 +224,7 @@ const CommuReview = ({ isLoggedIn }) => {
         <Link to="/login">
           <WriteBtn>후기 작성</WriteBtn>
         </Link>
-      )}
+      )} */}
     </Container>
   );
 };

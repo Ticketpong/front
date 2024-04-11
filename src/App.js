@@ -48,7 +48,7 @@ function App() {
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Homepage />} />
-          <Route path="/writereview" element={<WriteReview />} />
+          <Route path="/writereview/:imp_uid" element={<WriteReview />} />
           <Route path="/community" element={<Community />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/viewall" element={<Performance />} />

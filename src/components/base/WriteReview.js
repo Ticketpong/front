@@ -1,12 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const WriteReview = () => {
+  const { imp_uid } = useParams(); // 예매 id
   const [performance, setPerformance] = useState("");
   const [rating, setRating] = useState(0);
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
+  const [selectedReviewData, setSelectedReviewData] = useState(null);
+  const URL = "http://localhost:8080/mypage";
+
+  useEffect(() => {
+    fetchData();
+  }, [imp_uid]);
+
+  // 마이페이지에서 예매 id 받아서 가져오는 부분
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(URL);
+      const selectedData = response.data.find(
+        (item) => item.imp_uid === imp_uid
+      );
+      setSelectedReviewData(selectedData);
+      console.log(selectedReviewData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleRatingChange = (value) => {
     setRating(value);
@@ -33,18 +56,11 @@ const WriteReview = () => {
       <hr />
       <form onSubmit={handleSubmit}>
         <FormGroup>
-          <Label htmlFor="performance">공연명</Label>
-          <StyledSelect
-            id="performance"
-            value={performance}
-            onChange={(e) => setPerformance(e.target.value)}
-            required
-          >
-            <option value="">공연을 고르세요.</option>
-            <option value="옵션1">공연이름1</option>
-            <option value="옵션2">공연이름2</option>
-            <option value="옵션3">공연이름3</option>
-          </StyledSelect>
+          {/* 리뷰데이터 공연명 들어가는 부분 */}
+          {selectedReviewData && (
+            <PerformanceBox>{selectedReviewData.mt20id}</PerformanceBox>
+          )}
+          {!selectedReviewData && <PerformanceBox></PerformanceBox>}
         </FormGroup>
         <FormGroup>
           <Label htmlFor="rating">평점</Label>
@@ -108,8 +124,9 @@ const Label = styled.label`
   margin-bottom: 5px;
 `;
 
-const StyledSelect = styled.select`
-  width: 100%;
+const PerformanceBox = styled.div`
+  width: 800px;
+  height: 50px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
