@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
+// import testData from "../../../dummy/show_detail.json";
 import {
   MdKeyboardArrowLeft,
   MdKeyboardArrowRight,
@@ -58,6 +59,15 @@ const AddButton = styled.button`
   right: 10%;
 `;
 
+const Previous = styled.span`
+  color: rebeccapurple;
+  width: 50px; /* 사이즈 */
+  height: 50px; /* 사이즈 */
+  border-top: 5px solid #000; /* 선 두께 */
+  border-right: 5px solid #000; /* 선 두께 */
+  transform: rotate(225deg); /* 각도 */
+`;
+
 const PerformanceManage = ({ onAddClick, onEditClick }) => {
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
@@ -69,24 +79,25 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/경로` // 공연 리스트 불러오는 백엔드 url
+        `http://localhost:8080/manage/manageMain/performance` // 공연 리스트 불러오는 백엔드 url
       );
 
       const newData = response.data.map((item, index) => ({
         ...item,
         number: (page - 1) * 7 + index + 1,
       }));
-        setData(newData);
+      setData(newData);
+      // setPage(newData);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const url = "http://localhost:8080/경로"; // 공연 삭제 백엔드 url
+  const url = `http://localhost:8080/manage/manageMain/performanceDelete`; // 공연 삭제 백엔드 url
 
-  const performanceDelete = async (id) => {
+  const performanceDelete = async (mt20id) => {
     try {
-      const response = await axios.delete(url, { data: { id } });
+      const response = await axios.delete(url, { data: { mt20id } });
       console.log(response);
       fetchData();
     } catch (error) {
@@ -100,38 +111,41 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
         <thead>
           <tr>
             <Header>번호</Header>
+            <Header>공연ID</Header>
             <Header>공연제목</Header>
             <Header>장르</Header>
             <Header>시작일</Header>
             <Header>종료일</Header>
             <Header>공연상태</Header>
             <Header>게시여부</Header>
+            <Header></Header>
+            <Header></Header>
           </tr>
         </thead>
         <tbody>
           {data.map((item) => (
-            <tr key={item.id}>
-              <Cell>{item.performance.num}</Cell>
+            <tr key={item.mt20id}>
+              <Cell>{item.number}</Cell>
+              <Cell>{item.mt20id}</Cell>
               <Cell>{item.prfnm}</Cell>
               <Cell>{item.genrenm}</Cell>
               <Cell>{item.prfpdfrom}</Cell>
               <Cell>{item.prfpdto}</Cell>
               <Cell>{item.prfstate}</Cell>
-              <Cell>{item.post}</Cell> 
+              <Cell>{item.post ? "y" : "n"}</Cell>
               {/*수정 삭제 버튼*/}
               <Cell>
-                <Button onClick={() => onEditClick(item.id)}>
-                  {" "}
-                  수정
+                <Button onClick={() => onEditClick(item.mt20id)}> 수정</Button>
+                <Button onClick={() => performanceDelete(item.mt20id)}>
+                  삭제
                 </Button>
-                <Button onClick={() => performanceDelete(item.id)}>삭제</Button>
               </Cell>
-
             </tr>
           ))}
           <tr></tr>
         </tbody>
       </Container>
+      <Previous></Previous>
       <AddButton name="add" onClick={onAddClick}>
         공연추가하기
       </AddButton>
