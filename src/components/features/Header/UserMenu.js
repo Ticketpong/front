@@ -1,7 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Icon } from "../../../styles/HeaderStyled";
-import { Link } from "react-router-dom";
+import styled, { css } from 'styled-components';
+import { Link, useLocation } from "react-router-dom";
 import HeaderUserIcon from "../../../assets/headerImg/header_userIcon.png";
 import menuIcon from "../../../assets/headerImg/menuIcon.png";
 
@@ -13,6 +12,9 @@ const UserMenuContainer = styled.div`
     margin: 0;
     padding: 0;
     justify-content: center;
+    ${({ isManagePage }) => isManagePage && css`
+      margin-right: 50px;
+    `}
   }
   li {
     height: 60px;
@@ -52,9 +54,24 @@ const LogoutText = styled.span`
   cursor: pointer;
 `;
 
+const StyledHeaderUserIcon = styled.img`
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  margin-top: 2px;
+`;
+
+const UserInfoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const UserMenu = ({ isLogined, handleLogout, userId, toggleNav }) => {
+  const locationInfo = useLocation();
+  const isManagePage = locationInfo.pathname.toLowerCase() === "/managepage";
+
   return (
-    <UserMenuContainer>
+    <UserMenuContainer isManagePage={isManagePage}>
       <ul>
         {isLogined ? (
           <>
@@ -62,31 +79,41 @@ const UserMenu = ({ isLogined, handleLogout, userId, toggleNav }) => {
               <LogoutText onClick={handleLogout}>로그아웃</LogoutText>
             </li>
             <li>
-              <Icon src={HeaderUserIcon} alt="HeaderUserIcon" />
-              {userId} 님
+              <UserInfoWrapper>
+                <StyledHeaderUserIcon src={HeaderUserIcon} alt="HeaderUserIcon" />
+                <span>{userId}</span> 님
+              </UserInfoWrapper>
             </li>
-            <li>
-              <Link to="/mypage">마이 페이지</Link>
-            </li>
+            {locationInfo.pathname.toLowerCase() !== "/managepage" && (
+              <li>
+                <Link to="/mypage">마이 페이지</Link>
+              </li>
+            )}
           </>
         ) : (
           <>
             <li>
               <Link to="/login">로그인</Link>
             </li>
+            {locationInfo.pathname.toLowerCase() !== "/managepage" && (
             <li>
               <Link to="/signup">회원가입</Link>
             </li>
+            )}
+            {locationInfo.pathname.toLowerCase() !== "/managepage" && (
             <li>
               <Link to="/login">마이페이지</Link>
             </li>
+            )}
           </>
         )}
+        {locationInfo.pathname.toLowerCase() !== "/managepage" && (
         <li>
           <MenuButton onClick={toggleNav}>
             <img src={menuIcon} alt="menuIcon" />
           </MenuButton>
         </li>
+        )}
       </ul>
     </UserMenuContainer>
   );
