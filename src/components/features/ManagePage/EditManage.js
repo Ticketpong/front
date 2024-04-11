@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
@@ -106,9 +107,9 @@ const Labels = styled.label`
   margin-right: 20px;
 `;
 
-const EditManage = ({ manage_id }) => {
+const EditManage = ({ manageId }) => {
   const [manageInfo, setManageInfo] = useState({
-    id: manage_id,
+    id: "",
     password: "",
     repassword: "",
     name: "",
@@ -117,6 +118,28 @@ const EditManage = ({ manage_id }) => {
     role: "",
   });
 
+  useEffect(() => {
+    getManageInfo();
+  }, []);
+
+  const getManageInfo = async () => {
+    const response = await axios.post(
+      "http://localhost:8080/manage/manageMain/manageProfile",
+      {
+        id: manageId,
+      }
+    );
+    const newData = response.data[0];
+
+    setManageInfo({
+      id: newData.manage_id,
+      name: newData.manage_name,
+      phoneNumber: newData.manage_phone,
+      auth: newData.manage_auth,
+      role: newData.manage_part,
+    });
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setManageInfo((prevState) => ({
@@ -124,17 +147,34 @@ const EditManage = ({ manage_id }) => {
       [name]: value,
     }));
   };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // 회원 정보 수정 처리 로직
-  };
-
-  const deleteClick = () => {
-    // 회원 탈퇴 처리 로직
-  };
+  console.log(manageInfo);
 
   const submitUrl = "http://localhost:8080/manage/manageMain/manageEdit";
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // 회원 정보 수정 처리 로직
+    if (manageInfo.password !== manageInfo.repassword) {
+      alert("비밀번호가 일치하지 않습니다.");
+    } else {
+      const response = await axios.put(submitUrl, {
+        id: manageInfo.id,
+        pw: manageInfo.password,
+        repw: manageInfo.repassword,
+        name: manageInfo.name,
+        phone: manageInfo.phoneNumber,
+        auth: manageInfo.auth,
+        part: manageInfo.role,
+      });
+      if (response.status === 200) {
+        alert("회원 정보가 수정되었습니다.");
+        window.location.reload();
+      } else {
+        alert("회원 정보 수정에 실패했습니다.");
+        window.location.reload();
+      }
+    }
+  };
 
   const Star = () => {
     return <span style={{ color: "#fc1055", fontSize: "1.2em" }}>*</span>;
@@ -150,19 +190,13 @@ const EditManage = ({ manage_id }) => {
     <>
       <hr />
       <Container>
-        <Form onSubmit={handleSubmit}>
+        <Form>
           <InputContainer>
             <InputLabel>
               아이디
               <Star />
             </InputLabel>
-            <GrayInput
-              type="text"
-              name="id"
-              value={manageInfo.id}
-              onChange={handleChange}
-              placeholder="아이디를 입력하세요."
-            />
+            <GrayInput type="text" name="id" value={manageInfo.id} readOnly />
           </InputContainer>
           <InputContainer>
             <InputLabel>
@@ -199,8 +233,8 @@ const EditManage = ({ manage_id }) => {
               type="text"
               name="name"
               value={manageInfo.name}
-              onChange={handleChange}
               placeholder="이름을 입력하세요."
+              readOnly
             />
           </InputContainer>
           <InputContainer>
@@ -225,8 +259,10 @@ const EditManage = ({ manage_id }) => {
               <Input
                 type="radio"
                 name="auth"
-                value={manageInfo.auth}
+                value="주관리자"
+                checked={manageInfo.auth === "주관리자"}
                 id="mainAdmin"
+                onChange={handleChange}
               />
               <Labels for="mainAdmin">주관리자</Labels>
             </RadioList>
@@ -234,8 +270,10 @@ const EditManage = ({ manage_id }) => {
               <Input
                 type="radio"
                 name="auth"
-                value={manageInfo.auth}
+                value="부관리자"
+                checked={manageInfo.auth === "부관리자"}
                 id="secondAdmin"
+                onChange={handleChange}
               />
               <Labels for="secondAdmin">부관리자</Labels>
             </RadioList>
@@ -243,8 +281,10 @@ const EditManage = ({ manage_id }) => {
               <Input
                 type="radio"
                 name="auth"
-                value={manageInfo.auth}
+                value="일반관리자"
+                checked={manageInfo.auth === "일반관리자"}
                 id="admin"
+                onChange={handleChange}
               />
               <Labels for="admin">일반관리자</Labels>
             </RadioList>
@@ -254,7 +294,7 @@ const EditManage = ({ manage_id }) => {
               직급
               <Star />
             </InputLabel>
-            <GrayInput
+            <Input
               type="text"
               name="role"
               value={manageInfo.role}
@@ -265,10 +305,12 @@ const EditManage = ({ manage_id }) => {
         </Form>
         <HrDiv />
         <ButtonContainer>
-          <CancelButton type="submit" onClick={onClickCancel}>
+          <CancelButton type="button" onClick={onClickCancel}>
             취소
           </CancelButton>
-          <EndButton type="submit">회원 정보 수정</EndButton>
+          <EndButton type="submit" onClick={handleSubmit}>
+            회원 정보 수정
+          </EndButton>
         </ButtonContainer>
       </Container>
     </>
