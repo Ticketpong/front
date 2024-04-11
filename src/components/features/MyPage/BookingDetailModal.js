@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
+import moment from "moment";
 
 const ModalWrapper = styled.div`
   position: fixed;
@@ -128,10 +130,10 @@ const Modal = ({ isOpen, onClose, data }) => {
   // 현재 날짜 가져오기
   const currentDate = new Date();
   // 예매일자 가져오기
-  const selectDate = new Date(data.selectdate);
 
-  const selectDateStr = data.selectdate;
+  const selectDateStr = new Date(data.selectdate);
   const currentDateStr = currentDate;
+
   // 예매일자와 현재 날짜 비교
   const isCancelable = selectDateStr > currentDateStr;
 
@@ -140,8 +142,35 @@ const Modal = ({ isOpen, onClose, data }) => {
   };
 
   const handleConfirm = () => {
-    // 예매 취소 동작을 수행합니다.
-    // handleCancelReservation(); // 예매 취소 동작이 구현된 함수 호출
+    const cancelSubmit = async () => {
+      if (data.success.data[0] === 0) {
+        alert("이미 결제 취소된 예매입니다!");
+      } else {
+        try {
+          const response = await axios.put(
+            "http://localhost:8080/reservation/cancel",
+            {
+              imp_uid: data.imp_uid,
+            }
+          );
+          console.log(response);
+          if (response.status === 200 || response.status === 204) {
+            alert("예매가 취소되었습니다.");
+
+            window.location.reload();
+          } else {
+            alert("예매 취소가 불가합니다. 문의해주세요.");
+
+            window.location.reload();
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    };
+    // 예매 취소 동작을 수행
+    cancelSubmit();
+
     setIsConfirmOpen(false);
     onClose(); // 모달을 닫습니다.
   };
@@ -181,7 +210,7 @@ const Modal = ({ isOpen, onClose, data }) => {
             </tr>
             <tr>
               <Th>결제수단</Th>
-              <Td>{data.pay_method === "card" ? "신용카드" : "무통장입금"}</Td>
+              <Td>신용카드</Td>
               <Th>관람상태</Th>
               <Td>{data.watchstate.data[0] === 1 ? "관람완료" : "관람전"}</Td>
             </tr>

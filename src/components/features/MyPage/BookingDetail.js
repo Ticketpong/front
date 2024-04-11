@@ -145,7 +145,7 @@ const BookingDetail = () => {
             showName: selectedShowData ? selectedShowData.prfnm : "", // 공연 이름 추가
           };
         });
-        console.log(updatedFilteredData);
+
         setFilteredData(updatedFilteredData);
       } catch (error) {
         console.log(error);
@@ -213,7 +213,6 @@ const BookingDetail = () => {
         return itemDate >= startDate;
       });
       setFilteredData(filtered); // setData 호출 이후에 filteredData 설정
-      // console.log(filteredData);
     } catch (error) {
       console.error("예매 내역을 불러오는 동안 오류 발생:", error);
     }
