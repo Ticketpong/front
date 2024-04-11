@@ -4,7 +4,6 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 80px;
   text-align: center;
   max-width: 100%;
 `;
@@ -89,9 +88,12 @@ export const UpperOver = styled.p`
   max-width: ${(props) => (props.over ? "310px" : "inherit")};
   margin-bottom: 4px;
 `;
+
+// 카테고리
 export const CategoryContainer = styled.div`
   display: flex;
-  margin-bottom: 55px;
+  margin-top: 190px;
+  margin-bottom: 15px;
   align-items: center;
   justify-content: center;
   margin-right: 22px;
@@ -190,6 +192,22 @@ export const MoreButton = styled.button`
     color: #ffffff;
   }
 `;
+// 중단 라벨바
+
+export const LabelContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 10px;
+  min-width: 1500px;
+  max-width: 1500px;
+  margin: auto;
+  select {
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 18px;
+  }
+`;
 
 // =============================================================================================================
 // 하단 부분
@@ -201,7 +219,7 @@ export const Bottom = styled.div`
   justify-content: center;
   min-width: 1600px;
   max-width: 1600px;
-  margin: 80px auto;
+  margin: 40px auto;
 `;
 
 export const StyledUL = styled.ul`

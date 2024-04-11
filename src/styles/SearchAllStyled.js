@@ -1,15 +1,16 @@
-import React from 'react';
-import styled from 'styled-components';
-import searchIcon from '../assets/homeImg/searchIcon_p.png';
+import React from "react";
+import styled from "styled-components";
+import searchIcon from "../assets/homeImg/searchIcon_p.png";
 
 const StyledSearchBar = styled.div`
   position: absolute;
+  top: 930px;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 480px;
   height: 30px;
   padding: 10px 30px 10px 10px;
-  border: 1px solid #FC1055;
+  border: 1px solid #fc1055;
   border-radius: 60px;
   outline: none;
   display: flex;
@@ -25,7 +26,7 @@ const SearchInput = styled.input`
   outline: none;
   font-size: 16px;
   &::placeholder {
-    color:#000;
+    color: #000;
     opacity: 0.7;
     font-size: 16px;
   }
@@ -37,7 +38,13 @@ const SearchIcon = styled.img`
   cursor: pointer;
 `;
 
-const SearchAllStyled = ({ placeholder, value, onChange, onKeyDown, onSubmit }) => {
+const SearchAllStyled = ({
+  placeholder,
+  value,
+  onChange,
+  onKeyDown,
+  onSubmit,
+}) => {
   return (
     <StyledSearchBar>
       <SearchInput
@@ -47,7 +54,6 @@ const SearchAllStyled = ({ placeholder, value, onChange, onKeyDown, onSubmit }) 
         onChange={onChange}
         onKeyDown={onKeyDown}
         onSubmit={onSubmit}
-        
       />
       <SearchIcon src={searchIcon} alt="Search Icon" onClick={onSubmit} />
     </StyledSearchBar>

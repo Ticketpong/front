@@ -4,6 +4,7 @@ import styled from "styled-components";
 import axios from "axios";
 import Img from "../../assets/ViewAllImg/Image20240328164620.jpg";
 import { Link } from "react-router-dom";
+import SearchBar from "../../components/base/SearchBar";
 
 const BackgroudImg = styled.image`
   background-image: url(${Img});
@@ -38,6 +39,11 @@ const Performance = () => {
     coordinates: { lat: "", long: "" },
     error: null,
   });
+  const [sortBy, setSortBy] = useState("prfnm");
+
+  const handleSortBy = (event) => {
+    setSortBy(event.target.value);
+  };
 
   const onSuccess = (location) => {
     setLocation((prevState) => ({
@@ -162,6 +168,16 @@ const Performance = () => {
     setSelectedCategory("전체"); // 위치 기반 필터링 시 선택된 장르를 '전체'로 변경
   };
 
+  const sortedData = [...displayedData2].sort((a, b) => {
+    if (sortBy === "prfnm") {
+      return a.prfnm.localeCompare(b.prfnm); // Sort alphabetically by prfnm
+    } else if (sortBy === "prfpdfrom") {
+      return new Date(a.prfpdfrom) - new Date(b.prfpdfrom); // Sort by prfpdfrom
+    } else {
+      return new Date(a.prfpdto) - new Date(b.prfpdto); // Sort by prfpdto
+    }
+  });
+
   const handleLoadMore = () => {
     setShowAll(true);
   };
@@ -201,6 +217,8 @@ const Performance = () => {
         </BackgroudImg>
       </S.Container>
 
+      <SearchBar isHomepage={false} />
+
       <S.CategoryContainer>
         <S.Button onClick={() => handleCategoryChange("전체")}>
           전체보기
@@ -218,9 +236,17 @@ const Performance = () => {
         </S.GeographyButton>
       </S.CategoryContainer>
 
+      <S.LabelContainer>
+        <select id="sortBy" value={sortBy} onChange={handleSortBy}>
+          <option value="prfnm">가나다순</option>
+          <option value="prfpdfrom">최근 등록순</option>
+          <option value="prfpdto">종료일 늦은순</option>
+        </select>
+      </S.LabelContainer>
+
       <S.Bottom>
         <S.StyledUL>
-          {displayedData2.map((item, index) => {
+          {sortedData.map((item, index) => {
             if (!showAll && index >= 8) return null;
             return (
               <StyleLink to={`/ticketing/${item.mt20id}`}>
