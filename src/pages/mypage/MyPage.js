@@ -5,6 +5,7 @@ import MyReview from "../../components/features/MyPage/MyReview";
 import EditProfile from "../../components/features/MyPage/EditProfile";
 import PwCheck from "../../components/features/MyPage/PwCheck";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import SetDevice from "../../components/features/MyPage/SetDevice";
 
 const Container = styled.div`
   display: flex;
@@ -107,6 +108,15 @@ const MyPage = () => {
             <MdKeyboardArrowRight />
           </ArrowIconWrapper>
         </MenuItemWrapper>
+        <MenuItemWrapper
+          selected={selectedItem === 5}
+          onClick={() => handleItemClick(5)}
+        >
+          <MenuItem>기기 등록/수정</MenuItem>
+          <ArrowIconWrapper>
+            <MdKeyboardArrowRight />
+          </ArrowIconWrapper>
+        </MenuItemWrapper>
       </Sidebar>
       <Content>
         <Title>
@@ -114,11 +124,13 @@ const MyPage = () => {
           {selectedItem === 2 && "나의 관람 후기"}
           {selectedItem === 3 && "비밀번호 확인"}
           {selectedItem === 4 && "회원 정보 수정"}
+          {selectedItem === 5 && "기기 등록/수정"}
         </Title>
         {selectedItem === 1 && <BookingDetail />}
         {selectedItem === 2 && <MyReview />}
         {selectedItem === 3 && <PwCheck />}
         {selectedItem === 4 && <EditProfile />}
+        {selectedItem === 5 && <SetDevice />}
       </Content>
     </Container>
   );
