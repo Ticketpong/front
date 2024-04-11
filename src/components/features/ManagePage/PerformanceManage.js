@@ -1,15 +1,8 @@
-/**공연관리 */
-
 import React, { useState, useEffect } from "react";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import styled from "styled-components";
 import axios from "axios";
 // import testData from "../../../dummy/show_detail.json";
-import {
-  MdKeyboardArrowLeft,
-  MdKeyboardArrowRight,
-  MdKeyboardDoubleArrowLeft,
-  MdKeyboardDoubleArrowRight,
-} from "react-icons/md";
 
 const Container = styled.table`
   margin: 20px auto;
@@ -59,13 +52,14 @@ const AddButton = styled.button`
   right: 10%;
 `;
 
-const Previous = styled.span`
-  color: rebeccapurple;
-  width: 50px; /* 사이즈 */
-  height: 50px; /* 사이즈 */
-  border-top: 5px solid #000; /* 선 두께 */
-  border-right: 5px solid #000; /* 선 두께 */
-  transform: rotate(225deg); /* 각도 */
+const Pagination = styled.div`
+  margin-top: 20px;
+  text-align: center;
+`;
+
+const PageButton = styled(Button)`
+  width: 40px;
+  height: 36px;
 `;
 
 const PerformanceManage = ({ onAddClick, onEditClick }) => {
@@ -75,6 +69,7 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
   useEffect(() => {
     fetchData();
   }, [page]);
+
 
   const fetchData = async () => {
     try {
@@ -87,7 +82,6 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
         number: (page - 1) * 7 + index + 1,
       }));
       setData(newData);
-      // setPage(newData);
     } catch (error) {
       console.error(error);
     }
@@ -95,14 +89,60 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
 
   const url = `http://localhost:8080/manage/manageMain/performanceDelete`; // 공연 삭제 백엔드 url
 
+  // dummyData로 test
+  // const fetchData = async () => {
+  //   try {
+  //     // 데이터를 가져오는 로직 추가
+  //     setData(testData);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+
+ 
   const performanceDelete = async (mt20id) => {
     try {
-      const response = await axios.delete(url, { data: { mt20id } });
+      const response = await axios.delete(url, { data: { mt20id } }); // pk값으로 조회
       console.log(response);
       fetchData();
     } catch (error) {
       console.error(error);
     }
+  };
+
+   // 페이징 구현
+  const handlePreviousPage = () => {
+    setPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setPage((prevPage) =>
+      Math.min(prevPage + 1, Math.ceil(data.length / 10))
+    );
+  };
+
+  const handlePageClick = (page) => {
+    setPage(page);
+  };
+
+  const renderPageButtons = () => {
+    const totalPageCount = Math.ceil(data.length / 10);
+    const pageButtons = [];
+
+    for (let i = 1; i <= totalPageCount; i++) {
+      pageButtons.push(
+        <PageButton
+          key={i}
+          onClick={() => handlePageClick(i)}
+          disabled={page === i}
+        >
+          {i}
+        </PageButton>
+      );
+    }
+ 
+    return pageButtons;
   };
 
   return (
@@ -123,33 +163,49 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
-            <tr key={item.mt20id}>
-              <Cell>{item.number}</Cell>
-              <Cell>{item.mt20id}</Cell>
-              <Cell>{item.prfnm}</Cell>
-              <Cell>{item.genrenm}</Cell>
-              <Cell>{item.prfpdfrom}</Cell>
-              <Cell>{item.prfpdto}</Cell>
-              <Cell>{item.prfstate}</Cell>
-              <Cell>{item.post ? "y" : "n"}</Cell>
-              {/*수정 삭제 버튼*/}
-              <Cell>
-                <Button onClick={() => onEditClick(item.mt20id)}> 수정</Button>
-                <Button onClick={() => performanceDelete(item.mt20id)}>
+          {/* 페이징에 맞게 데이터 렌더링 */}
+          {data
+            .slice((page - 1) * 10, page * 10)
+            .map((item, index) => (
+              <tr key={index}>
+                <Cell>{item.number}</Cell>
+                <Cell>{item.mt20id}</Cell>
+                <Cell>{item.prfnm}</Cell>
+                <Cell>{item.genrenm}</Cell>
+                <Cell>{item.prfpdfrom}</Cell>
+                <Cell>{item.prfpdto}</Cell>
+                <Cell>{item.prfstate}</Cell>
+                <Cell>{item.post ? "y" : "n"}</Cell>
+                {/* 수정 삭제 버튼 */}
+                <Cell>
+                  <Button onClick={() => onEditClick(item.mt20id)}>
+                    수정
+                  </Button>
+                  {/* 삭제 버튼 */}
+                  <Button onClick={() => performanceDelete(item.mt20id)}>
                   삭제
                 </Button>
-              </Cell>
-            </tr>
-          ))}
-          <tr></tr>
+                </Cell>
+              </tr>
+            ))}
         </tbody>
       </Container>
-      <Previous></Previous>
+      {/* 페이지네이션 버튼 */}
+      <Pagination>
+        <Button onClick={handlePreviousPage}>
+          <MdKeyboardArrowLeft />
+        </Button>
+        {renderPageButtons()}
+        <Button onClick={handleNextPage}>
+          <MdKeyboardArrowRight />
+        </Button>
+      </Pagination>
+      {/* 공연 추가 버튼 */}
       <AddButton name="add" onClick={onAddClick}>
         공연추가하기
       </AddButton>
     </>
   );
 };
+
 export default PerformanceManage;
