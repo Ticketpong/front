@@ -72,7 +72,7 @@ const SetDevice = () => {
     if (userId) {
       getMacInfo();
     }
-  }, [userId, isLogined]);
+  }, [userId]);
 
   const getMacInfo = async () => {
     console.log(userId); //들어감
@@ -80,13 +80,11 @@ const SetDevice = () => {
       const response = await axios.get(
         "http://localhost:8080/macAddress/profile",
         {
-          params: {
-            user_id: userId,
-          },
+          user_id: userId,
         }
       );
-      console.log(response); //data가 빈배열 출력
-      // setRegiData(response.data);
+      console.log(response.data); // 응답 데이터 빈 배열
+      setRegiData(response.data);
     } catch (error) {
       console.log(error);
     }
