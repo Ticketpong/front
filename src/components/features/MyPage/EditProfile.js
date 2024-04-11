@@ -90,7 +90,7 @@ const EndButton = styled.button`
   margin-right: 50px;
 `;
 
-const EditProfile = () => {
+const EditProfile = (props) => {
   const [userInfo, setUserInfo] = useState({
     id: "",
     password: "",
@@ -108,30 +108,12 @@ const EditProfile = () => {
 
   useEffect(() => {
     // 회원 정보 가져오기 로직
-    fetchLoginStatus();
-  }, []);
-
-  const fetchLoginStatus = async () => {
-    const response = await axiosWithAuth().get(
-      "http://localhost:8080/login/profile"
-    ); //로그인 상태 확인
-    const { id, isLogined } = response.data;
-    if (isLogined) {
-      setUserId(id);
-      setIsLogined(isLogined);
-    } else {
-      console.log("로그인 상태가 아닙니다.");
-    }
-  };
-
-  useEffect(() => {
-    // 회원 정보 가져오기 로직
     fetchUserInfo();
-  }, []);
+  }, [isLogined]);
 
   const fetchUserInfo = async () => {
     const response = await axios.post("http://localhost:8080/main/member", {
-      id: userId,
+      id: props.Id,
     });
 
     const newData = response.data;
@@ -146,7 +128,7 @@ const EditProfile = () => {
     }));
   };
 
-  console.log(userInfo);
+  // console.log(userInfo);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -222,7 +204,6 @@ const EditProfile = () => {
       });
       if (response.status === 200) {
         alert("회원 정보 수정이 완료되었습니다.");
-        window.location.reload();
       } else {
         alert("회원 정보 수정에 실패했습니다.");
         window.location.reload();
