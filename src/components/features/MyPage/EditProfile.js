@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import axiosWithAuth from "../../base/axiosWithAuth";
 import axios from "axios";
 import DaumPostcode from "react-daum-postcode";
-import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 900px;
@@ -106,7 +105,6 @@ const EditProfile = () => {
   const [isLogined, setIsLogined] = useState(false);
   const [isEmailCheck, setIsEmailCheck] = useState(false);
   const [isDaumPostcodeOpen, setIsDaumPostcodeOpen] = useState(false);
-  const navigate = useNavigate(); // 페이지 이동을 위한 hook
 
   useEffect(() => {
     // 회원 정보 가져오기 로직
@@ -224,7 +222,7 @@ const EditProfile = () => {
       });
       if (response.status === 200) {
         alert("회원 정보 수정이 완료되었습니다.");
-        navigate(0);
+        window.location.reload();
       } else {
         alert("회원 정보 수정에 실패했습니다.");
         window.location.reload();
