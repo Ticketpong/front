@@ -1,8 +1,11 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import jsonData from "../../../dummy/ReviewData.json";
+import React, { useEffect, useState } from "react";
+import { useParams, useLocation } from "react-router-dom";
+import { FcLike } from "react-icons/fc";
+import { GoHeart } from "react-icons/go";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import axiosWithAuth from "../../base/axiosWithAuth";
 
 const Container = styled.div`
   width: 900px;
@@ -86,10 +89,117 @@ const P5 = styled.span`
   margin-left: 7px;
 `;
 
-const ReviewDetail = () => {
-  const { prfnmText } = useParams();
+const Button = styled.button`
+  background: none;
+  border: none;
+`;
 
-  const data = jsonData;
+const RecommandNum = styled.span`
+  font-size: 20px;
+  margin-left: 5px;
+  padding-bottom: 3px;
+`;
+
+const Recommand = styled.div`
+  display: flex;
+  float: right;
+  align-items: center;
+  justify-content: right;
+  position: inline;
+`;
+
+const ReviewDetail = () => {
+  const [data, setData] = useState([]);
+  const location = useLocation();
+  const [recommandState, setRecommandState] = useState(false);
+  const [isLogined, setIsLogined] = useState(false);
+  const [userId, setUserId] = useState("");
+
+  const preid = location.state.preId;
+
+  useEffect(() => {
+    const getReviewInfo = async () => {
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/review/detail",
+          {
+            pre_id: preid,
+          }
+        );
+
+        const newData = response.data.map((item, index) => ({
+          ...item,
+        }));
+        setData(newData);
+        // console.log(newData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getReviewInfo();
+  }, [preid, recommandState]);
+
+  useEffect(() => {
+    fetchLoginStatus();
+  }, []);
+
+  const fetchLoginStatus = async () => {
+    try {
+      const response = await axiosWithAuth().get(
+        "http://localhost:8080/login/profile"
+      );
+      const { id, isLogined } = response.data;
+      if (isLogined) {
+        setUserId(id);
+        setIsLogined(true);
+      }
+    } catch {
+      console.log("로그인 상태를 확인하는 동안 오류 발생:");
+    }
+  };
+
+  useEffect(() => {
+    const getRecommandInfo = async () => {
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/review/recommand",
+          {
+            pre_id: preid,
+            user_id: userId,
+          }
+        );
+        const newData = response.data;
+        setRecommandState(newData);
+        // console.log(recommandState);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getRecommandInfo();
+  }, [preid, userId]);
+
+  console.log(recommandState);
+
+  const recommandHandler = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/review/checkRecommand",
+        {
+          pre_id: preid,
+          user_id: userId,
+        }
+      );
+      if (response.data === "recommand success") {
+        setRecommandState(true);
+        console.log("추천 성공");
+      } else {
+        setRecommandState(false);
+        console.log("추천 취소");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const rankStar = (num) => {
     const stars = [];
@@ -103,30 +213,37 @@ const ReviewDetail = () => {
 
   return (
     <div>
-      {data?.boxofs?.boxof && (
+      {data && (
         <Container>
           <Textbox>
             <P1>커뮤니티 | </P1>
             <P2>관람후기</P2>
           </Textbox>
           <hr />
-          {data.boxofs.boxof.map(
-            (item, index) =>
-              item.prfnm._text === prfnmText && (
-                <Content key={index}>
-                  <P3>{item.prfnm._text}</P3>
-                  <P4>리뷰 제목</P4>
-                  <Span>
-                    작성자: {item.prfplcnm._text} | 작성일 : {item.prfpd._text}
-                    {"    "}|
-                    {item.rank && <P5> 평점: {rankStar(item.rank._num)}</P5>}
-                    {"    "}
-                  </Span>
-                  <HrBox />
-                  <OutputArea>{item.review._text}</OutputArea>
-                </Content>
-              )
-          )}
+          {data.map((item) => (
+            <Content key={item.pre_id}>
+              <P3>{item.prfnm}</P3>
+              <P4>{item.pretitle}</P4>
+              <Span>
+                작성자: {item.user_id} | 작성일 : {item.predate}
+                {"    "}|
+                {item.prestar && <P5> 평점: {rankStar(item.prestar)}</P5>}
+                {"    "}
+                <Recommand>
+                  <Button onClick={recommandHandler}>
+                    {recommandState ? (
+                      <FcLike size="30" />
+                    ) : (
+                      <GoHeart size="30" />
+                    )}
+                    <RecommandNum>{item.recommend}</RecommandNum>
+                  </Button>
+                </Recommand>
+              </Span>
+              <HrBox />
+              <OutputArea>{item.precontent}</OutputArea>
+            </Content>
+          ))}
           <hr />
           <ButtonContainer>
             <ListButton>
