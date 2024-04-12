@@ -102,17 +102,24 @@ const ReviewStatus = styled.button`
   color: white;
   font-size: 14px;
   margin: 0 auto;
-  background-color: ${({ status }) => {
-    switch (status) {
-      case 0:
-        return "#fc1055";
-      case 1:
-        return "#999999";
-      default:
-        return "#999999";
+  background-color: ${({ status, selectdate }) => {
+    const today = new Date();
+    const viewingDate = new Date(selectdate);
+
+    // 관람일 이후이고 후기를 작성하지 않은 경우
+    if (viewingDate < today && status === 0) {
+      return "#fc1055";
     }
+    // 관람일 이전이거나 후기를 작성한 경우
+    return "#999999";
   }};
-  cursor: ${({ status }) => (status === false ? "pointer" : "default")};
+  cursor: ${({ status, selectdate }) => {
+    const today = new Date();
+    const viewingDate = new Date(selectdate);
+
+    // 관람일 이후이고 후기를 작성하지 않은 경우에만 클릭 가능
+    return viewingDate < today && status === 0 ? "pointer" : "default";
+  }};
 `;
 
 const ITEMS_PER_PAGE = 7;
@@ -311,13 +318,21 @@ const BookingDetail = () => {
                 <Cell>
                   <ReviewStatus
                     status={item.prestate.data[0]}
-                    onClick={
-                      item.prestate.data[0] === 0
-                        ? () => navigate("/writereview", { state: [item] })
-                        : undefined
-                    }
+                    selectdate={item.selectdate}
+                    onClick={() => {
+                      if (
+                        item.prestate.data[0] === 0 &&
+                        new Date(item.selectdate) < new Date()
+                      ) {
+                        navigate("/writereview", { state: [item] });
+                      }
+                    }}
                   >
-                    {item.prestate.data[0] === 1 ? "작성완료" : "작성하기"}
+                    {item.prestate.data[0] === 1
+                      ? "작성완료"
+                      : new Date(item.selectdate) < new Date()
+                      ? "작성하기"
+                      : "관람전"}
                   </ReviewStatus>
                 </Cell>
               </tr>
