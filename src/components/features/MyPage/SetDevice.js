@@ -83,8 +83,23 @@ const SetDevice = () => {
           user_id: userId,
         }
       );
-      console.log(response.data); // 응답 데이터 빈 배열
+      console.log(response); // 응답 데이터 data 빈 배열
       setRegiData(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateMacInfo = async () => {
+    try {
+      const response = await axios.put(
+        "http://localhost:8080/macAddress/edit",
+        {
+          device_id: setDeviceId(),
+          device_name: userAgent,
+        }
+      );
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -128,6 +143,21 @@ const SetDevice = () => {
     });
   };
 
+  const setMac = () => {
+    const today = new Date();
+    if (regiData.length > 0) {
+      console.log(regiData.length);
+      if (today - regiData.res_date > 30) {
+        updateMacInfo();
+      } else {
+        alert(`${30 - (today - regiData.res_date)}일 후 재설정이 가능합니다.`);
+      }
+    } else {
+      postMacInfo();
+      alert("설정이 완료되었습니다!");
+    }
+  };
+
   return (
     <>
       <Wrapper>
@@ -151,7 +181,7 @@ const SetDevice = () => {
             </li>
           </ul>
         )}
-        <button onClick={postMacInfo}>현재 접속한 기기로 설정</button>
+        <button onClick={setMac}>현재 접속한 기기로 설정</button>
       </Wrapper>
     </>
   );
