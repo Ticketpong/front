@@ -1,8 +1,8 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import jsonData from "../../../dummy/ReviewData.json";
+import React, { useEffect, useState } from "react";
+import { useParams, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Container = styled.div`
   width: 900px;
@@ -88,8 +88,30 @@ const P5 = styled.span`
 
 const ReviewDetail = () => {
   const { prfnmText } = useParams();
+  const [data, setData] = useState([]);
+  const location = useLocation();
 
-  const data = jsonData;
+  const preid = location.state.preId;
+
+  useEffect(() => {
+    getReviewInfo();
+  }, [preid]);
+
+  const getReviewInfo = async () => {
+    try {
+      const response = await axios.post("http://localhost:8080/review/detail", {
+        pre_id: preid,
+      });
+
+      const newData = response.data.map((item, index) => ({
+        ...item,
+      }));
+      setData(newData);
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const rankStar = (num) => {
     const stars = [];
@@ -103,30 +125,27 @@ const ReviewDetail = () => {
 
   return (
     <div>
-      {data?.boxofs?.boxof && (
+      {data && (
         <Container>
           <Textbox>
             <P1>커뮤니티 | </P1>
             <P2>관람후기</P2>
           </Textbox>
           <hr />
-          {data.boxofs.boxof.map(
-            (item, index) =>
-              item.prfnm._text === prfnmText && (
-                <Content key={index}>
-                  <P3>{item.prfnm._text}</P3>
-                  <P4>리뷰 제목</P4>
-                  <Span>
-                    작성자: {item.prfplcnm._text} | 작성일 : {item.prfpd._text}
-                    {"    "}|
-                    {item.rank && <P5> 평점: {rankStar(item.rank._num)}</P5>}
-                    {"    "}
-                  </Span>
-                  <HrBox />
-                  <OutputArea>{item.review._text}</OutputArea>
-                </Content>
-              )
-          )}
+          {data.map((item) => (
+            <Content key={item.pre_id}>
+              <P4>{item.pretitle}</P4>
+              {/* <P4>리뷰 제목</P4> */}
+              <Span>
+                작성자: {item.user_id} | 작성일 : {item.predate}
+                {"    "}|
+                {item.prestar && <P5> 평점: {rankStar(item.prestar)}</P5>}
+                {"    "}
+              </Span>
+              <HrBox />
+              <OutputArea>{item.precontent}</OutputArea>
+            </Content>
+          ))}
           <hr />
           <ButtonContainer>
             <ListButton>
