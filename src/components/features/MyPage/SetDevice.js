@@ -110,20 +110,6 @@ const SetDevice = () => {
     }
   };
 
-  const updateMacInfo = async () => {
-    try {
-      const response = await axios.put(
-        "http://localhost:8080/macAddress/edit",
-        {
-          device_id: setDeviceId(),
-          device_name: userAgent,
-        }
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     if (navigator.userAgent.match(/iPhone/i)) {
       setUserAgent("iPhone");
