@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import reviewData from "../../../dummy/reviews.json";
-import showData from "../../../dummy/show_detail.json";
 import ReviewsTable from "./ReviewDetail";
+import axios from "axios";
 
 const ReviewWrapper = styled.div`
   padding: 20px 0;
@@ -99,6 +98,7 @@ const ModalContent = styled.div`
 function ReviewsManagement() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
+  const [reviews, setReviews] = useState([]);
 
   const openModal = (review) => {
     setIsOpen(true);
@@ -111,32 +111,57 @@ function ReviewsManagement() {
     setSelectedReview(null);
   };
 
-  const reviews = reviewData;
-  const shows = showData;
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  const getShowInfo = (mt20id) => {
-    return shows.find((show) => show.mt20id === mt20id) || {};
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/review/recentList`
+      );
+      const newReviews = response.data.map((item) => ({
+        ...item,
+      }));
+      setReviews(newReviews);
+      console.log(newReviews);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleDeleteReview = (pre_id) => {
-    alert(`ID: ${pre_id} 리뷰를 삭제하시겠습니까?`);
+  console.log(reviews);
+
+  const url = `http://localhost:8080/review/delete`;
+
+  const handleDeleteReview = async (pre_id) => {
+    try {
+      const response = await axios.delete(url, { data: { pre_id } });
+      if (response) {
+        alert(`ID: ${pre_id} 리뷰를 삭제하시겠습니까?`);
+        fetchData();
+      } else {
+        alert("리뷰 삭제에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <>
       <ReviewWrapper>
         {reviews.map((review) => {
-          const showInfo = getShowInfo(review.mt20id);
           return (
             <ReviewItem key={review.pre_id}>
               <ContentWrapper>
                 <PosterWarpper onClick={() => openModal(review)}>
-                  <PosterImage src={showInfo.poster} alt={showInfo.prfnm} />
+                  <PosterImage src={review.poster} alt={review.prfnm} />
                 </PosterWarpper>
                 <ReviewContent>
                   <p>
-                    &lt;{showInfo.genrenm}&gt;
-                    {showInfo.prfnm}
+                    &lt;{review.genrenm}&gt;
+                    {review.prfnm}
                   </p>
                   <h3>{review.pretitle}</h3>
                   <p>{review.precontent}</p>
