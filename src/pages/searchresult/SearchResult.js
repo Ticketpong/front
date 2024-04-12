@@ -67,7 +67,7 @@ const PosterImage = styled.img`
 `;
 
 const ResultTitle = styled.p`
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 700;
   margin-top: 20px;
   line-height: 0px;
@@ -75,13 +75,13 @@ const ResultTitle = styled.p`
 `;
 
 const ResultPlace = styled.p`
-  font-size: 14px;
+  font-size: 16px;
   line-height: 10px;
   color: #171717;
 `;
 
 const ResultDate = styled.p`
-  font-size: 12px;
+  font-size: 16px;
   margin-bottom: 5px;
   line-height: 5px;
   color: #999;
