@@ -4,6 +4,8 @@ import reviewData from "../../../dummy/reviews.json";
 import showData from "../../../dummy/show_detail.json";
 import ReviewsTable from "./ReviewDetail";
 
+const ITEMS_PER_PAGE = 2;
+
 const ReviewWrapper = styled.div`
   padding: 20px 0;
   border-top: 2px solid #373a42;
@@ -96,14 +98,32 @@ const ModalContent = styled.div`
   border-radius: 8px;
 `;
 
+const ButtonContainer = styled.div`
+  align-items: center;
+  text-align: center;
+
+  button {
+    text-align: center;
+    background-color: white;
+    border: 0;
+    font-size: 20px;
+    border-radius: 20px;
+
+    &:active,
+    &:hover {
+      background-color: #fc1055;
+    }
+  }
+`;
+
 function ReviewsManagement() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const openModal = (review) => {
     setIsOpen(true);
     setSelectedReview(review);
-    console.log(review);
   };
 
   const closeModal = () => {
@@ -122,10 +142,21 @@ function ReviewsManagement() {
     alert(`ID: ${pre_id} 리뷰를 삭제하시겠습니까?`);
   };
 
+  const totalPages = Math.ceil(reviews.length / ITEMS_PER_PAGE);
+
+  const paginatedReviews = reviews.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  const goToPage = (page) => {
+    setCurrentPage(page);
+  };
+
   return (
     <>
       <ReviewWrapper>
-        {reviews.map((review) => {
+        {paginatedReviews.map((review) => {
           const showInfo = getShowInfo(review.mt20id);
           return (
             <ReviewItem key={review.pre_id}>
@@ -149,6 +180,23 @@ function ReviewsManagement() {
           );
         })}
       </ReviewWrapper>
+      <ButtonContainer>
+        <button onClick={() => goToPage(1)}>{"<<"}</button>
+        <button onClick={() => goToPage(currentPage - 1)}>{"<"}</button>
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i + 1}
+            onClick={() => goToPage(i + 1)}
+            style={{
+              fontWeight: currentPage === i + 1 ? "bold" : "normal",
+            }}
+          >
+            {i + 1}
+          </button>
+        ))}
+        <button onClick={() => goToPage(currentPage + 1)}>{">"}</button>
+        <button onClick={() => goToPage(totalPages)}>{">>"}</button>
+      </ButtonContainer>
       {isOpen && (
         <Modal isOpen={isOpen}>
           <ModalContent>
