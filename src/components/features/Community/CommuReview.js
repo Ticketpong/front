@@ -177,7 +177,10 @@ const CommuReview = () => {
       <hr style={{ border: "0", borderTop: "1px solid #99999" }} />
       <Ul>
         {data?.slice(startIndex, endIndex).map((item, index) => (
-          <StyleLink to={`/reviewdetail/${item.pre_id}`}>
+          <StyleLink
+            to={`/reviewdetail/${item.pre_id}`}
+            state={{ preId: item.pre_id }}
+          >
             <HrBox key={index}>
               <ListItem key={index}>
                 <div className="imageContainer">
