@@ -88,13 +88,13 @@ const NavMenu = ({ open, isLoggedIn, onClose }) => {
           <li>커뮤니티</li>
         </NavListItem>
         <NavListItem>
-          <Link to="/community?selectedItem=2">후기</Link>
+          <Link to="/community">후기</Link>
         </NavListItem>
         <NavListItem>
-          <Link to="/community?selectedItem=1">공지사항</Link>
+          <Link to="/community">공지사항</Link>
         </NavListItem>
         <NavListItem>
-          <Link to="/community?selectedItem=3">이용안내</Link>
+          <Link to="/community">이용안내</Link>
         </NavListItem>
         {/* <NavListItem>
           <Link to="/managepage?selectedItem=2">확인버튼</Link>

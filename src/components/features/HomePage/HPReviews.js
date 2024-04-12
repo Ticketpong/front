@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import data from "../../../dummy/ReviewData.json";
+// import data from "../../../dummy/ReviewData.json";
+import axios from "axios";
+import LikeIconImg from "../../../assets/homeImg/free-icon-like-179655.png";
 
 const Strong = styled.div`
   text-align: center;
@@ -54,6 +56,8 @@ const UlContainer = styled.ul`
 const Li = styled.li`
   display: flex;
   align-items: center;
+  border-bottom: 1px solid #999999;
+  justify-content: space-between;
 `;
 
 const Img = styled.div`
@@ -74,7 +78,12 @@ const Img = styled.div`
 `;
 
 const Text = styled.div`
-  max-width: 1200px;
+  flex-grow: 1;
+  margin-top: 50px;
+  min-height: 320px;
+  max-height: 320px;
+  min-width: 1100px;
+  max-width: 1100px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -82,13 +91,6 @@ const Text = styled.div`
   -webkit-line-clamp: 3; /* 최대 줄 수 설정 */
   text-overflow: ellipsis;
   white-space: normal;
-`;
-
-const CenterHr = styled.hr`
-  color: gray;
-  height: 1px;
-  min-width: 1540px;
-  max-width: 1540px;
 `;
 
 const StyledViewAllButton = styled.button`
@@ -141,9 +143,42 @@ const Rank = styled.span`
   font-size: 24px;
 `;
 
+const LikeIcon = styled.img`
+  width: 28px;
+  height: 28px;
+  margin-right: 12px;
+`;
+
+const LikeCount = styled.span`
+  font-weight: bold;
+  font-size: 21px;
+`;
+
+const LikeBox = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 32px;
+`;
+
 const HPReviews = () => {
-  const URL = "https://www.kopis.or.kr/";
-  const jsonData = data;
+  const URL = "http://localhost:8080/review/recommandList";
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(URL);
+      const newData = response.data.map((item) => ({
+        ...item,
+      }));
+      setData(newData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const rankStar = (num) => {
     const stars = [];
@@ -161,89 +196,30 @@ const HPReviews = () => {
         <Strong>베스트 관람 후기</Strong>
         <HeadHr />
         <UlContainer>
-          <Li>
-            {jsonData?.boxofs?.boxof?.[0]?.poster && (
-              <Img>
-                <img
-                  src={URL + jsonData.boxofs.boxof[0].poster._text}
-                  alt="포스터"
-                />
-              </Img>
-            )}
-            <Text>
-              {jsonData?.boxofs?.boxof?.[0]?.prfnm && (
-                <Work>{jsonData.boxofs.boxof[0].prfnm._text}</Work>
+          {data?.slice(0, 3).map((item, index) => (
+            <Li key={index}>
+              {item.poster && (
+                <Img>
+                  <img src={item.poster} alt="포스터" />
+                </Img>
               )}
-              {jsonData?.boxofs?.boxof?.[0]?.reviewname && (
-                <Name>{jsonData.boxofs.boxof[0].reviewname._text}</Name>
-              )}
-              {jsonData?.boxofs?.boxof?.[0]?.rank && (
-                <p>{rankStar(jsonData.boxofs.boxof[0].rank._num)}</p>
-              )}
-              {jsonData?.boxofs?.boxof?.[0]?.review && (
-                <Content> {jsonData.boxofs.boxof[0].review._text}</Content>
-              )}
-            </Text>
-          </Li>
-          <CenterHr />
-        </UlContainer>
-        <UlContainer>
-          <Li>
-            {jsonData?.boxofs?.boxof?.[1]?.poster && (
-              <Img>
-                <img
-                  src={URL + jsonData.boxofs.boxof[1].poster._text}
-                  alt="포스터"
-                />
-              </Img>
-            )}
-            <Text>
-              {jsonData?.boxofs?.boxof?.[1]?.prfnm && (
-                <Work>{jsonData.boxofs.boxof[1].prfnm._text}</Work>
-              )}
-              {jsonData?.boxofs?.boxof?.[1]?.reviewname && (
-                <Name className="name">
-                  {jsonData.boxofs.boxof[1].reviewname._text}
-                </Name>
-              )}
-              {jsonData?.boxofs?.boxof?.[1]?.rank && (
-                <p>{rankStar(jsonData.boxofs.boxof[1].rank._num)}</p>
-              )}
-              {jsonData?.boxofs?.boxof?.[1]?.review && (
-                <Content> {jsonData.boxofs.boxof[1].review._text}</Content>
-              )}
-            </Text>
-          </Li>
-          <CenterHr />
-        </UlContainer>
-        <UlContainer>
-          <Li>
-            {jsonData?.boxofs?.boxof?.[2]?.poster && (
-              <Img>
-                <img
-                  src={URL + jsonData.boxofs.boxof[2].poster._text}
-                  alt="포스터"
-                />
-              </Img>
-            )}
-            <Text>
-              {jsonData?.boxofs?.boxof?.[2]?.prfnm && (
-                <Work>{jsonData.boxofs.boxof[2].prfnm._text}</Work>
-              )}
-              {jsonData?.boxofs?.boxof?.[2]?.reviewname && (
-                <Name>{jsonData.boxofs.boxof[2].reviewname._text}</Name>
-              )}
-              {jsonData?.boxofs?.boxof?.[2]?.rank && (
-                <p>{rankStar(jsonData.boxofs.boxof[2].rank._num)}</p>
-              )}
-              {jsonData?.boxofs?.boxof?.[2]?.review && (
-                <Content> {jsonData.boxofs.boxof[2].review._text}</Content>
-              )}
-            </Text>
-          </Li>
+              <Text>
+                {item.prfnm && <Work>{item.prfnm}</Work>}
+                {item.pretitle && <Name>{item.pretitle}</Name>}
+                {item.prestar && <p>{rankStar(item.prestar)}</p>}
+                {item.precontent && <Content>{item.precontent}</Content>}
+                {item.recommend && (
+                  <LikeBox>
+                    <LikeIcon src={LikeIconImg} alt="좋아요 아이콘" />
+                    <LikeCount>{item.recommend}</LikeCount>
+                  </LikeBox>
+                )}
+              </Text>
+            </Li>
+          ))}
         </UlContainer>
         <BottomBtn>
-          <Link to="/community?selectedItem=3">
+          <Link to="/community">
             <StyledViewAllButton>후기 전체보기</StyledViewAllButton>
           </Link>
         </BottomBtn>
