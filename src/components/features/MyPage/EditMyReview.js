@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import reviewJsonData from "../../../dummy/reviews.json";
-import showDetailJson from "../../../dummy/show_detail.json";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import axiosWithAuth from "../../base/axiosWithAuth";
+import axios from "axios";
 
 const Container = styled.div`
   max-width: 1100px;
@@ -105,15 +105,52 @@ const ReviewInfo = styled.div`
 `;
 
 const EditMyReview = () => {
+  const [userId, setUserId] = useState("");
+  const [isLogined, setIsLogined] = useState(false);
+  const [reviewList, setReviewList] = useState([]);
+
   const { prfnmText } = useParams();
+
   const [editMode, setEditMode] = useState(false); // 수정 모드 여부
   const [editedContent, setEditedContent] = useState(""); // 수정된 리뷰 내용을 저장
 
-  //user0001일 때 가정
-  const reviewData = reviewJsonData.filter(
-    (item) => item.user_id === "user0001"
-  );
-  const showDetailData = showDetailJson;
+  useEffect(() => {
+    const fetchLoginStatus = async () => {
+      try {
+        const response = await axiosWithAuth().get(
+          "http://localhost:8080/login/profile"
+        );
+        const { id, isLogined } = response.data;
+        if (isLogined) {
+          setUserId(id);
+          setIsLogined(true);
+        }
+      } catch (error) {
+        console.error("로그인 상태를 확인하는 동안 오류 발생:", error);
+      }
+    };
+    fetchLoginStatus();
+  }, []);
+
+  useEffect(() => {
+    if (userId) {
+      getReviewInfo();
+    }
+  }, [userId]);
+
+  const getReviewInfo = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/review/myReviewList",
+        {
+          user_id: userId,
+        }
+      );
+      setReviewList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // 수정 버튼 클릭 시
   const handleEditButtonClick = () => {
@@ -136,14 +173,17 @@ const EditMyReview = () => {
   };
 
   const formatDate = (dateString) => {
-    // "yyyymmddhhmmss"에서 "yy.mm.dd" 형식으로 변환
-    const formattedDate =
-      dateString.substring(2, 4) +
-      "." +
-      dateString.substring(4, 6) +
-      "." +
-      dateString.substring(6, 8);
-    return formattedDate;
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    if (month < 10) {
+      month = "0" + month;
+    }
+    let day = date.getDate();
+    if (day < 10) {
+      day = "0" + day;
+    }
+    return `${year}-${day}-${month}`;
   };
 
   const encryptUserId = (userId) => {
@@ -153,14 +193,14 @@ const EditMyReview = () => {
 
   return (
     <div>
-      {reviewData && (
+      {reviewList && (
         <Container>
           <Textbox>
             <P1>마이페이지</P1>
             <P2>나의 관람 후기</P2>
           </Textbox>
 
-          {reviewData.map(
+          {reviewList.map(
             (item, index) =>
               item.pre_id === prfnmText && (
                 <Content key={index}>
@@ -168,15 +208,9 @@ const EditMyReview = () => {
                     {item.mt20id && (
                       <span>
                         &lt;
-                        {showDetailData &&
-                          showDetailData.find(
-                            (data) => data.mt20id === item.mt20id
-                          )?.genrenm}
+                        {item.genrenm}
                         &gt;
-                        {showDetailData &&
-                          showDetailData.find(
-                            (data) => data.mt20id === item.mt20id
-                          )?.prfnm}
+                        {item.prfnm}
                       </span>
                     )}
                   </P3>
