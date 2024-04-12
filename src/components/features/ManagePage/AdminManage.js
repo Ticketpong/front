@@ -35,13 +35,13 @@ const Cell = styled.td`
     border-right: none;
   }
 `;
-
 const Button = styled.button`
   width: 70px;
   height: 36px;
   margin-right: 15px;
   background-color: white;
-  border: 1px solid #999999;
+  color: #fc1055;
+  border: 1px solid #fc1055;
   border-radius: 3px;
 `;
 

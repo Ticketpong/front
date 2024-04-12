@@ -42,19 +42,9 @@ const Button = styled.button`
   height: 36px;
   margin-right: 15px;
   background-color: white;
-  border: 1px solid #999999;
+  color: #fc1055;
+  border: 1px solid #fc1055;
   border-radius: 3px;
-`;
-
-const AddButton = styled.button`
-  width: 120px;
-  height: 51px;
-  border-radius: 3px;
-  background-color: #fc1055;
-  color: white;
-  border: none;
-  position: absolute;
-  right: 10%;
 `;
 
 const Pagination = styled.div`
