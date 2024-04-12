@@ -25,8 +25,8 @@ const Header = () => {
           setUserId(id);
           setIsLogined(true);
         }
-      } catch (error) {
-        console.error("로그인 상태를 확인하는 동안 오류 발생:", error);
+      } catch {
+        console.log("로그인 상태를 확인하는 동안 오류 발생:");
       }
     };
 

@@ -11,9 +11,10 @@ const SearchBar = ({ isHomepage }) => {
     setKeyword(event.target.value);
   };
 
+
   const handleSearch = () => {
     if (keyword.trim()) {
-      navigate(`/searchresult?keyword=${encodeURIComponent(keyword)}`);
+      navigate(`/searchresult?keyword=${keyword}`);
     }
   };
 
