@@ -40,6 +40,7 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
   const [isLogined, setIsLogined] = useState(false);
   const [userValue, setUserValue] = useState([]);
   const [payData, setPayData] = useState([]);
+  const [regiData, setRegiData] = useState([]);
 
   useEffect(() => {
     const iamport = document.createElement("script");
@@ -68,6 +69,27 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
 
     fetchLoginStatus();
   }, []);
+
+  useEffect(() => {
+    if (userId) {
+      getMacInfo();
+    }
+  }, [userId]);
+
+  const getMacInfo = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/macAddress/profile",
+        {
+          user_id: userId,
+        }
+      );
+
+      setRegiData(response.data[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const postUser = async () => {
@@ -128,6 +150,21 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
   };
   const navigate = useNavigate();
 
+  const checkMac = () => {
+    console.log(regiData);
+    if (userId) {
+      if (regiData) {
+        onClickPayment();
+      } else {
+        alert("기기등록이 필요합니다.");
+        navigate("/mypage");
+      }
+    } else {
+      alert("로그인이 필요합니다.");
+      navigate("/login");
+    }
+  };
+
   const onClickPayment = () => {
     const { IMP } = window;
     IMP.init("imp83485354");
@@ -184,7 +221,7 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
 
   return (
     <>
-      <PongButton className="payment" onClick={onClickPayment}>
+      <PongButton className="payment" onClick={checkMac}>
         결제하기
       </PongButton>
     </>
