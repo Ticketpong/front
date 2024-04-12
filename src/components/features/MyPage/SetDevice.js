@@ -105,7 +105,6 @@ const SetDevice = () => {
           device_name: userAgent,
         }
       );
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
