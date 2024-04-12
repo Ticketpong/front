@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import data from "../../../dummy/ReviewData.json";
+// import data from "../../../dummy/ReviewData.json";
+import axios from "axios";
 
 const ITEMS_PER_PAGE = 2; // 페이지당 표시할 데이터의 개수
 
@@ -120,11 +121,24 @@ const GrayHr = styled.div`
   height: 1px;
 `;
 
-const CommuReview = ({ isLoggedIn }) => {
+const CommuReview = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const URL = "https://www.kopis.or.kr/";
+  const URL = "http://localhost:8080/review/recentList"; // 리뷰 별점 + 추천 순으로 데이터 가져오기
+  const [data, setData] = useState([]);
 
-  const jsonData = data;
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(URL);
+      console.log(response);
+      setData(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const rankStar = (num) => {
     const stars = [];
@@ -132,15 +146,11 @@ const CommuReview = ({ isLoggedIn }) => {
     for (let i = 0; i < num; i++) {
       stars.push(<Rank key={i}>★</Rank>);
     }
-
     return stars;
   };
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = Math.min(
-    startIndex + ITEMS_PER_PAGE,
-    jsonData?.boxofs?.boxof?.length
-  );
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, data.length);
 
   const goToStartPage = () => {
     setCurrentPage(1);
@@ -152,17 +162,12 @@ const CommuReview = ({ isLoggedIn }) => {
 
   const goToNextPage = () => {
     setCurrentPage((prevPage) =>
-      Math.min(
-        prevPage + 1,
-        Math.ceil(jsonData?.boxofs?.boxof?.length / ITEMS_PER_PAGE)
-      )
+      Math.min(prevPage + 1, Math.ceil(data.length / ITEMS_PER_PAGE))
     );
   };
 
   const goToEndPage = () => {
-    const totalPages = Math.ceil(
-      jsonData?.boxofs?.boxof?.length / ITEMS_PER_PAGE
-    );
+    const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE);
     setCurrentPage(totalPages);
   };
 
@@ -170,39 +175,33 @@ const CommuReview = ({ isLoggedIn }) => {
     <Container>
       <hr style={{ border: "0", borderTop: "1px solid #99999" }} />
       <Ul>
-        {jsonData?.boxofs?.boxof
-          ?.slice(startIndex, endIndex)
-          .map((item, index) => (
-            <StyleLink to={`/reviewdetail/${item.prfnm._text}`}>
-              <HrBox key={index}>
-                <ListItem key={index}>
-                  <div className="imageContainer">
-                    {item.poster && (
-                      <img src={URL + item.poster._text} alt="포스터" />
-                    )}
-                  </div>
-                  <div className="contentContainer">
-                    {item.prfnm && <Name>{item.prfnm._text}</Name>}
-                    {item.prfnm && (
-                      <ReviewName>{item.reviewname._text}</ReviewName>
-                    )}
-                    {item.rank && <p>{rankStar(item.rank._num)}</p>}
-                    {item.review && (
-                      <ReviewContent>내용: {item.review._text}</ReviewContent>
-                    )}
-                  </div>
-                </ListItem>
-                {index <= endIndex - 1 && <GrayHr />}
-              </HrBox>
-            </StyleLink>
-          ))}
+        {data?.slice(startIndex, endIndex).map((item, index) => (
+          <StyleLink to={`/reviewdetail/${item.imp_uid}`}>
+            <HrBox key={index}>
+              <ListItem key={index}>
+                <div className="imageContainer">
+                  {item.poster && <img src={item.poster} alt="포스터" />}
+                </div>
+                <div className="contentContainer">
+                  {item.prfnm && <Name>{item.prfnm}</Name>}
+                  {item.prfnm && <ReviewName>{item.pretitle}</ReviewName>}
+                  {item.prestar && <p>{rankStar(item.prestar)}</p>}
+                  {item.precontent && (
+                    <ReviewContent>{item.precontent}</ReviewContent>
+                  )}
+                </div>
+              </ListItem>
+              {index <= endIndex - 1 && <GrayHr />}
+            </HrBox>
+          </StyleLink>
+        ))}
       </Ul>
       <ButtonContainer>
         <button onClick={goToStartPage}>{"<<"}</button>
         <button onClick={goToPrevPage}>{"<"}</button>
         {Array.from(
           {
-            length: Math.ceil(jsonData?.boxofs?.boxof?.length / ITEMS_PER_PAGE),
+            length: Math.ceil(data.length / ITEMS_PER_PAGE),
           },
           (_, i) => (
             <button key={i + 1} onClick={() => setCurrentPage(i + 1)}>

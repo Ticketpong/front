@@ -99,7 +99,7 @@ const WriteReview = () => {
 
   const bookingData = useLocation();
   const data = bookingData.state[0];
-  // console.log(data);
+  console.log(data);
   const [review, setReview] = useState({
     performance: "",
     rating: 0,
