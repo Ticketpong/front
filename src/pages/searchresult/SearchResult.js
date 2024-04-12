@@ -94,7 +94,6 @@ const SearchResult = () => {
   const [searchResults, setSearchResults] = useState([]);
 
 useEffect(() => {
-  console.log(keyword);
   if (keyword) {
     fetch(`http://localhost:8080/searchBar?keyword=${keyword}`)
       .then(response => {
