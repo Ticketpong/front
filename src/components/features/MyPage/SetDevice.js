@@ -4,20 +4,25 @@ import axiosWithAuth from "../../base/axiosWithAuth";
 import axios from "axios";
 
 const Wrapper = styled.div`
-  width: 70%;
+  width: 100%;
   padding: 20px;
   margin-top: 50px;
   text-align: center;
 
   ul {
-    margin: 10px auto;
-    padding: 0;
+    width: 500px;
+    margin: 0 auto;
+    padding: 10px;
     list-style: none;
+    border: 1px solid #999999;
+    border-radius: 15px;
   }
   li {
+    width: 400px;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    text-align: left;
+    line-height: 55px;
+    margin: 0 auto;
   }
   span {
     flex: 1;
@@ -25,10 +30,12 @@ const Wrapper = styled.div`
     font-weight: 700;
   }
   p {
+    margin: 0;
     flex: 1;
     padding: 0 5px;
   }
   button {
+    margin-top: 20px;
     border: 1px solid #fc1055;
     width: 200px;
     border-radius: 5px;
@@ -75,16 +82,15 @@ const SetDevice = () => {
   }, [userId]);
 
   const getMacInfo = async () => {
-    console.log(userId); //들어감
     try {
-      const response = await axios.get(
+      const response = await axios.post(
         "http://localhost:8080/macAddress/profile",
         {
           user_id: userId,
         }
       );
-      console.log(response); // 응답 데이터 data 빈 배열
-      setRegiData(response.data);
+
+      setRegiData(response.data[0]);
     } catch (error) {
       console.log(error);
     }
@@ -99,7 +105,6 @@ const SetDevice = () => {
           device_name: userAgent,
         }
       );
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -144,17 +149,33 @@ const SetDevice = () => {
   };
 
   const setMac = () => {
-    const today = new Date();
-    if (regiData.length > 0) {
+    const getDateStringDifference = (dateString) => {
+      const today = new Date();
+      const date2 = new Date(dateString);
+
+      const differenceInMs = Math.abs(today - date2);
+      const differenceInDays = differenceInMs / (1000 * 60 * 60 * 24);
+      return Math.floor(differenceInDays);
+    };
+
+    if (regiData) {
       console.log(regiData.length);
-      if (today - regiData.res_date > 30) {
+      if (getDateStringDifference(regiData.res_date) > 30) {
         updateMacInfo();
+        alert("설정이 완료되었습니다!");
+        window.location.reload();
       } else {
-        alert(`${30 - (today - regiData.res_date)}일 후 재설정이 가능합니다.`);
+        alert(
+          `${
+            30 - getDateStringDifference(regiData.res_date)
+          }일 후 재설정이 가능합니다.`
+        );
       }
     } else {
+      console.log(regiData);
       postMacInfo();
       alert("설정이 완료되었습니다!");
+      window.location.reload();
     }
   };
 
@@ -165,16 +186,16 @@ const SetDevice = () => {
           <ul>
             <li>
               <span>등록된 기기 ID: </span>
-              <p>{regiData.device_id}</p>
+              <p>{regiData ? regiData.macaddress : "기기를 등록해주세요."}</p>
             </li>
             <li>
               <span>등록된 기기 유형: </span>
-              <p>{regiData.device_name}</p>
+              <p>{regiData ? regiData.device_name : "기기를 등록해주세요."}</p>
             </li>
-            <li>
+            {/* <li>
               <span>접속한 기기 ID: </span>
-              <p>{nowData.device_id}</p>
-            </li>
+              <p>{nowData.macaddress}</p>
+            </li> */}
             <li>
               <span>접속한 기기 유형: </span>
               <p>{nowData.device_name}</p>
