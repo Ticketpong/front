@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-// import data from "../../../dummy/ReviewData.json";
 import axios from "axios";
 
 const ITEMS_PER_PAGE = 2; // 페이지당 표시할 데이터의 개수
@@ -123,20 +122,22 @@ const GrayHr = styled.div`
 
 const CommuReview = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const URL = "http://localhost:8080/review/recentList"; // 리뷰 별점 + 추천 순으로 데이터 가져오기
+  const URL = "http://localhost:8080/review/recommandList"; // 리뷰 별점 + 추천 순으로 데이터 가져오기
   const [data, setData] = useState([]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [currentPage]);
 
   const fetchData = async () => {
     try {
       const response = await axios.get(URL);
-      console.log(response);
-      setData(response.data);
+      const newData = response.data.map((item) => ({
+        ...item,
+      }));
+      setData(newData);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -176,7 +177,7 @@ const CommuReview = () => {
       <hr style={{ border: "0", borderTop: "1px solid #99999" }} />
       <Ul>
         {data?.slice(startIndex, endIndex).map((item, index) => (
-          <StyleLink to={`/reviewdetail/${item.imp_uid}`}>
+          <StyleLink to={`/reviewdetail/${item.pre_id}`}>
             <HrBox key={index}>
               <ListItem key={index}>
                 <div className="imageContainer">
