@@ -313,7 +313,7 @@ const BookingDetail = () => {
                     status={item.prestate.data[0]}
                     onClick={
                       item.prestate.data[0] === 0
-                        ? () => navigate("/writereview")
+                        ? () => navigate("/writereview", { state: [item] })
                         : undefined
                     }
                   >

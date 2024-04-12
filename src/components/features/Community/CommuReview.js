@@ -6,6 +6,9 @@ import data from "../../../dummy/ReviewData.json";
 const ITEMS_PER_PAGE = 2; // 페이지당 표시할 데이터의 개수
 
 const Container = styled.div`
+  width: 1500px;
+  padding: 20px;
+  margin-top: 20px;
   hr {
     height: 1px;
   }
@@ -17,6 +20,7 @@ const ListItem = styled.li`
 
   .imageContainer {
     margin-right: 40px;
+    margin-left: 10px;
   }
 
   .contentContainer {
@@ -28,7 +32,7 @@ const ListItem = styled.li`
     display: block;
     width: 230px;
     height: 270px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     object-fit: cover;
     border-radius: 12px;
   }
@@ -64,20 +68,20 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const WriteBtn = styled.button`
-  float: right;
-  width: 120px;
-  height: 50px;
-  border-radius: 3px;
-  color: #ffffff;
-  background-color: #fc1055;
-  border: none;
-  font-size: 18px;
-`;
+// const WriteBtn = styled.button`
+//   float: right;
+//   width: 120px;
+//   height: 50px;
+//   border-radius: 3px;
+//   color: #ffffff;
+//   background-color: #fc1055;
+//   border: none;
+//   font-size: 18px;
+// `;
 
 const HrBox = styled.div`
   position: relative;
-  width: 1580px;
+  width: 1490px;
   height: 320px;
 `;
 
@@ -105,6 +109,15 @@ const ReviewContent = styled.span`
 const StyleLink = styled(Link)`
   text-decoration: none;
   color: black;
+`;
+
+const GrayHr = styled.div`
+  background-color: #999999;
+  min-width: 1490px;
+  max-width: 1490px;
+  border: 0;
+  margin: 10px;
+  height: 1px;
 `;
 
 const CommuReview = ({ isLoggedIn }) => {
@@ -155,7 +168,7 @@ const CommuReview = ({ isLoggedIn }) => {
 
   return (
     <Container>
-      <hr style={{ border: "0", borderTop: "2px solid black" }} />
+      <hr style={{ border: "0", borderTop: "1px solid #99999" }} />
       <Ul>
         {jsonData?.boxofs?.boxof
           ?.slice(startIndex, endIndex)
@@ -179,7 +192,7 @@ const CommuReview = ({ isLoggedIn }) => {
                     )}
                   </div>
                 </ListItem>
-                {index <= endIndex - 1 && <hr />}
+                {index <= endIndex - 1 && <GrayHr />}
               </HrBox>
             </StyleLink>
           ))}
@@ -201,7 +214,7 @@ const CommuReview = ({ isLoggedIn }) => {
         <button onClick={goToNextPage}>{">"}</button>
         <button onClick={goToEndPage}>{">>"}</button>
       </ButtonContainer>
-      {isLoggedIn ? (
+      {/* {isLoggedIn ? (
         <>
           <Link to="/writereview">
             <WriteBtn>후기 작성</WriteBtn>
@@ -211,7 +224,7 @@ const CommuReview = ({ isLoggedIn }) => {
         <Link to="/login">
           <WriteBtn>후기 작성</WriteBtn>
         </Link>
-      )}
+      )} */}
     </Container>
   );
 };

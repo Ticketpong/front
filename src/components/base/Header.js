@@ -61,12 +61,13 @@ const Header = () => {
     }
   };
 
-  if(locationInfo.pathname === "/login"
-    || locationInfo.pathname === "/manage"
-    || locationInfo.pathname === "/signup"
-    || locationInfo.pathname === "/findid"
-    || locationInfo.pathname === "/findpw"
-    || locationInfo.pathname === "/confirmid"
+  if (
+    locationInfo.pathname === "/login" ||
+    locationInfo.pathname === "/manage" ||
+    locationInfo.pathname === "/signup" ||
+    locationInfo.pathname === "/findid" ||
+    locationInfo.pathname === "/findpw" ||
+    locationInfo.pathname === "/confirmid"
   )
     return null;
 

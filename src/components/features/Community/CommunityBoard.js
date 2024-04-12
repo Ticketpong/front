@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const BoardContainer = styled.div`
-  width: 1500px;
+  min-width: 1500px;
+  max-width: 1500px;
   padding: 20px;
   margin-top: 20px;
 

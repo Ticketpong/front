@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
-import searchTopImg from '../../assets/searchResultImg/search_topImg.jpg';
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import styled from "styled-components";
+import searchTopImg from "../../assets/searchResultImg/search_topImg.jpg";
 
 const Container = styled.div`
   position: relative;
@@ -45,7 +45,7 @@ const ResultCount = styled.h1`
   margin-left: 10%;
   margin-top: 130px;
   padding-bottom: 15px;
-  border-bottom: 1px solid #ccc; 
+  border-bottom: 1px solid #ccc;
 `;
 
 const ResultContainer = styled.div`
@@ -90,42 +90,50 @@ const ResultDate = styled.p`
 const SearchResult = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const keyword = queryParams.get('keyword');
+  const keyword = queryParams.get("keyword");
   const [searchResults, setSearchResults] = useState([]);
 
-useEffect(() => {
-  const fetchSearchResults = async () => {
-    try {
-      if (keyword) {
-        const response = await fetch(`http://localhost:8080/performances?keyword=${encodeURIComponent(keyword)}`);
-        if (response.ok) {
-          const searchData = await response.json();
-          setSearchResults(searchData);
-        } else {
-          throw new Error('검색 결과 가져오기 실패');
+  useEffect(() => {
+    const fetchSearchResults = async () => {
+      try {
+        if (keyword) {
+          const response = await fetch(
+            `http://localhost:8080/performances?keyword=${encodeURIComponent(
+              keyword
+            )}`
+          );
+          if (response.ok) {
+            const searchData = await response.json();
+            setSearchResults(searchData);
+          } else {
+            throw new Error("검색 결과 가져오기 실패");
+          }
         }
+      } catch (error) {
+        console.error("검색 결과를 가져오는 중에 오류 발생:", error);
       }
-    } catch (error) {
-      console.error('검색 결과를 가져오는 중에 오류 발생:', error);
-    }
-  };
+    };
 
-  fetchSearchResults();
-}, [keyword]);
+    fetchSearchResults();
+  }, [keyword]);
 
   return (
     <Container>
       <TopImage src={searchTopImg} alt="topImg" />
       <Title>검색하신 '{keyword}'에 대한 검색 결과입니다.</Title>
-      <GoToViewAllButton to="/viewall">전체보기 페이지로 이동하기</GoToViewAllButton>
+      <GoToViewAllButton to="/viewall">
+        전체보기 페이지로 이동하기
+      </GoToViewAllButton>
       <ResultCount>티켓 ({searchResults.length})</ResultCount>
       <ResultContainer>
-        {searchResults.map(result => (
+        {searchResults.map((result) => (
           <ResultItem key={result.id}>
             <PosterImage src={result.poster} alt="Poster" />
             <ResultTitle>{result.prfnm}</ResultTitle>
             <ResultPlace>{result.mt10id}</ResultPlace>
-            <ResultDate>{result.prfpdfrom} ~ {result.prfpdto}</ResultDate>
+            <ResultDate>
+              {result.prfpdfrom} ~ {result.prfpdto}
+            </ResultDate>
           </ResultItem>
         ))}
       </ResultContainer>
