@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Head = styled.span`
   font-size: 34px;
@@ -91,41 +93,43 @@ const RegisterBtn = styled.button`
   margin-right: 50px;
 `;
 const WriteReview = () => {
-  // const { imp_uid } = useParams(); // 예매 id
-  const [performance, setPerformance] = useState("");
   const [rating, setRating] = useState(0);
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
 
   const bookingData = useLocation();
   const data = bookingData.state[0];
-  // console.log(data);
-  const [review, setReview] = useState({
-    performance: "",
-    rating: 0,
-    title: "",
-    comment: "",
-  });
+  const preId = data.mt20id + "pre" + generateRandomCode();
+
+  const navigate = useNavigate();
+
+  function generateRandomCode() {
+    return Math.random().toString(36).substring(2, 6).toUpperCase();
+  }
 
   const handleRatingChange = (value) => {
     setRating(value);
+  };
+  const getReviewInfo = async () => {
+    try {
+      const response = await axios.post("http://localhost:8080/review", {
+        imp_uid: data.imp_uid,
+        pre_id: preId,
+        pretitle: title,
+        precontent: comment,
+        prestar: rating,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // 입력한 후기 데이터 저장하는 부분
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({
-      performance: data.showName,
-      rating,
-      title,
-      comment,
-    });
+    getReviewInfo();
 
-    // 제출 후 상태 초기화
-    setPerformance("");
-    setRating(0);
-    setTitle("");
-    setComment("");
+    navigate(`/editmyreview/${preId}`);
   };
 
   return (
