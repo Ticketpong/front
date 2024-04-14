@@ -1,7 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
 import logo from "../../assets/headerImg/logo.png";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const OuterContainer = styled.div`
   width: 100%;
@@ -40,7 +41,7 @@ const Logo = styled.img`
 
 const Title = styled.h2`
   font-size: 18px;
-  color: #373A42;
+  color: #373a42;
 `;
 
 const Form = styled.form`
@@ -68,7 +69,6 @@ const EmailLabel = styled.label`
   width: 70px;
   margin-right: 10px;
 `;
-  
 
 const NameInput = styled.input`
   width: 440px;
@@ -101,17 +101,17 @@ const EmailInput = styled.input`
 `;
 
 const Button = styled.button`
-    width: 440px;
-    height: 60px;
-    border: none;
-    border-radius: 5px;
-    background-color: #fc1055;
-    color: white;
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 22px;
-    margin-top: 15px;
-    cursor: pointer;
+  width: 440px;
+  height: 60px;
+  border: none;
+  border-radius: 5px;
+  background-color: #fc1055;
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 22px;
+  margin-top: 15px;
+  cursor: pointer;
 `;
 
 const BottomArea = styled.div`
@@ -143,8 +143,38 @@ const Links = styled(Link)`
 `;
 
 const FindId = () => {
-  const handleSubmit = (e) => {
+  const [inputValue, setInputValue] = useState({
+    name: "",
+    email: "",
+  });
+  const navigate = useNavigate();
+
+  const inputChange = (e) => {
+    const { name, value } = e.target;
+    setInputValue({
+      ...inputValue,
+      [name]: value,
+    });
+  };
+  console.log(inputValue);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const response = await axios.post(
+      "http://localhost:8080/findIdPassword/findId",
+      {
+        name: inputValue.name,
+        email: inputValue.email,
+      }
+    );
+    console.log(response);
+    if (response.status === 200) {
+      console.log(response.data);
+      navigate("/confirmid", { state: { userId: response.data } });
+    } else {
+      alert("입력하신 정보가 일치하지 않습니다.");
+      window.location.reload();
+    }
   };
 
   return (
@@ -158,20 +188,32 @@ const FindId = () => {
           <Title>아이디 찾기</Title>
         </TopArea>
         <Form onSubmit={handleSubmit}>
-            <FormGroup>
-              <NameLabel htmlFor="name">이름</NameLabel>
-              <NameInput type="text" id="name" name="name" placeholder="이름을 입력해주세요" />
-            </FormGroup>
-            <FormGroup>
-              <EmailLabel htmlFor="email">이메일</EmailLabel>
-              <EmailInput type="email" id="email" name="email" placeholder="이메일을 입력해주세요"  />
-            </FormGroup>
+          <FormGroup>
+            <NameLabel htmlFor="name">이름</NameLabel>
+            <NameInput
+              type="text"
+              id="name"
+              name="name"
+              placeholder="이름을 입력해주세요"
+              onChange={inputChange}
+            />
+          </FormGroup>
+          <FormGroup>
+            <EmailLabel htmlFor="email">이메일</EmailLabel>
+            <EmailInput
+              type="email"
+              id="email"
+              name="email"
+              placeholder="이메일을 입력해주세요"
+              onChange={inputChange}
+            />
+          </FormGroup>
           <Button type="submit">확인</Button>
         </Form>
         <BottomArea>
-          <Links to='/findpw'>비밀번호 찾기</Links>
+          <Links to="/findpw">비밀번호 찾기</Links>
           <VerticalLine />
-          <Links to='/login'>로그인 하기</Links>
+          <Links to="/login">로그인 하기</Links>
         </BottomArea>
       </InnerContainer>
     </OuterContainer>

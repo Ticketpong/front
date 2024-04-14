@@ -1,7 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
 import logo from "../../assets/headerImg/logo.png";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 const OuterContainer = styled.div`
   width: 100%;
@@ -40,7 +41,7 @@ const Logo = styled.img`
 
 const Title = styled.h2`
   font-size: 18px;
-  color: #373A42;
+  color: #373a42;
 `;
 
 const Form = styled.form`
@@ -76,7 +77,6 @@ const EmailLabel = styled.label`
   width: 70px;
   margin-right: 10px;
 `;
-  
 
 const NameInput = styled.input`
   width: 440px;
@@ -124,17 +124,17 @@ const EmailInput = styled.input`
 `;
 
 const Button = styled.button`
-    width: 440px;
-    height: 60px;
-    border: none;
-    border-radius: 5px;
-    background-color: #fc1055;
-    color: white;
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 22px;
-    margin-top: 15px;
-    cursor: pointer;
+  width: 440px;
+  height: 60px;
+  border: none;
+  border-radius: 5px;
+  background-color: #fc1055;
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 22px;
+  margin-top: 15px;
+  cursor: pointer;
 `;
 
 const BottomArea = styled.div`
@@ -166,8 +166,39 @@ const Links = styled(Link)`
 `;
 
 const FindPw = () => {
-  const handleSubmit = (e) => {
+  const [inputValues, setInputValues] = useState({
+    name: "",
+    id: "",
+    email: "",
+  });
+
+  const inputChange = (e) => {
+    const { name, value } = e.target;
+    setInputValues({
+      ...inputValues,
+      [name]: value,
+    });
+  };
+
+  console.log(inputValues);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const response = await axios.post(
+      "http://localhost:8080/findIdPassword/findPassword",
+      {
+        name: inputValues.name,
+        id: inputValues.id,
+        email: inputValues.email,
+      }
+    );
+    if (response.status === 200) {
+      alert("입력하신 이메일로 임시 비밀번호가 발송되었습니다.");
+      window.location.replace("/login");
+    } else {
+      alert("입력하신 정보가 일치하지 않습니다.");
+      window.location.reload();
+    }
   };
 
   return (
@@ -181,24 +212,42 @@ const FindPw = () => {
           <Title>비밀번호 찾기</Title>
         </TopArea>
         <Form onSubmit={handleSubmit}>
-            <FormGroup>
-              <NameLabel htmlFor="name">이름</NameLabel>
-              <NameInput type="text" id="name" name="name" placeholder="이름을 입력해주세요" />
-            </FormGroup>
-            <FormGroup>
-              <IdLabel htmlFor="email">아이디</IdLabel>
-              <IdInput type="id" id="id" name="id" placeholder="아이디를 입력해주세요"  />
-            </FormGroup>
-            <FormGroup>
-              <EmailLabel htmlFor="email">이메일</EmailLabel>
-              <EmailInput type="email" id="email" name="email" placeholder="이메일을 입력해주세요"  />
-            </FormGroup>
+          <FormGroup>
+            <NameLabel htmlFor="name">이름</NameLabel>
+            <NameInput
+              type="text"
+              id="name"
+              name="name"
+              placeholder="이름을 입력해주세요"
+              onChange={inputChange}
+            />
+          </FormGroup>
+          <FormGroup>
+            <IdLabel htmlFor="email">아이디</IdLabel>
+            <IdInput
+              type="id"
+              id="id"
+              name="id"
+              placeholder="아이디를 입력해주세요"
+              onChange={inputChange}
+            />
+          </FormGroup>
+          <FormGroup>
+            <EmailLabel htmlFor="email">이메일</EmailLabel>
+            <EmailInput
+              type="email"
+              id="email"
+              name="email"
+              placeholder="이메일을 입력해주세요"
+              onChange={inputChange}
+            />
+          </FormGroup>
           <Button type="submit">확인</Button>
         </Form>
         <BottomArea>
-          <Links to='/findId'>아이디 찾기</Links>
+          <Links to="/findId">아이디 찾기</Links>
           <VerticalLine />
-          <Links to='/login'>로그인 하기</Links>
+          <Links to="/login">로그인 하기</Links>
         </BottomArea>
       </InnerContainer>
     </OuterContainer>
