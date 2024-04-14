@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { FcLike } from "react-icons/fc";
 import axios from "axios";
 
 const ITEMS_PER_PAGE = 2; // 페이지당 표시할 데이터의 개수
@@ -193,6 +194,9 @@ const CommuReview = () => {
                   {item.precontent && (
                     <ReviewContent>{item.precontent}</ReviewContent>
                   )}
+                  <span>
+                    <FcLike /> : {item.recommend}
+                  </span>
                 </div>
               </ListItem>
               {index <= endIndex - 1 && <GrayHr />}

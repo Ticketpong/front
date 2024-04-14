@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-// import data from "../../../dummy/ReviewData.json";
 import axios from "axios";
-import LikeIconImg from "../../../assets/homeImg/free-icon-like-179655.png";
+// import LikeIconImg from "../../../assets/homeImg/free-icon-like-179655.png";
+import { FcLike } from "react-icons/fc";
 
 const Strong = styled.div`
   text-align: center;
@@ -208,12 +208,11 @@ const HPReviews = () => {
                 {item.pretitle && <Name>{item.pretitle}</Name>}
                 {item.prestar && <p>{rankStar(item.prestar)}</p>}
                 {item.precontent && <Content>{item.precontent}</Content>}
-                {item.recommend && (
-                  <LikeBox>
-                    <LikeIcon src={LikeIconImg} alt="좋아요 아이콘" />
-                    <LikeCount>{item.recommend}</LikeCount>
-                  </LikeBox>
-                )}
+                <LikeBox>
+                  {/* <LikeIcon src={LikeIconImg} alt="좋아요 아이콘" /> */}
+                  <FcLike size="35" />
+                  <LikeCount> {item.recommend}</LikeCount>
+                </LikeBox>
               </Text>
             </Li>
           ))}
