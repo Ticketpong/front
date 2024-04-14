@@ -247,7 +247,7 @@ const ReviewDetail = () => {
           <hr />
           <ButtonContainer>
             <ListButton>
-              <Link to="/community?selectedItem=3">목록</Link>
+              <Link to="/community">목록</Link>
             </ListButton>
           </ButtonContainer>
         </Container>
