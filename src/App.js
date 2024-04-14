@@ -57,10 +57,7 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/manage" element={<ManageLoginPage />} />
           <Route path="/managepage" element={<ManagePage />} />
-          <Route
-            path="/editmyreview/:prfnmText"
-            element={<EditMyReview />}
-          ></Route>
+          <Route path="/editmyreview" element={<EditMyReview />}></Route>
           <Route path="/myreview" element={<MyReview />}></Route>
           <Route
             path="/reviewdetail/:prfnmText"
