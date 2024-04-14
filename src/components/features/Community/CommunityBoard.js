@@ -236,10 +236,10 @@ const CommunityBoard = () => {
       )}
       {!showPostList && selectedPost && (
         <PostContentContainer>
-          <Textbox>
+          {/* <Textbox>
             <P1>커뮤니티 | </P1>
             <P2>관람후기</P2>
-          </Textbox>
+          </Textbox> */}
           <hr />
           <NameBox>
             <P3>{posts.find((post) => post.id === selectedPost).title}</P3>
