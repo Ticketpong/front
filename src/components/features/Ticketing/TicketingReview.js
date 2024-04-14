@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-
-import reviewData from "../../../dummy/reviews.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 const ReviewList = styled.ul`
   margin-top: 23px;
@@ -51,14 +50,34 @@ const CommentInfo = styled.div`
 
 const TicketingReview = ({ mt20id }) => {
   const [reviews, setReviews] = useState([]);
+  const [filteredReviews, setFilteredReviews] = useState([]);
+
+  useEffect(() => {
+    fetchReview();
+  }, [mt20id]);
+
+  const fetchReview = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/review/recommandList"
+      );
+      const newData = response.data.map((item) => ({
+        ...item,
+      }));
+      setReviews(newData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     // mt20id에 해당하는 리뷰만 필터링
-    const filteredReviews = reviewData.filter(
+    const filteringReviews = reviews.filter(
       (review) => review.mt20id === mt20id
     );
-    setReviews(filteredReviews);
-  }, [mt20id]);
+    setFilteredReviews(filteringReviews);
+    console.log(filteredReviews);
+  }, [reviews]);
 
   const renderStars = (starCount) => {
     const stars = [];
@@ -69,10 +88,17 @@ const TicketingReview = ({ mt20id }) => {
   };
 
   const formatDate = (dateString) => {
-    const year = dateString.slice(0, 4);
-    const month = dateString.slice(4, 6);
-    const day = dateString.slice(6, 8);
-    return `${year}.${month}.${day}`;
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    if (month < 10) {
+      month = "0" + month;
+    }
+    let day = date.getDate();
+    if (day < 10) {
+      day = "0" + day;
+    }
+    return `${year}-${month}-${day}`;
   };
 
   return (
@@ -80,7 +106,7 @@ const TicketingReview = ({ mt20id }) => {
       <h2>관람 후기</h2>
       <hr />
       <ReviewList>
-        {reviews.map((review, index) => (
+        {filteredReviews.map((review, index) => (
           <ReviewItem key={index}>
             <div className="stars">{renderStars(review.prestar)}</div>
             <p className="commentTitle">{review.pretitle}</p>
