@@ -182,7 +182,7 @@ const ReviewDetail = () => {
     getRecommandInfo();
   }, [preid, userId]);
 
-  console.log(recommandState);
+  // console.log(recommandState);
 
   const recommandHandler = async () => {
     try {
@@ -229,25 +229,14 @@ const ReviewDetail = () => {
     return `${year}-${day}-${month}`;
   };
 
-  const deleteReview = async () => {
-    try {
-      const response = await axios.delete(
-        "http://localhost:8080/review/delete",
-        {
-          pre_id: preid,
-        }
-      );
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleDeleteButtonClick = () => {
+  const handleDeleteButtonClick = async () => {
     const confirmDelete = window.confirm("리뷰를 삭제하시겠습니까?");
     if (confirmDelete) {
-      deleteReview();
-      navigate(-1);
+      const response = await axios.post("http://localhost:8080/review/delete", {
+        pre_id: preid,
+      });
+      console.log(response);
+      // navigate(-1);
     }
   };
 
