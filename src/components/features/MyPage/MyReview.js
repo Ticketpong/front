@@ -178,7 +178,10 @@ const MyReview = () => {
             <HrBox key={index}>
               <ListItem key={index}>
                 <div className="imageContainer">
-                  <Link to={`/editmyreview/${item.pre_id}`}>
+                  <Link
+                    to={`/reviewdetail/${item.pre_id}`}
+                    state={{ preId: item.pre_id }}
+                  >
                     {reviewList &&
                       reviewList.find((data) => data.mt20id === item.mt20id)
                         ?.poster && (

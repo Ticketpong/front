@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { FcLike } from "react-icons/fc";
 import { GoHeart } from "react-icons/go";
 import styled from "styled-components";
@@ -53,6 +53,8 @@ const HrBox = styled.div`
 `;
 
 const ButtonContainer = styled.div`
+  border-top: 1px solid #999999;
+  padding-top: 15px;
   display: flex;
   justify-content: right;
   margin-top: 30px;
@@ -68,6 +70,7 @@ const ListButton = styled.button`
   margin-left: 10px;
   font-size: 18px;
   color: #ffffff;
+  cursor: pointer;
 `;
 
 const OutputArea = styled.div`
@@ -114,6 +117,7 @@ const ReviewDetail = () => {
   const [recommandState, setRecommandState] = useState(false);
   const [isLogined, setIsLogined] = useState(false);
   const [userId, setUserId] = useState("");
+  const navigate = useNavigate();
 
   const preid = location.state.preId;
 
@@ -211,6 +215,42 @@ const ReviewDetail = () => {
     return stars;
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    if (month < 10) {
+      month = "0" + month;
+    }
+    let day = date.getDate();
+    if (day < 10) {
+      day = "0" + day;
+    }
+    return `${year}-${day}-${month}`;
+  };
+
+  const deleteReview = async () => {
+    try {
+      const response = await axios.delete(
+        "http://localhost:8080/review/delete",
+        {
+          pre_id: preid,
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDeleteButtonClick = () => {
+    const confirmDelete = window.confirm("리뷰를 삭제하시겠습니까?");
+    if (confirmDelete) {
+      deleteReview();
+      navigate(-1);
+    }
+  };
+
   return (
     <div>
       {data && (
@@ -225,7 +265,7 @@ const ReviewDetail = () => {
               <P3>{item.prfnm}</P3>
               <P4>{item.pretitle}</P4>
               <Span>
-                작성자: {item.user_id} | 작성일 : {item.predate}
+                작성자: {item.user_id} | 작성일 : {formatDate(item.predate)}
                 {"    "}|
                 {item.prestar && <P5> 평점: {rankStar(item.prestar)}</P5>}
                 {"    "}
@@ -242,14 +282,34 @@ const ReviewDetail = () => {
               </Span>
               <HrBox />
               <OutputArea>{item.precontent}</OutputArea>
+
+              <ButtonContainer>
+                {userId === item.user_id && (
+                  <>
+                    {" "}
+                    <ListButton
+                      onClick={() => {
+                        navigate("/editmyreview", { state: [item] });
+                      }}
+                    >
+                      수정
+                    </ListButton>
+                    <ListButton onClick={handleDeleteButtonClick}>
+                      삭제
+                    </ListButton>
+                  </>
+                )}
+                <ListButton>
+                  <Link
+                    style={{ textDecoration: "none", color: "#fff" }}
+                    to="/community"
+                  >
+                    목록
+                  </Link>
+                </ListButton>
+              </ButtonContainer>
             </Content>
           ))}
-          <hr />
-          <ButtonContainer>
-            <ListButton>
-              <Link to="/community">목록</Link>
-            </ListButton>
-          </ButtonContainer>
         </Container>
       )}
     </div>

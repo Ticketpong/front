@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const Head = styled.span`
   font-size: 34px;
@@ -98,6 +97,7 @@ const WriteReview = () => {
   const [comment, setComment] = useState("");
 
   const bookingData = useLocation();
+  console.log(bookingData);
   const data = bookingData.state[0];
   const preId = data.mt20id + "pre" + generateRandomCode();
 
@@ -129,7 +129,7 @@ const WriteReview = () => {
     e.preventDefault();
     getReviewInfo();
 
-    navigate(`/editmyreview/${preId}`);
+    navigate(`/reviewdetail/${preId}`);
   };
 
   return (
