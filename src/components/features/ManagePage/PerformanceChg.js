@@ -144,7 +144,6 @@ const PerformaceReg = () => {
       const response = await axios.post(url, {
         // 수정
       });
-      console.log(response);
       json.stringify(response);
     } catch (error) {
       console.log(error);

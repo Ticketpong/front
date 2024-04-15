@@ -35,7 +35,6 @@ const ApiDataFetcher = () => {
           jsonData.push(jsonDataItem);
         }
         setData(jsonData);
-        console.log(jsonData);
       } catch (error) {
         setError(error);
       }

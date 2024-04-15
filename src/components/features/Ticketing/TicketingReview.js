@@ -76,7 +76,6 @@ const TicketingReview = ({ mt20id }) => {
       (review) => review.mt20id === mt20id
     );
     setFilteredReviews(filteringReviews);
-    console.log(filteredReviews);
   }, [reviews]);
 
   const renderStars = (starCount) => {

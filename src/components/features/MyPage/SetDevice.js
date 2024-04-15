@@ -159,7 +159,6 @@ const SetDevice = () => {
     };
 
     if (regiData) {
-      console.log(regiData.length);
       if (getDateStringDifference(regiData.res_date) > 30) {
         updateMacInfo();
         alert("설정이 완료되었습니다!");
@@ -172,7 +171,6 @@ const SetDevice = () => {
         );
       }
     } else {
-      console.log(regiData);
       postMacInfo();
       alert("설정이 완료되었습니다!");
       window.location.reload();

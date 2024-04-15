@@ -182,7 +182,6 @@ const PerformaceReg = () => {
         post: performance.post,
         prfage: performance.prfage,
       });
-      console.log(response);
       json.stringify(response);
     } catch (error) {
       console.log(error);

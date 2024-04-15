@@ -147,7 +147,6 @@ const EditManage = ({ manageId }) => {
       [name]: value,
     }));
   };
-  console.log(manageInfo);
 
   const submitUrl = "http://localhost:8080/manage/manageMain/manageEdit";
 

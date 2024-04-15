@@ -249,7 +249,6 @@ const SignupPage = () => {
             id: inputValue.id,
           }
         );
-        console.log(response);
         if (response.data === "이미 사용중인 아이디입니다.") {
           alert("이미 사용중인 아이디입니다.");
           setIsIdCheck(false);
@@ -275,7 +274,6 @@ const SignupPage = () => {
             email: inputValue.email,
           }
         );
-        console.log(response);
         if (response.data === "이미 사용중인 이메일입니다.") {
           alert("이미 사용중인 이메일입니다.");
           setIsEmailCheck(false);
@@ -304,7 +302,6 @@ const SignupPage = () => {
         address: inputValue.address,
         detailAddress: inputValue.detailAddress,
       });
-      console.log(response);
       json.stringify(response);
       if (response.status === 200) {
         alert("회원가입 성공");

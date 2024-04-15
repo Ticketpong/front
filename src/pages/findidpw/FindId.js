@@ -156,7 +156,6 @@ const FindId = () => {
       [name]: value,
     });
   };
-  console.log(inputValue);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -167,9 +166,7 @@ const FindId = () => {
         email: inputValue.email,
       }
     );
-    console.log(response);
     if (response.status === 200) {
-      console.log(response.data);
       navigate("/confirmid", { state: { userId: response.data } });
     } else {
       alert("입력하신 정보가 일치하지 않습니다.");

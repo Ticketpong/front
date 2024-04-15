@@ -138,7 +138,7 @@ const ManageAdd = () => {
         role: manageInfo.role,
         part: manageInfo.part,
       });
-      console.log(response);
+
       json.stringify(response);
     } catch (error) {
       console.log(error);

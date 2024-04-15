@@ -142,7 +142,6 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
         selectseat: response.custom_data.selectedseat,
         people: response.custom_data.people,
       });
-      console.log(result);
       json.stringify(result);
     } catch (error) {
       console.log(error);
@@ -151,7 +150,6 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
   const navigate = useNavigate();
 
   const checkMac = () => {
-    console.log(regiData);
     if (userId) {
       if (regiData) {
         onClickPayment();
@@ -195,7 +193,6 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
     };
 
     if (cardData) {
-      console.log(cardData[0]);
       // cardData가 존재하는 경우 추가 카드 정보를 포함하여 결제 요청
       data.card = {
         direct: {
@@ -209,7 +206,6 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
 
   const callback = (response) => {
     if (response.success) {
-      console.log(response);
       submitPayment(response);
       alert("결제 성공!");
 

@@ -171,7 +171,6 @@ const LoginPage = () => {
         id: inputValue.id,
         pw: inputValue.pw,
       });
-      console.log(response);
       if (response.status === 200) {
         if (response.data === "login failed") {
           alert("로그인 실패");

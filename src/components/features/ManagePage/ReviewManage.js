@@ -170,13 +170,11 @@ function ReviewsManagement() {
         ...item,
       }));
       setReviews(newReviews);
-      console.log(newReviews);
     } catch (error) {
       console.log(error);
     }
   };
 
-  console.log(reviews);
 
   const url = `http://localhost:8080/review/delete`;
 

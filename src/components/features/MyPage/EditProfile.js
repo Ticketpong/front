@@ -127,8 +127,6 @@ const EditProfile = (props) => {
     }));
   };
 
-  // console.log(userInfo);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserInfo((prevState) => ({
