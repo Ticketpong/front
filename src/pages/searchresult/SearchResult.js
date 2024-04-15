@@ -123,7 +123,11 @@ const SearchResult = () => {
         {searchResults.map((result) => (
           <ResultItem key={result.id}>
             <PosterImage src={result.poster} alt="Poster" />
-            <ResultTitle>{result.prfnm}</ResultTitle>
+            <ResultTitle>
+              {result.prfnm.length > 15 ?
+              (<>&lt;{result.prfnm.slice(0, 15)}...</>)
+              : (<>&lt;{result.prfnm}&gt;</>
+                    )}</ResultTitle>
             <ResultPlace>{result.mt10id}</ResultPlace>
             <ResultDate>
               {result.prfpdfrom} ~ {result.prfpdto}
