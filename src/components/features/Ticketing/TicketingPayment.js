@@ -41,6 +41,7 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
   const [userValue, setUserValue] = useState([]);
   const [payData, setPayData] = useState([]);
   const [regiData, setRegiData] = useState([]);
+  const [macData, setMacData] = useState([]);
 
   useEffect(() => {
     const iamport = document.createElement("script");
@@ -50,6 +51,21 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
       document.head.removeChild(iamport);
     };
   }, []);
+
+  const getCurrentMac = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/macAddress/current",
+        {
+          user_id: userId,
+        }
+      );
+      console.log(response);
+      setMacData(response.data === true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const fetchLoginStatus = async () => {
@@ -73,6 +89,7 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
   useEffect(() => {
     if (userId) {
       getMacInfo();
+      getCurrentMac();
     }
   }, [userId]);
 
@@ -151,8 +168,10 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
 
   const checkMac = () => {
     if (userId && userValue.length > 0 && userValue[0].user_name) {
-      if (regiData) {
+      if (macData) {
         onClickPayment();
+      } else if (!macData) {
+        alert("접속한 기기와 등록된 기기가 일치하지 않습니다!");
       } else {
         alert("기기 등록이 필요합니다.");
         navigate("/mypage#mac");
