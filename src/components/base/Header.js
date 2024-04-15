@@ -85,8 +85,12 @@ const Header = () => {
         toggleNav={toggleNav}
       />
       {locationInfo.pathname.toLowerCase() !== "/managepage" && (
-        <NavMenu open={isNavOpen} onClose={toggleNav} />
-      )}
+      <NavMenu
+        open={isNavOpen}
+        onClose={toggleNav}
+        isLogined={isLogined}
+       />
+)}
     </HeaderContainer>
   );
 };
