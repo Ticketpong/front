@@ -236,7 +236,7 @@ const ReviewDetail = () => {
         pre_id: preid,
       });
       console.log(response);
-      // navigate(-1);
+      navigate(-1);
     }
   };
 
