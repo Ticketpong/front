@@ -150,16 +150,20 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
   const navigate = useNavigate();
 
   const checkMac = () => {
-    if (userId) {
+    if (userId && userValue.length > 0 && userValue[0].user_name) {
       if (regiData) {
         onClickPayment();
       } else {
-        alert("기기등록이 필요합니다.");
+        alert("기기 등록이 필요합니다.");
         navigate("/mypage#mac");
       }
     } else {
-      alert("로그인이 필요합니다.");
-      navigate("/login");
+      if (!userId) {
+        navigate("/login");
+      } else {
+        alert("잠시후 다시 시도해주세요.");
+        window.location.reload();
+      }
     }
   };
 
