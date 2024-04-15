@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const BoardContainer = styled.div`
-  min-width: 1500px;
-  max-width: 1500px;
+  max-width: 1000px;
   padding: 20px;
   margin-top: 20px;
 
@@ -30,7 +29,7 @@ const BoardContainer = styled.div`
 `;
 
 const PostTable = styled.table`
-  width: 100%;
+  width: 50%;
   border-collapse: collapse;
   text-align: center;
   border-top: 2px solid black;
@@ -66,10 +65,10 @@ const Td = styled.td`
   text-align: center;
   &:first-child,
   &:last-child {
-    min-width: 300px;
+    min-width: 200px;
   }
   &:nth-child(2) {
-    min-width: 900px;
+    min-width: 600px;
     text-align: center;
   }
 `;
