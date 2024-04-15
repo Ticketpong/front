@@ -3,8 +3,11 @@ import styled from "styled-components";
 import reviewData from "../../../dummy/reviews.json";
 import showData from "../../../dummy/show_detail.json";
 import ReviewsTable from "./ReviewDetail";
-
 const ITEMS_PER_PAGE = 2;
+import { MdKeyboardDoubleArrowLeft, MdKeyboardArrowLeft, MdKeyboardArrowRight, MdKeyboardDoubleArrowRight } from "react-icons/md";
+import axios from "axios";
+
+
 
 const ReviewWrapper = styled.div`
   padding: 20px 0;
@@ -97,7 +100,6 @@ const ModalContent = styled.div`
   padding: 20px;
   border-radius: 8px;
 `;
-
 const ButtonContainer = styled.div`
   align-items: center;
   text-align: center;
@@ -119,7 +121,11 @@ const ButtonContainer = styled.div`
 function ReviewsManagement() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
+
   const [currentPage, setCurrentPage] = useState(1);
+  const [data, setData] = useState([]);
+
+
 
   const openModal = (review) => {
     setIsOpen(true);
@@ -152,6 +158,19 @@ function ReviewsManagement() {
   const goToPage = (page) => {
     setCurrentPage(page);
   };
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, data.length);
+
+  const goToStartPage = () => setCurrentPage(1);
+  const goToPrevPage = () =>
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  const goToNextPage = () =>
+    setCurrentPage((prevPage) =>
+      Math.min(prevPage + 1, Math.ceil(data.length / ITEMS_PER_PAGE))
+    );
+  const goToEndPage = () =>
+    setCurrentPage(Math.ceil(data.length / ITEMS_PER_PAGE));
 
   return (
     <>
@@ -205,6 +224,28 @@ function ReviewsManagement() {
           </ModalContent>
         </Modal>
       )}
+           <ButtonContainer>
+        <button onClick={goToStartPage}>
+          <MdKeyboardDoubleArrowLeft color="#999999" />
+        </button>
+        <button onClick={goToPrevPage}>
+          <MdKeyboardArrowLeft color="#999999" />
+        </button>
+        {Array.from(
+          { length: Math.ceil(data.length / ITEMS_PER_PAGE) },
+          (_, i) => (
+            <strong key={i + 1} onClick={() => setCurrentPage(i + 1)}>
+              {i + 1}
+            </strong>
+          )
+        )}
+        <button onClick={goToNextPage}>
+          <MdKeyboardArrowRight color="#999999" />
+        </button>
+        <button onClick={goToEndPage}>
+          <MdKeyboardDoubleArrowRight color="#999999" />
+        </button>
+      </ButtonContainer>
     </>
   );
 }

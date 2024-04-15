@@ -39,6 +39,7 @@ const Cell = styled.td`
     border-right: none;
   }
 `;
+
 const Button = styled.button`
   width: 70px;
   height: 36px;
@@ -59,34 +60,23 @@ const AddButton = styled.button`
   position: absolute;
   right: 10%;
 `;
-
-
 const ButtonContainer = styled.div`
-  display: flex;
-  text-align: center;
-  height: 30px;
   align-items: center;
-  justify-content: center;
+  text-align: center;
 
   button {
     text-align: center;
     background-color: white;
-    border: none;
-    padding: 0;
-    margin: 0 6px;
-    width: 24px;
-    height: 30px;
+    border: 0;
+    font-size: 20px;
+    border-radius: 20px;
 
-    cursor: pointer;
-    svg {
-      width: 100%;
-      height: 100%;
+    &:active,
+    &:hover {
+      background-color: #fc1055;
     }
   }
-  strong {
-  }
 `;
-
 
 const AdminManage = ({ onAddClick, onEditClick }) => {
   const [currentPage, setCurrentPage] = useState(1);

@@ -41,6 +41,7 @@ const Cell = styled.td`
   }
 `;
 
+
 const Button = styled.button`
   width: 70px;
   height: 36px;
@@ -51,6 +52,16 @@ const Button = styled.button`
   border-radius: 3px;
 `;
 
+const AddButton = styled.button`
+  width: 120px;
+  height: 51px;
+  border-radius: 3px;
+  background-color: #fc1055;
+  color: white;
+  border: none;
+  position: absolute;
+  right: 10%;
+`;
 const ButtonContainer = styled.div`
   align-items: center;
   text-align: center;
@@ -68,7 +79,6 @@ const ButtonContainer = styled.div`
     }
   }
 `;
-
 const MemberManage = ({ onAddClick, onEditClick }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
