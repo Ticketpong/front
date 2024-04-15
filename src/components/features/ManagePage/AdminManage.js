@@ -1,3 +1,5 @@
+// 관리자관리
+
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
@@ -7,6 +9,8 @@ import {
   MdKeyboardDoubleArrowLeft,
   MdKeyboardDoubleArrowRight,
 } from "react-icons/md";
+
+const ITEMS_PER_PAGE = 7;
 
 const Container = styled.table`
   margin: 20px auto;
@@ -41,7 +45,8 @@ const Button = styled.button`
   height: 36px;
   margin-right: 15px;
   background-color: white;
-  border: 1px solid #999999;
+  color: #fc1055;
+  border: 1px solid #fc1055;
   border-radius: 3px;
 `;
 
@@ -55,24 +60,31 @@ const AddButton = styled.button`
   position: absolute;
   right: 10%;
 `;
-
-const Pagination = styled.div`
-  margin-top: 20px;
+const ButtonContainer = styled.div`
+  align-items: center;
   text-align: center;
-`;
 
-const PageButton = styled(Button)`
-  width: 40px;
-  height: 36px;
+  button {
+    text-align: center;
+    background-color: white;
+    border: 0;
+    font-size: 20px;
+    border-radius: 20px;
+
+    &:active,
+    &:hover {
+      background-color: #fc1055;
+    }
+  }
 `;
 
 const AdminManage = ({ onAddClick, onEditClick }) => {
-  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
 
   useEffect(() => {
     fetchData();
-  }, [page]);
+  }, [currentPage]);
 
   const fetchData = async () => {
     try {
@@ -82,7 +94,7 @@ const AdminManage = ({ onAddClick, onEditClick }) => {
 
       const newData = response.data.map((item, index) => ({
         ...item,
-        number: (page - 1) * 7 + index + 1,
+        number: (currentPage - 1) * 7 + index + 1,
       }));
       setData(newData);
     } catch (error) {
@@ -102,40 +114,19 @@ const AdminManage = ({ onAddClick, onEditClick }) => {
     }
   };
 
-  
-   // 페이징 구현
-   const handlePreviousPage = () => {
-    setPage((prevPage) => Math.max(prevPage - 1, 1));
-  };
+  // 페이징 구현
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, data.length);
 
-  const handleNextPage = () => {
-    setPage((prevPage) =>
-      Math.min(prevPage + 1, Math.ceil(data.length / 10))
+  const goToStartPage = () => setCurrentPage(1);
+  const goToPrevPage = () =>
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  const goToNextPage = () =>
+    setCurrentPage((prevPage) =>
+      Math.min(prevPage + 1, Math.ceil(data.length / ITEMS_PER_PAGE))
     );
-  };
-
-  const handlePageClick = (page) => {
-    setPage(page);
-  };
-
-  const renderPageButtons = () => {
-    const totalPageCount = Math.ceil(data.length / 10);
-    const pageButtons = [];
-
-    for (let i = 1; i <= totalPageCount; i++) {
-      pageButtons.push(
-        <PageButton
-          key={i}
-          onClick={() => handlePageClick(i)}
-          disabled={page === i}
-        >
-          {i}
-        </PageButton>
-      );
-    }
- 
-    return pageButtons;
-  };
+  const goToEndPage = () =>
+    setCurrentPage(Math.ceil(data.length / ITEMS_PER_PAGE));
 
   return (
     <>
@@ -152,9 +143,7 @@ const AdminManage = ({ onAddClick, onEditClick }) => {
           </tr>
         </thead>
         <tbody>
-          {data
-          .slice((page - 1) * 10, page * 10)
-          .map((item) => (
+          {data.slice(startIndex, endIndex).map((item, index) => (
             <tr key={item.id}>
               <Cell>{item.number}</Cell>
               <Cell>{item.manage_id}</Cell>
@@ -174,16 +163,30 @@ const AdminManage = ({ onAddClick, onEditClick }) => {
           <tr></tr>
         </tbody>
       </Container>
-         {/* 페이지네이션 버튼 */}
-         <Pagination>
-        <Button onClick={handlePreviousPage}>
-          <MdKeyboardArrowLeft />
-        </Button>
-        {renderPageButtons()}
-        <Button onClick={handleNextPage}>
-          <MdKeyboardArrowRight />
-        </Button>
-      </Pagination>
+
+      {/* 페이지네이션 버튼 */}
+      <ButtonContainer>
+        <button onClick={goToStartPage}>
+          <MdKeyboardDoubleArrowLeft color="#999999" />
+        </button>
+        <button onClick={goToPrevPage}>
+          <MdKeyboardArrowLeft color="#999999" />
+        </button>
+        {Array.from(
+          { length: Math.ceil(data.length / ITEMS_PER_PAGE) },
+          (_, i) => (
+            <button key={i + 1} onClick={() => setCurrentPage(i + 1)}>
+              {i + 1}
+            </button>
+          )
+        )}
+        <button onClick={goToNextPage}>
+          <MdKeyboardArrowRight color="#999999" />
+        </button>
+        <button onClick={goToEndPage}>
+          <MdKeyboardDoubleArrowRight color="#999999" />
+        </button>
+      </ButtonContainer>
       <AddButton name="add" onClick={onAddClick}>
         + 추가하기
       </AddButton>

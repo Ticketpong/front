@@ -2,6 +2,14 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ReviewsTable from "./ReviewDetail";
 import axios from "axios";
+import {
+  MdKeyboardDoubleArrowLeft,
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
+  MdKeyboardDoubleArrowRight,
+} from "react-icons/md";
+
+const ITEMS_PER_PAGE = 2;
 
 const ReviewWrapper = styled.div`
   padding: 20px 0;
@@ -95,15 +103,53 @@ const ModalContent = styled.div`
   border-radius: 8px;
 `;
 
+const Button = styled.button`
+  width: 70px;
+  height: 36px;
+  margin-right: 15px;
+  background-color: white;
+  color: #fc1055;
+  border: 1px solid #fc1055;
+  border-radius: 3px;
+`;
+
+const AddButton = styled.button`
+  width: 120px;
+  height: 51px;
+  border-radius: 3px;
+  background-color: #fc1055;
+  color: white;
+  border: none;
+  position: absolute;
+  right: 10%;
+`;
+const ButtonContainer = styled.div`
+  align-items: center;
+  text-align: center;
+
+  button {
+    text-align: center;
+    background-color: white;
+    border: 0;
+    font-size: 20px;
+    border-radius: 20px;
+
+    &:active,
+    &:hover {
+      background-color: #fc1055;
+    }
+  }
+`;
+
 function ReviewsManagement() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
   const [reviews, setReviews] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const openModal = (review) => {
     setIsOpen(true);
     setSelectedReview(review);
-    console.log(review);
   };
 
   const closeModal = () => {
@@ -134,37 +180,48 @@ function ReviewsManagement() {
 
   const url = `http://localhost:8080/review/delete`;
 
-  const handleDeleteReview = async (data) => {
-    console.log(data);
+  const handleDeleteReview = async (pre_id) => {
     try {
-      const confirmDelete = window.confirm("리뷰를 삭제하시겠습니까?");
-      if (confirmDelete) {
-        const response = await axios.post(url, { pre_id: data });
-        if (response) {
-          fetchData();
-          console.log(response);
-          alert(`ID: ${data} 리뷰가 삭제되었습니다.`);
-        } else {
-          alert("리뷰 삭제에 실패했습니다.");
-        }
+      const response = await axios.delete(url, { data: { pre_id } });
+      if (response) {
+        alert(`ID: ${pre_id} 리뷰를 삭제하시겠습니까?`);
+        fetchData();
+      } else {
+        alert("리뷰 삭제에 실패했습니다.");
       }
     } catch (error) {
       console.error(error);
     }
   };
+  // 페이징 구현
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, reviews.length);
+
+  const goToStartPage = () => setCurrentPage(1);
+  const goToPrevPage = () =>
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  const goToNextPage = () =>
+    setCurrentPage((prevPage) =>
+      Math.min(prevPage + 1, Math.ceil(reviews.length / ITEMS_PER_PAGE))
+    );
+  const goToEndPage = () =>
+    setCurrentPage(Math.ceil(reviews.length / ITEMS_PER_PAGE));
 
   return (
     <>
       <ReviewWrapper>
-        {reviews.map((review) => {
+        {reviews.slice(startIndex, endIndex).map((review, index) => {
           return (
             <ReviewItem key={review.pre_id}>
               <ContentWrapper>
                 <PosterWarpper onClick={() => openModal(review)}>
                   <PosterImage src={review.poster} alt={review.prfnm} />
+                  <PosterImage src={review.poster} alt={review.prfnm} />
                 </PosterWarpper>
                 <ReviewContent>
                   <p>
+                    &lt;{review.genrenm}&gt;
+                    {review.prfnm}
                     &lt;{review.genrenm}&gt;
                     {review.prfnm}
                   </p>
@@ -179,6 +236,29 @@ function ReviewsManagement() {
           );
         })}
       </ReviewWrapper>
+      {/* 페이지네이션 버튼 */}
+      <ButtonContainer>
+        <button onClick={goToStartPage}>
+          <MdKeyboardDoubleArrowLeft color="#999999" />
+        </button>
+        <button onClick={goToPrevPage}>
+          <MdKeyboardArrowLeft color="#999999" />
+        </button>
+        {Array.from(
+          { length: Math.ceil(reviews.length / ITEMS_PER_PAGE) },
+          (_, i) => (
+            <button key={i + 1} onClick={() => setCurrentPage(i + 1)}>
+              {i + 1}
+            </button>
+          )
+        )}
+        <button onClick={goToNextPage}>
+          <MdKeyboardArrowRight color="#999999" />
+        </button>
+        <button onClick={goToEndPage}>
+          <MdKeyboardDoubleArrowRight color="#999999" />
+        </button>
+      </ButtonContainer>
       {isOpen && (
         <Modal isOpen={isOpen}>
           <ModalContent>
