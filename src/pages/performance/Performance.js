@@ -130,7 +130,7 @@ const Performance = () => {
           Math.pow(item.la - lat, 2) + Math.pow(item.lo - long, 2)
         );
         // 0.1당 대략 반경 11km 이내
-        console.log(lat, long);
+        // console.log(lat, long);
         return distance <= 0.1;
       });
     } else if (selectedCategory === "전체") {
@@ -170,11 +170,11 @@ const Performance = () => {
 
   const sortedData = [...displayedData2].sort((a, b) => {
     if (sortBy === "prfnm") {
-      return a.prfnm.localeCompare(b.prfnm); // Sort alphabetically by prfnm
+      return a.prfnm.localeCompare(b.prfnm);
     } else if (sortBy === "prfpdfrom") {
-      return new Date(a.prfpdfrom) - new Date(b.prfpdfrom); // Sort by prfpdfrom
+      return new Date(a.prfpdfrom) - new Date(b.prfpdfrom);
     } else {
-      return new Date(a.prfpdto) - new Date(b.prfpdto); // Sort by prfpdto
+      return new Date(a.prfpdto) - new Date(b.prfpdto);
     }
   });
 
