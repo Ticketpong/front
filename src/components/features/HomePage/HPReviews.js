@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import data from "../../../dummy/ReviewData.json";
+import axios from "axios";
+// import LikeIconImg from "../../../assets/homeImg/free-icon-like-179655.png";
+import { FcLike } from "react-icons/fc";
 
 const Strong = styled.div`
   text-align: center;
@@ -9,12 +11,12 @@ const Strong = styled.div`
   font-size: 42px;
   margin-bottom: 20px;
   font-weight: bold;
-  margin-top: 45px;
   font-family: "Noto Sans Korean";
 `;
 
 const Container = styled.div`
   padding-left: 0;
+  margin-bottom: 120px;
   .head {
     border-width: 3px;
     min-width: 1530px;
@@ -34,32 +36,54 @@ const Container = styled.div`
   }
 `;
 
+const HeadHr = styled.hr`
+  background-color: black;
+  height: 2px;
+  min-width: 1540px;
+  max-width: 1540px;
+`;
 const UlContainer = styled.ul`
   list-style-type: none;
   display: flex;
   flex-direction: column;
   align-items: flex-start; /* 수직 가운데 정렬 */
   margin: 0 auto;
-  width: 1580px;
+  min-width: 1540px;
+  max-width: 1540px;
   padding-left: 0;
 `;
 
 const Li = styled.li`
   display: flex;
   align-items: center;
+  border-bottom: 1px solid #999999;
+  justify-content: space-between;
 `;
 
-const Img = styled.img`
+const Img = styled.div`
   display: block;
   min-width: 270px;
+  max-width: 270px;
   height: 340px;
-  margin: 17px 35px 17px 180px;
+  margin: 17px 35px 17px 120px;
   object-fit: cover;
   border-radius: 12px;
+  img {
+    min-height: 100%;
+    max-height: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    border-radius: 12px;
+  }
 `;
 
 const Text = styled.div`
-  max-width: 1200px;
+  flex-grow: 1;
+  margin-top: 50px;
+  min-height: 320px;
+  max-height: 320px;
+  min-width: 1100px;
+  max-width: 1100px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -67,13 +91,6 @@ const Text = styled.div`
   -webkit-line-clamp: 3; /* 최대 줄 수 설정 */
   text-overflow: ellipsis;
   white-space: normal;
-`;
-
-const CenterHr = styled.hr`
-  color: gray;
-  height: 1px;
-  min-width: 1580px;
-  max-width: 1580px;
 `;
 
 const StyledViewAllButton = styled.button`
@@ -126,9 +143,42 @@ const Rank = styled.span`
   font-size: 24px;
 `;
 
+const LikeIcon = styled.img`
+  width: 28px;
+  height: 28px;
+  margin-right: 12px;
+`;
+
+const LikeCount = styled.span`
+  font-weight: bold;
+  font-size: 21px;
+`;
+
+const LikeBox = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 32px;
+`;
+
 const HPReviews = () => {
-  const URL = "https://www.kopis.or.kr/";
-  const jsonData = data;
+  const URL = "http://localhost:8080/review/recommandList";
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(URL);
+      const newData = response.data.map((item) => ({
+        ...item,
+      }));
+      setData(newData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const rankStar = (num) => {
     const stars = [];
@@ -144,88 +194,31 @@ const HPReviews = () => {
     <Container>
       <div className="container">
         <Strong>베스트 관람 후기</Strong>
-        <hr className="head" />
+        <HeadHr />
         <UlContainer>
-          <Li>
-            {jsonData?.boxofs?.boxof?.[0]?.poster && (
-              <Img
-                src={URL + jsonData.boxofs.boxof[0].poster._text}
-                alt="포스터"
-                className="image"
-              />
-            )}
-            <Text>
-              {jsonData?.boxofs?.boxof?.[0]?.prfnm && (
-                <Work>{jsonData.boxofs.boxof[0].prfnm._text}</Work>
+          {data?.slice(0, 3).map((item, index) => (
+            <Li key={index}>
+              {item.poster && (
+                <Img>
+                  <img src={item.poster} alt="포스터" />
+                </Img>
               )}
-              {jsonData?.boxofs?.boxof?.[0]?.reviewname && (
-                <Name>{jsonData.boxofs.boxof[0].reviewname._text}</Name>
-              )}
-              {jsonData?.boxofs?.boxof?.[0]?.rank && (
-                <p>{rankStar(jsonData.boxofs.boxof[0].rank._num)}</p>
-              )}
-              {jsonData?.boxofs?.boxof?.[0]?.review && (
-                <Content> {jsonData.boxofs.boxof[0].review._text}</Content>
-              )}
-            </Text>
-          </Li>
-          <CenterHr />
-        </UlContainer>
-        <UlContainer>
-          <Li>
-            {jsonData?.boxofs?.boxof?.[1]?.poster && (
-              <Img
-                src={URL + jsonData.boxofs.boxof[1].poster._text}
-                alt="포스터"
-                className="image"
-              />
-            )}
-            <Text>
-              {jsonData?.boxofs?.boxof?.[1]?.prfnm && (
-                <Work>{jsonData.boxofs.boxof[1].prfnm._text}</Work>
-              )}
-              {jsonData?.boxofs?.boxof?.[1]?.reviewname && (
-                <Name className="name">
-                  {jsonData.boxofs.boxof[1].reviewname._text}
-                </Name>
-              )}
-              {jsonData?.boxofs?.boxof?.[1]?.rank && (
-                <p>{rankStar(jsonData.boxofs.boxof[1].rank._num)}</p>
-              )}
-              {jsonData?.boxofs?.boxof?.[1]?.review && (
-                <Content> {jsonData.boxofs.boxof[1].review._text}</Content>
-              )}
-            </Text>
-          </Li>
-          <CenterHr />
-        </UlContainer>
-        <UlContainer>
-          <Li>
-            {jsonData?.boxofs?.boxof?.[2]?.poster && (
-              <Img
-                src={URL + jsonData.boxofs.boxof[2].poster._text}
-                alt="포스터"
-                className="image"
-              />
-            )}
-            <Text>
-              {jsonData?.boxofs?.boxof?.[2]?.prfnm && (
-                <Work>{jsonData.boxofs.boxof[2].prfnm._text}</Work>
-              )}
-              {jsonData?.boxofs?.boxof?.[2]?.reviewname && (
-                <Name>{jsonData.boxofs.boxof[2].reviewname._text}</Name>
-              )}
-              {jsonData?.boxofs?.boxof?.[2]?.rank && (
-                <p>{rankStar(jsonData.boxofs.boxof[2].rank._num)}</p>
-              )}
-              {jsonData?.boxofs?.boxof?.[2]?.review && (
-                <Content> {jsonData.boxofs.boxof[2].review._text}</Content>
-              )}
-            </Text>
-          </Li>
+              <Text>
+                {item.prfnm && <Work>{item.prfnm}</Work>}
+                {item.pretitle && <Name>{item.pretitle}</Name>}
+                {item.prestar && <p>{rankStar(item.prestar)}</p>}
+                {item.precontent && <Content>{item.precontent}</Content>}
+                <LikeBox>
+                  {/* <LikeIcon src={LikeIconImg} alt="좋아요 아이콘" /> */}
+                  <FcLike size="35" />
+                  <LikeCount> {item.recommend}</LikeCount>
+                </LikeBox>
+              </Text>
+            </Li>
+          ))}
         </UlContainer>
         <BottomBtn>
-          <Link to="/community?selectedItem=3">
+          <Link to="/community">
             <StyledViewAllButton>후기 전체보기</StyledViewAllButton>
           </Link>
         </BottomBtn>

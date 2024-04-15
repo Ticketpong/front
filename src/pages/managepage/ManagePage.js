@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import BookingDetail from "../../components/features/MyPage/BookingDetail";
-import MyReview from "../../components/features/MyPage/MyReview";
-import EditProfile from "../../components/features/MyPage/EditProfile";
 import AdminManage from "../../components/features/ManagePage/AdminManage";
 import EditManage from "../../components/features/ManagePage/EditManage";
 import ManageAdd from "../../components/features/ManagePage/ManageAdd";
 import MemberManage from "../../components/features/ManagePage/MemberManage";
 import PerformanceReg from "../../components/features/ManagePage/PerformanceReg";
-import PerformanceManageChg from "../../components/features/ManagePage/PerformanceChg"
+import PerformanceManageChg from "../../components/features/ManagePage/PerformanceChg";
 import PerformanceManage from "../../components/features/ManagePage/PerformanceManage";
 
 import { MdKeyboardArrowRight } from "react-icons/md";

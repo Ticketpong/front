@@ -123,11 +123,22 @@ const ManageLoginPage = () => {
         id: inputValue.id,
         pw: inputValue.pw,
       });
-      const { token } = response.data;
-      localStorage.setItem("token", token);
+
       if (response.status === 200) {
-        alert("로그인 성공");
-        window.location.href = "/managepage";
+        if (response.data === "login failed") {
+          alert("로그인 실패");
+          window.location.reload();
+        } else {
+          const { token } = response.data;
+          localStorage.setItem("token", token);
+          if (response.status === 200) {
+            alert("로그인 성공");
+            window.location.href = "/managepage";
+          }
+        }
+      } else {
+        alert("로그인 실패");
+        window.location.reload();
       }
     } catch (error) {
       console.log(error);

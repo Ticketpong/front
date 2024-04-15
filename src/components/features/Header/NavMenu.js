@@ -54,7 +54,7 @@ const NavListItem = styled.li`
   }
 `;
 
-const NavMenu = ({ open, isLoggedIn, onClose }) => {
+const NavMenu = ({ open, isLogined, onClose }) => {
   useEffect(() => {
     const handleOutsideClick = (event) => {
       if (!event.target.closest(".nav-menu-container") && open) {
@@ -73,7 +73,7 @@ const NavMenu = ({ open, isLoggedIn, onClose }) => {
       <ul>
         <NavListItem bold>
           <Icon src={navUserIcon} alt="navUserIcon" />
-          {isLoggedIn ? (
+         {isLogined ? (
             <Link to="/mypage">회원서비스</Link>
           ) : (
             <Link to="/login">회원서비스</Link>
@@ -88,13 +88,13 @@ const NavMenu = ({ open, isLoggedIn, onClose }) => {
           <li>커뮤니티</li>
         </NavListItem>
         <NavListItem>
-          <Link to="/community?selectedItem=2">후기</Link>
+          <Link to="/community#notice">공지사항</Link>
         </NavListItem>
         <NavListItem>
-          <Link to="/community?selectedItem=1">공지사항</Link>
+          <Link to="/community#review">관람후기</Link>
         </NavListItem>
         <NavListItem>
-          <Link to="/community?selectedItem=3">이용안내</Link>
+          <Link to="/community#guide">이용안내</Link>
         </NavListItem>
         {/* <NavListItem>
           <Link to="/managepage?selectedItem=2">확인버튼</Link>

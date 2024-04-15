@@ -1,93 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const WriteReview = () => {
-  const [performance, setPerformance] = useState("");
-  const [rating, setRating] = useState(0);
-  const [title, setTitle] = useState("");
-  const [comment, setComment] = useState("");
-
-  const handleRatingChange = (value) => {
-    setRating(value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log({
-      performance,
-      rating,
-      title,
-      comment,
-    });
-    // 제출 후 상태 초기화
-    setPerformance("");
-    setRating(0);
-    setTitle("");
-    setComment("");
-  };
-
-  return (
-    <FormContainer>
-      <Head>후기 작성</Head>
-      <hr />
-      <form onSubmit={handleSubmit}>
-        <FormGroup>
-          <Label htmlFor="performance">공연명</Label>
-          <StyledSelect
-            id="performance"
-            value={performance}
-            onChange={(e) => setPerformance(e.target.value)}
-            required
-          >
-            <option value="">공연을 고르세요.</option>
-            <option value="옵션1">공연이름1</option>
-            <option value="옵션2">공연이름2</option>
-            <option value="옵션3">공연이름3</option>
-          </StyledSelect>
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor="rating">평점</Label>
-          <RatingContainer>
-            {[...Array(5)].map((_, index) => (
-              <Star
-                key={index}
-                filled={index < rating}
-                onClick={() => handleRatingChange(index + 1)}
-              >
-                ★
-              </Star>
-            ))}
-          </RatingContainer>
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor="title">제목</Label>
-          <Input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor="comment">한줄평</Label>
-          <Textarea
-            id="comment"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            required
-          />
-        </FormGroup>
-        <Hr />
-        <Link to="/mypage">
-          <CancelBtn>작성 취소</CancelBtn>
-        </Link>
-        <RegisterBtn type="submit">후기 작성</RegisterBtn>
-      </form>
-    </FormContainer>
-  );
-};
 const Head = styled.span`
   font-size: 34px;
   font-weight: 500;
@@ -108,8 +24,9 @@ const Label = styled.label`
   margin-bottom: 5px;
 `;
 
-const StyledSelect = styled.select`
+const PerformanceBox = styled.div`
   width: 100%;
+  height: 25px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -174,5 +91,97 @@ const RegisterBtn = styled.button`
   margin-left: 50px;
   margin-right: 50px;
 `;
+const WriteReview = () => {
+  const [rating, setRating] = useState(0);
+  const [title, setTitle] = useState("");
+  const [comment, setComment] = useState("");
+
+  const bookingData = useLocation();
+  console.log(bookingData);
+  const data = bookingData.state[0];
+  const preId = data.mt20id + "pre" + generateRandomCode();
+
+  const navigate = useNavigate();
+
+  function generateRandomCode() {
+    return Math.random().toString(36).substring(2, 6).toUpperCase();
+  }
+
+  const handleRatingChange = (value) => {
+    setRating(value);
+  };
+  const getReviewInfo = async () => {
+    try {
+      const response = await axios.post("http://localhost:8080/review", {
+        imp_uid: data.imp_uid,
+        pre_id: preId,
+        pretitle: title,
+        precontent: comment,
+        prestar: rating,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // 입력한 후기 데이터 저장하는 부분
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    getReviewInfo();
+
+    navigate(-1);
+  };
+
+  return (
+    <FormContainer>
+      <Head>후기 작성</Head>
+      <hr />
+      <form onSubmit={handleSubmit}>
+        <FormGroup>
+          <Label html="performance">공연명</Label>
+          <PerformanceBox>{data.showName}</PerformanceBox>
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="rating">평점</Label>
+          <RatingContainer>
+            {[...Array(5)].map((_, index) => (
+              <Star
+                key={index}
+                filled={index < rating}
+                onClick={() => handleRatingChange(index + 1)}
+              >
+                ★
+              </Star>
+            ))}
+          </RatingContainer>
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="title">제목</Label>
+          <Input
+            type="text"
+            id="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="comment">한줄평</Label>
+          <Textarea
+            id="comment"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            required
+          />
+        </FormGroup>
+        <Hr />
+        <Link to="/mypage">
+          <CancelBtn>작성 취소</CancelBtn>
+        </Link>
+        <RegisterBtn type="submit">후기 작성</RegisterBtn>
+      </form>
+    </FormContainer>
+  );
+};
 
 export default WriteReview;

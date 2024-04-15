@@ -171,11 +171,22 @@ const LoginPage = () => {
         id: inputValue.id,
         pw: inputValue.pw,
       });
-      const { token } = response.data;
-      localStorage.setItem("token", token); // 토큰 저장
-      if (localStorage.getItem("token")) {
-        alert("로그인 성공");
-        window.location.href = "/";
+      console.log(response);
+      if (response.status === 200) {
+        if (response.data === "login failed") {
+          alert("로그인 실패");
+          window.location.reload();
+        } else {
+          const { token } = response.data;
+          localStorage.setItem("token", token); // 토큰 저장
+          if (localStorage.getItem("token")) {
+            alert("로그인 성공");
+            window.location.href = "/";
+          }
+        }
+      } else {
+        alert("로그인 실패");
+        window.location.reload();
       }
     } catch (error) {
       console.log(error);

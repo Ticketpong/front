@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CommuReview from "../../components/features/Community/CommuReview.js";
 import CommunityBoard from "../../components/features/Community/CommunityBoard.js";
 import CommunityRules from "../../components/features/Community/CommunityRules.js";
 import styled from "styled-components";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import { useLocation } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -53,7 +54,7 @@ const ArrowIconWrapper = styled.div`
 `;
 
 const Content = styled.div`
-  width: 1580px;
+  width: 1100px;
   background-color: #fff;
   padding: 20px;
   margin-top: 50px;
@@ -68,10 +69,22 @@ const Title = styled.h2`
 
 const Community = () => {
   const [selectedItem, setSelectedItem] = useState(1);
+  const location = useLocation();
+  const hash = location.hash;
 
   const handleItemClick = (num) => {
     setSelectedItem(num);
   };
+
+  useEffect(() => {
+    if (hash === "#review") {
+      setSelectedItem(2);
+    } else if (hash === "#guide") {
+      setSelectedItem(3);
+    } else {
+      setSelectedItem(1);
+    }
+  }, [hash]);
 
   return (
     <Container>

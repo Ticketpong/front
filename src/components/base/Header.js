@@ -25,8 +25,8 @@ const Header = () => {
           setUserId(id);
           setIsLogined(true);
         }
-      } catch (error) {
-        console.error("로그인 상태를 확인하는 동안 오류 발생:", error);
+      } catch {
+        console.log("로그인 상태를 확인하는 동안 오류 발생:");
       }
     };
 
@@ -61,12 +61,13 @@ const Header = () => {
     }
   };
 
-  if(locationInfo.pathname === "/login"
-    || locationInfo.pathname === "/manage"
-    || locationInfo.pathname === "/signup"
-    || locationInfo.pathname === "/findid"
-    || locationInfo.pathname === "/findpw"
-    || locationInfo.pathname === "/confirmid"
+  if (
+    locationInfo.pathname === "/login" ||
+    locationInfo.pathname === "/manage" ||
+    locationInfo.pathname === "/signup" ||
+    locationInfo.pathname === "/findid" ||
+    locationInfo.pathname === "/findpw" ||
+    locationInfo.pathname === "/confirmid"
   )
     return null;
 
@@ -84,8 +85,12 @@ const Header = () => {
         toggleNav={toggleNav}
       />
       {locationInfo.pathname.toLowerCase() !== "/managepage" && (
-        <NavMenu open={isNavOpen} onClose={toggleNav} />
-      )}
+      <NavMenu
+        open={isNavOpen}
+        onClose={toggleNav}
+        isLogined={isLogined}
+       />
+)}
     </HeaderContainer>
   );
 };

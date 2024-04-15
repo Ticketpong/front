@@ -50,7 +50,8 @@ const CategoryButton = styled.button`
 `;
 
 const UlContainer = styled.div`
-  min-width: 1300px;
+  min-width: 1570px;
+  max-width: 1720px;
 `;
 
 const SliderContainer = styled.div`
@@ -62,7 +63,7 @@ const SliderContainer = styled.div`
   white-space: nowrap;
 `;
 
-const SlideButton = styled.button`
+const PrevSlideButton = styled.button`
   position: absolute;
   top: 45%;
   width: 70px;
@@ -72,6 +73,7 @@ const SlideButton = styled.button`
   border: none;
   font-size: 40px;
   color: #fc1055;
+  box-shadow: 1px 1px 1px #666;
   cursor: pointer;
   border-radius: 50%;
   z-index: 999;
@@ -79,6 +81,31 @@ const SlideButton = styled.button`
 
   &:focus {
     background-color: #fc1055;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22);
+    color: white;
+  }
+`;
+
+const NextSlideButton = styled.button`
+  position: absolute;
+  top: 45%;
+  width: 70px;
+  height: 70px;
+  transform: translateY(-50%);
+  background-color: white;
+  border: none;
+  font-size: 40px;
+  color: #fc1055;
+  box-shadow: 1px 1px 1px #666;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 999;
+  ${(props) => (props.direction === "left" ? "left: 0;" : "right: 9px;")}
+
+  &:focus {
+    background-color: #fc1055;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22);
+    color: white;
   }
 `;
 
@@ -89,18 +116,42 @@ const ListItem = styled.li`
   vertical-align: top;
 `;
 
-const Image = styled.img`
+const Image = styled.div`
   display: block;
-  min-width: 350px;
-  height: 450px;
+  min-width: 310px;
+  max-width: 310px;
+  height: 390px;
+  margin-top: 10px;
   margin-bottom: 10px;
   object-fit: cover;
-  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  img {
+    min-height: 100%;
+    max-height: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22);
+  }
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 
 const Text = styled.p`
   margin: 0;
-  font-size: ${(props) => (props.over ? "24px" : "inherit")};
+  font-size: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: ${(props) => (props.over ? "350px" : "none")};
+`;
+
+const TextOver = styled.p`
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -202,23 +253,25 @@ const HPContent1 = () => {
         </CategoryButton>
       </CategoryContainer>
       <SliderContainer>
-        <SlideButton
-          className="prevButton"
-          onClick={handlePrev}
-          direction="left"
-        >
+        <PrevSlideButton onClick={handlePrev} direction="left">
           {"<"}
-        </SlideButton>
+        </PrevSlideButton>
         <UlContainer>
           {displayedData.map((item, index) => (
             <StyleLink to={`/ticketing/${item.mt20id}`}>
               <ListItem key={index}>
-                <Image src={item.poster} alt="포스터" />
-                <Text>장르: {item.genrenm}</Text>
-                <Text over className="over">
-                  {item.prfnm}
-                </Text>
-                <Text>{item.sidonm}</Text>
+                <Image>
+                  <img src={item.poster} alt="포스터" />
+                </Image>
+                <TextOver>
+                  {item.genrenm} &nbsp;
+                  {item.prfnm.length > 8 ? (
+                    <>&lt;{item.prfnm.slice(0, 8)}...</>
+                  ) : (
+                    <>&lt;{item.prfnm}&gt;</>
+                  )}
+                </TextOver>
+                <Text>{item.fcltynm}</Text>
                 <Text>
                   {item.prfpdfrom} ~ {item.prfpdto}
                 </Text>
@@ -226,9 +279,7 @@ const HPContent1 = () => {
             </StyleLink>
           ))}
         </UlContainer>
-        <SlideButton className="nextButton" onClick={handleNext}>
-          {">"}
-        </SlideButton>
+        <NextSlideButton onClick={handleNext}>{">"}</NextSlideButton>
       </SliderContainer>
     </Container>
   );

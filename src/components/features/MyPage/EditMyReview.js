@@ -1,236 +1,184 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import reviewJsonData from "../../../dummy/reviews.json";
-import showDetailJson from "../../../dummy/show_detail.json";
+import React, { useEffect, useState } from "react";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import axiosWithAuth from "../../base/axiosWithAuth";
+import axios from "axios";
 
-const Container = styled.div`
-  max-width: 1100px;
-  margin: 80px auto;
-  padding: 100px 0;
-`;
-
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: right;
-  border-top: 2px solid #373a42;
-  padding-top: 15px;
-`;
-const Textbox = styled.div`
-  display: flex;
-  justify-content: left;
-  padding-bottom: 5px;
-  margin-bottom: 15px;
-`;
-
-const P1 = styled.span`
+const Head = styled.span`
   font-size: 34px;
-  font-weight: bold;
-`;
-
-const P2 = styled.span`
-  font-size: 18px;
   font-weight: 500;
-  color: #373a42;
-  margin-left: 20px;
-  vertical-align: baseline;
-  margin-top: 24px;
-  border-left: 2px solid #373a42;
-  padding-left: 10px;
 `;
 
-const P3 = styled.span`
-  color: #999999;
-  font-size: 18px;
-  margin-bottom: 10px;
+const FormContainer = styled.div`
+  width: 800px;
+  height: 700px;
+  margin: 100px auto;
 `;
 
-const P4 = styled.span`
-  font-size: 34px;
-  margin-bottom: 10px;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: right;
-  margin-top: 30px;
-`;
-const Defaultbutton = styled.button`
-  width: 90px;
-  height: 40px;
-  background-color: #ffffff;
-  border: 1px solid #999999;
-  margin-right: 10px;
-  margin-left: 10px;
-  font-size: 16px;
-  color: black;
-
-  &.PButton {
-    background-color: #fc1055;
-    border: 0;
-    color: #ffffff;
-  }
-`;
-
-const TextArea = styled.textarea`
-  width: 100%;
-  height: 300px;
-  margin-top: 20px;
+const FormGroup = styled.div`
   margin-bottom: 20px;
 `;
 
-const OutputArea = styled.div`
-  width: 100%;
-  margin: 30px 0;
-  border: 1px solid #999999;
-  border-width: 1px 0;
-  padding: 50px 0;
+const Label = styled.label`
+  display: block;
+  margin-bottom: 5px;
 `;
 
-const ReviewInfo = styled.div`
+const PerformanceBox = styled.div`
   width: 100%;
-  span {
-    padding: 0 15px;
-    border-left: 1px solid #373a42;
+  height: 25px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+`;
 
-    &:first-child {
-      padding-left: 0;
-      border: none;
-    }
-  }
+const Input = styled.input`
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+`;
+
+const Textarea = styled.textarea`
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+`;
+
+const RatingContainer = styled.div`
+  display: flex;
+  gap: 5px;
+`;
+
+const Star = styled.span`
+  font-size: 20px;
+  color: ${({ filled }) => (filled ? "#FFD700" : "#ccc")};
+  cursor: pointer;
+`;
+
+const Hr = styled.hr`
+  margin-bottom: 40px;
+`;
+
+const CancelBtn = styled.button`
+  width: 250px;
+  height: 70px;
+  font-size: 24px;
+  padding: 10px 20px;
+  background-color: #666666;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-left: 50px;
+  margin-right: 50px;
+`;
+
+const RegisterBtn = styled.button`
+  width: 250px;
+  height: 70px;
+  font-size: 24px;
+  padding: 10px 20px;
+  background-color: #fc1055;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-left: 50px;
+  margin-right: 50px;
 `;
 
 const EditMyReview = () => {
-  const { prfnmText } = useParams();
-  const [editMode, setEditMode] = useState(false); // 수정 모드 여부
-  const [editedContent, setEditedContent] = useState(""); // 수정된 리뷰 내용을 저장
+  const reviewData = useLocation();
+  const data = reviewData.state[0];
+  const [rating, setRating] = useState(data.prestar);
+  const [title, setTitle] = useState(data.pretitle);
+  const [comment, setComment] = useState(data.precontent);
 
-  //user0001일 때 가정
-  const reviewData = reviewJsonData.filter(
-    (item) => item.user_id === "user0001"
-  );
-  const showDetailData = showDetailJson;
+  const navigate = useNavigate();
 
-  // 수정 버튼 클릭 시
-  const handleEditButtonClick = () => {
-    setEditMode(true);
-    setEditedContent("수정할 내용 입력");
+  const handleRatingChange = (value) => {
+    setRating(value);
   };
 
-  // 저장 버튼 클릭 시
-  const handleSaveButtonClick = () => {
-    console.log("수정된 리뷰 내용:", editedContent);
-    setEditMode(false);
-  };
-
-  const renderStars = (starCount) => {
-    const stars = [];
-    for (let i = 0; i < starCount; i++) {
-      stars.push(<FontAwesomeIcon icon={faStar} key={i} />);
+  const updateReview = async () => {
+    try {
+      const response = await axios.put("http://localhost:8080/review/edit", {
+        pre_id: data.pre_id,
+        pretitle: title,
+        precontent: comment,
+        prestar: rating,
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
     }
-    return stars;
   };
 
-  const formatDate = (dateString) => {
-    // "yyyymmddhhmmss"에서 "yy.mm.dd" 형식으로 변환
-    const formattedDate =
-      dateString.substring(2, 4) +
-      "." +
-      dateString.substring(4, 6) +
-      "." +
-      dateString.substring(6, 8);
-    return formattedDate;
-  };
+  // 입력한 후기 데이터 저장하는 부분
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  const encryptUserId = (userId) => {
-    const encrypted = userId.slice(0, -3) + "***";
-    return encrypted;
+    updateReview();
+    navigate(-1);
   };
 
   return (
-    <div>
-      {reviewData && (
-        <Container>
-          <Textbox>
-            <P1>마이페이지</P1>
-            <P2>나의 관람 후기</P2>
-          </Textbox>
-
-          {reviewData.map(
-            (item, index) =>
-              item.pre_id === prfnmText && (
-                <Content key={index}>
-                  <P3>
-                    {item.mt20id && (
-                      <span>
-                        &lt;
-                        {showDetailData &&
-                          showDetailData.find(
-                            (data) => data.mt20id === item.mt20id
-                          )?.genrenm}
-                        &gt;
-                        {showDetailData &&
-                          showDetailData.find(
-                            (data) => data.mt20id === item.mt20id
-                          )?.prfnm}
-                      </span>
-                    )}
-                  </P3>
-                  <P4>{item.pretitle}</P4>
-                  <ReviewInfo>
-                    <span>작성자 {encryptUserId(item.user_id)}</span>
-                    <span>작성일 {formatDate(item.predate)}</span>
-                    <span>평점 {renderStars(item.prestar)}</span>
-                  </ReviewInfo>
-
-                  {editMode ? (
-                    <TextArea
-                      value={editedContent}
-                      onChange={(e) => setEditedContent(e.target.value)}
-                    />
-                  ) : (
-                    <OutputArea>{item.precontent}</OutputArea>
-                  )}
-                </Content>
-              )
-          )}
-
-          <ButtonContainer>
-            {editMode ? (
-              <>
-                <Defaultbutton
-                  className="PButton"
-                  onClick={handleSaveButtonClick}
-                >
-                  저장
-                </Defaultbutton>
-                <Defaultbutton onClick={() => setEditMode(false)}>
-                  취소
-                </Defaultbutton>
-              </>
-            ) : (
-              // 수정 모드가 아닌 경우
-              <Defaultbutton onClick={handleEditButtonClick}>
-                수정
-              </Defaultbutton>
-            )}
-            <Defaultbutton>삭제</Defaultbutton>
-            <Defaultbutton className="PButton">
-              <Link
-                to="/mypage"
-                style={{ textDecoration: "none", color: "#fff" }}
+    <FormContainer>
+      <Head>후기 수정</Head>
+      <hr />
+      <form onSubmit={handleSubmit}>
+        <FormGroup>
+          <Label html="performance">공연명</Label>
+          <PerformanceBox>{data.prfnm}</PerformanceBox>
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="rating">평점</Label>
+          <RatingContainer>
+            {[...Array(5)].map((_, index) => (
+              <Star
+                key={index}
+                filled={index < rating}
+                onClick={() => handleRatingChange(index + 1)}
               >
-                목록
-              </Link>
-            </Defaultbutton>
-          </ButtonContainer>
-        </Container>
-      )}
-    </div>
+                ★
+              </Star>
+            ))}
+          </RatingContainer>
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="title">제목</Label>
+          <Input
+            type="text"
+            id="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="comment">한줄평</Label>
+          <Textarea
+            id="comment"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            required
+          />
+        </FormGroup>
+        <Hr />
+        <Link to="/mypage">
+          <CancelBtn>작성 취소</CancelBtn>
+        </Link>
+        <RegisterBtn type="submit">후기 작성</RegisterBtn>
+      </form>
+    </FormContainer>
   );
 };
 

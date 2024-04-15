@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import reviewJson from "../../../dummy/reviews.json";
-import showDetailJson from "../../../dummy/show_detail.json";
 import {
   MdKeyboardArrowLeft,
   MdKeyboardArrowRight,
   MdKeyboardDoubleArrowLeft,
   MdKeyboardDoubleArrowRight,
 } from "react-icons/md";
+import axiosWithAuth from "../../base/axiosWithAuth";
+import axios from "axios";
 
 const ITEMS_PER_PAGE = 2; // 페이지당 표시할 데이터의 개수
 
@@ -21,6 +21,9 @@ const Container = styled.div`
   }
   ul {
     padding: 0;
+  }
+  p {
+    text-align: center;
   }
 `;
 
@@ -94,17 +97,6 @@ const MoveBtn = styled.button`
   border-radius: 20px;
 `;
 
-const WriteBtn = styled.button`
-  float: right;
-  width: 120px;
-  height: 50px;
-  border-radius: 3px;
-  color: #ffffff;
-  background-color: #fc1055;
-  border: none;
-  font-size: 18px;
-`;
-
 const HrBox = styled.div`
   width: 100%;
   height: 320px;
@@ -112,12 +104,50 @@ const HrBox = styled.div`
 
 const MyReview = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  //user0001일 때 가정
-  const reviewData = reviewJson.filter((item) => item.user_id === "user0001");
-  const showDetailData = showDetailJson;
+  const [userId, setUserId] = useState("");
+  const [isLogined, setIsLogined] = useState(false);
+  const [reviewList, setReviewList] = useState([]);
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, reviewData.length);
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, reviewList.length);
+
+  useEffect(() => {
+    const fetchLoginStatus = async () => {
+      try {
+        const response = await axiosWithAuth().get(
+          "http://localhost:8080/login/profile"
+        );
+        const { id, isLogined } = response.data;
+        if (isLogined) {
+          setUserId(id);
+          setIsLogined(true);
+        }
+      } catch (error) {
+        console.error("로그인 상태를 확인하는 동안 오류 발생:", error);
+      }
+    };
+    fetchLoginStatus();
+  }, []);
+
+  useEffect(() => {
+    if (userId) {
+      getReviewInfo();
+    }
+  }, [userId]);
+
+  const getReviewInfo = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/review/myReviewList",
+        {
+          user_id: userId,
+        }
+      );
+      setReviewList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const goToStartPage = () => {
     setCurrentPage(1);
@@ -129,57 +159,64 @@ const MyReview = () => {
 
   const goToNextPage = () => {
     setCurrentPage((prevPage) =>
-      Math.min(prevPage + 1, Math.ceil(reviewData?.length / ITEMS_PER_PAGE))
+      Math.min(prevPage + 1, Math.ceil(reviewList?.length / ITEMS_PER_PAGE))
     );
   };
 
   const goToEndPage = () => {
-    const totalPages = Math.ceil(reviewData?.length / ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(reviewList?.length / ITEMS_PER_PAGE);
     setCurrentPage(totalPages);
   };
 
   return (
     <Container>
-      <ul>
-        {reviewData?.slice(startIndex, endIndex).map((item, index) => (
-          <HrBox key={index}>
-            <ListItem key={index}>
-              <div className="imageContainer">
-                <Link to={`/editmyreview/${item.pre_id}`}>
-                  {showDetailData &&
-                    showDetailData.find((data) => data.mt20id === item.mt20id)
-                      ?.poster && (
-                      <img
-                        src={
-                          showDetailData.find(
-                            (data) => data.mt20id === item.mt20id
-                          )?.poster
-                        }
-                        alt="포스터"
-                      />
-                    )}
-                </Link>
-              </div>
-              <ContentContainer>
-                {item.mt20id && (
-                  <span>
-                    &lt;
-                    {showDetailData &&
-                      showDetailData.find((data) => data.mt20id === item.mt20id)
-                        ?.genrenm}
-                    &gt;
-                    {showDetailData &&
-                      showDetailData.find((data) => data.mt20id === item.mt20id)
-                        ?.prfnm}
-                  </span>
-                )}
-                {item.pretitle && <p>{item.pretitle}</p>}
-                {item.precontent && <span>{item.precontent}</span>}
-              </ContentContainer>
-            </ListItem>
-          </HrBox>
-        ))}
-      </ul>
+      {reviewList.length === 0 ? (
+        <p>작성한 리뷰가 없습니다.</p>
+      ) : (
+        <ul>
+          {reviewList?.slice(startIndex, endIndex).map((item, index) => (
+            <HrBox key={index}>
+              <ListItem key={index}>
+                <div className="imageContainer">
+                  <Link
+                    to={`/reviewdetail/${item.pre_id}`}
+                    state={{ preId: item.pre_id }}
+                  >
+                    {reviewList &&
+                      reviewList.find((data) => data.mt20id === item.mt20id)
+                        ?.poster && (
+                        <img
+                          src={
+                            reviewList.find(
+                              (data) => data.mt20id === item.mt20id
+                            )?.poster
+                          }
+                          alt="포스터"
+                        />
+                      )}
+                  </Link>
+                </div>
+                <ContentContainer>
+                  {item.mt20id && (
+                    <span>
+                      &lt;
+                      {reviewList &&
+                        reviewList.find((data) => data.mt20id === item.mt20id)
+                          ?.genrenm}
+                      &gt;
+                      {reviewList &&
+                        reviewList.find((data) => data.mt20id === item.mt20id)
+                          ?.prfnm}
+                    </span>
+                  )}
+                  {item.pretitle && <p>{item.pretitle}</p>}
+                  {item.precontent && <span>{item.precontent}</span>}
+                </ContentContainer>
+              </ListItem>
+            </HrBox>
+          ))}
+        </ul>
+      )}
       <ButtonContainer>
         <MoveBtn onClick={goToStartPage}>
           <MdKeyboardDoubleArrowLeft color="#999999" />
@@ -189,7 +226,7 @@ const MyReview = () => {
         </MoveBtn>
         {Array.from(
           {
-            length: Math.ceil(reviewData?.length / ITEMS_PER_PAGE),
+            length: Math.ceil(reviewList?.length / ITEMS_PER_PAGE),
           },
           (_, i) => (
             <strong key={i + 1} onClick={() => setCurrentPage(i + 1)}>
@@ -206,9 +243,6 @@ const MyReview = () => {
           <MdKeyboardDoubleArrowRight color="#999999" />
         </MoveBtn>
       </ButtonContainer>
-      <Link to="/writereview">
-        <WriteBtn>후기 작성</WriteBtn>
-      </Link>
     </Container>
   );
 };

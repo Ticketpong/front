@@ -48,6 +48,7 @@ export const ContentDetailPoster = styled.div`
   height: 573px;
   img {
     max-height: 100%;
+    max-width: 100%;
   }
 `;
 export const ContentDetailInfo = styled.div`

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ReviewsTable from "./ReviewDetail";
 import axios from "axios";
@@ -214,9 +215,12 @@ function ReviewsManagement() {
               <ContentWrapper>
                 <PosterWarpper onClick={() => openModal(review)}>
                   <PosterImage src={review.poster} alt={review.prfnm} />
+                  <PosterImage src={review.poster} alt={review.prfnm} />
                 </PosterWarpper>
                 <ReviewContent>
                   <p>
+                    &lt;{review.genrenm}&gt;
+                    {review.prfnm}
                     &lt;{review.genrenm}&gt;
                     {review.prfnm}
                   </p>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const BoardContainer = styled.div`
-  width: 1500px;
+  max-width: 1000px;
   padding: 20px;
   margin-top: 20px;
 
@@ -29,7 +29,7 @@ const BoardContainer = styled.div`
 `;
 
 const PostTable = styled.table`
-  width: 100%;
+  width: 50%;
   border-collapse: collapse;
   text-align: center;
   border-top: 2px solid black;
@@ -65,10 +65,10 @@ const Td = styled.td`
   text-align: center;
   &:first-child,
   &:last-child {
-    min-width: 300px;
+    min-width: 200px;
   }
   &:nth-child(2) {
-    min-width: 900px;
+    min-width: 600px;
     text-align: center;
   }
 `;
@@ -235,10 +235,10 @@ const CommunityBoard = () => {
       )}
       {!showPostList && selectedPost && (
         <PostContentContainer>
-          <Textbox>
+          {/* <Textbox>
             <P1>커뮤니티 | </P1>
             <P2>관람후기</P2>
-          </Textbox>
+          </Textbox> */}
           <hr />
           <NameBox>
             <P3>{posts.find((post) => post.id === selectedPost).title}</P3>

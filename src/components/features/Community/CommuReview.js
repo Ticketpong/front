@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import data from "../../../dummy/ReviewData.json";
+import { FcLike } from "react-icons/fc";
+import axios from "axios";
 
 const ITEMS_PER_PAGE = 2; // 페이지당 표시할 데이터의 개수
 
 const Container = styled.div`
+  max-width: 1000px;
+  padding: 20px;
+  margin-top: 20px;
   hr {
     height: 1px;
   }
@@ -17,6 +21,7 @@ const ListItem = styled.li`
 
   .imageContainer {
     margin-right: 40px;
+    margin-left: 10px;
   }
 
   .contentContainer {
@@ -28,7 +33,7 @@ const ListItem = styled.li`
     display: block;
     width: 230px;
     height: 270px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     object-fit: cover;
     border-radius: 12px;
   }
@@ -64,20 +69,20 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const WriteBtn = styled.button`
-  float: right;
-  width: 120px;
-  height: 50px;
-  border-radius: 3px;
-  color: #ffffff;
-  background-color: #fc1055;
-  border: none;
-  font-size: 18px;
-`;
+// const WriteBtn = styled.button`
+//   float: right;
+//   width: 120px;
+//   height: 50px;
+//   border-radius: 3px;
+//   color: #ffffff;
+//   background-color: #fc1055;
+//   border: none;
+//   font-size: 18px;
+// `;
 
 const HrBox = styled.div`
   position: relative;
-  width: 1580px;
+  max-width: 1000px;
   height: 320px;
 `;
 
@@ -107,11 +112,34 @@ const StyleLink = styled(Link)`
   color: black;
 `;
 
-const CommuReview = ({ isLoggedIn }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const URL = "https://www.kopis.or.kr/";
+const GrayHr = styled.div`
+  background-color: #999999;
+  max-width: 1000px;
+  border: 0;
+  margin: 10px;
+  height: 1px;
+`;
 
-  const jsonData = data;
+const CommuReview = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const URL = "http://localhost:8080/review/recommandList"; // 리뷰 별점 + 추천 순으로 데이터 가져오기
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, [currentPage]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(URL);
+      const newData = response.data.map((item) => ({
+        ...item,
+      }));
+      setData(newData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const rankStar = (num) => {
     const stars = [];
@@ -119,15 +147,11 @@ const CommuReview = ({ isLoggedIn }) => {
     for (let i = 0; i < num; i++) {
       stars.push(<Rank key={i}>★</Rank>);
     }
-
     return stars;
   };
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = Math.min(
-    startIndex + ITEMS_PER_PAGE,
-    jsonData?.boxofs?.boxof?.length
-  );
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, data.length);
 
   const goToStartPage = () => {
     setCurrentPage(1);
@@ -139,57 +163,52 @@ const CommuReview = ({ isLoggedIn }) => {
 
   const goToNextPage = () => {
     setCurrentPage((prevPage) =>
-      Math.min(
-        prevPage + 1,
-        Math.ceil(jsonData?.boxofs?.boxof?.length / ITEMS_PER_PAGE)
-      )
+      Math.min(prevPage + 1, Math.ceil(data.length / ITEMS_PER_PAGE))
     );
   };
 
   const goToEndPage = () => {
-    const totalPages = Math.ceil(
-      jsonData?.boxofs?.boxof?.length / ITEMS_PER_PAGE
-    );
+    const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE);
     setCurrentPage(totalPages);
   };
 
   return (
     <Container>
-      <hr style={{ border: "0", borderTop: "2px solid black" }} />
+      <hr style={{ border: "0", borderTop: "1px solid #99999" }} />
       <Ul>
-        {jsonData?.boxofs?.boxof
-          ?.slice(startIndex, endIndex)
-          .map((item, index) => (
-            <StyleLink to={`/reviewdetail/${item.prfnm._text}`}>
-              <HrBox key={index}>
-                <ListItem key={index}>
-                  <div className="imageContainer">
-                    {item.poster && (
-                      <img src={URL + item.poster._text} alt="포스터" />
-                    )}
-                  </div>
-                  <div className="contentContainer">
-                    {item.prfnm && <Name>{item.prfnm._text}</Name>}
-                    {item.prfnm && (
-                      <ReviewName>{item.reviewname._text}</ReviewName>
-                    )}
-                    {item.rank && <p>{rankStar(item.rank._num)}</p>}
-                    {item.review && (
-                      <ReviewContent>내용: {item.review._text}</ReviewContent>
-                    )}
-                  </div>
-                </ListItem>
-                {index <= endIndex - 1 && <hr />}
-              </HrBox>
-            </StyleLink>
-          ))}
+        {data?.slice(startIndex, endIndex).map((item, index) => (
+          <StyleLink
+            to={`/reviewdetail/${item.pre_id}`}
+            state={{ preId: item.pre_id }}
+          >
+            <HrBox key={index}>
+              <ListItem key={index}>
+                <div className="imageContainer">
+                  {item.poster && <img src={item.poster} alt="포스터" />}
+                </div>
+                <div className="contentContainer">
+                  {item.prfnm && <Name>{item.prfnm}</Name>}
+                  {item.prfnm && <ReviewName>{item.pretitle}</ReviewName>}
+                  {item.prestar && <p>{rankStar(item.prestar)}</p>}
+                  {item.precontent && (
+                    <ReviewContent>{item.precontent}</ReviewContent>
+                  )}
+                  <span>
+                    <FcLike /> : {item.recommend}
+                  </span>
+                </div>
+              </ListItem>
+              {index <= endIndex - 1 && <GrayHr />}
+            </HrBox>
+          </StyleLink>
+        ))}
       </Ul>
       <ButtonContainer>
         <button onClick={goToStartPage}>{"<<"}</button>
         <button onClick={goToPrevPage}>{"<"}</button>
         {Array.from(
           {
-            length: Math.ceil(jsonData?.boxofs?.boxof?.length / ITEMS_PER_PAGE),
+            length: Math.ceil(data.length / ITEMS_PER_PAGE),
           },
           (_, i) => (
             <button key={i + 1} onClick={() => setCurrentPage(i + 1)}>
@@ -201,7 +220,7 @@ const CommuReview = ({ isLoggedIn }) => {
         <button onClick={goToNextPage}>{">"}</button>
         <button onClick={goToEndPage}>{">>"}</button>
       </ButtonContainer>
-      {isLoggedIn ? (
+      {/* {isLoggedIn ? (
         <>
           <Link to="/writereview">
             <WriteBtn>후기 작성</WriteBtn>
@@ -211,7 +230,7 @@ const CommuReview = ({ isLoggedIn }) => {
         <Link to="/login">
           <WriteBtn>후기 작성</WriteBtn>
         </Link>
-      )}
+      )} */}
     </Container>
   );
 };
