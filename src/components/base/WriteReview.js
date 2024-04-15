@@ -129,7 +129,7 @@ const WriteReview = () => {
     e.preventDefault();
     getReviewInfo();
 
-    navigate(`/reviewdetail/${preId}`);
+    navigate(-1);
   };
 
   return (

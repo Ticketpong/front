@@ -7,7 +7,7 @@ import axios from "axios";
 const ITEMS_PER_PAGE = 2; // 페이지당 표시할 데이터의 개수
 
 const Container = styled.div`
-  width: 1500px;
+  max-width: 1000px;
   padding: 20px;
   margin-top: 20px;
   hr {
@@ -82,7 +82,7 @@ const ButtonContainer = styled.div`
 
 const HrBox = styled.div`
   position: relative;
-  width: 1490px;
+  max-width: 1000px;
   height: 320px;
 `;
 
@@ -114,8 +114,7 @@ const StyleLink = styled(Link)`
 
 const GrayHr = styled.div`
   background-color: #999999;
-  min-width: 1490px;
-  max-width: 1490px;
+  max-width: 1000px;
   border: 0;
   margin: 10px;
   height: 1px;
