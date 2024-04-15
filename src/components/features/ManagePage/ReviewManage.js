@@ -175,12 +175,11 @@ function ReviewsManagement() {
     }
   };
 
-
   const url = `http://localhost:8080/review/delete`;
 
   const handleDeleteReview = async (pre_id) => {
     try {
-      const response = await axios.delete(url, { data: { pre_id } });
+      const response = await axios.post(url, { pre_id: pre_id });
       if (response) {
         alert(`ID: ${pre_id} 리뷰를 삭제하시겠습니까?`);
         fetchData();
@@ -213,7 +212,6 @@ function ReviewsManagement() {
             <ReviewItem key={review.pre_id}>
               <ContentWrapper>
                 <PosterWarpper onClick={() => openModal(review)}>
-                  <PosterImage src={review.poster} alt={review.prfnm} />
                   <PosterImage src={review.poster} alt={review.prfnm} />
                 </PosterWarpper>
                 <ReviewContent>

@@ -302,7 +302,7 @@ const SignupPage = () => {
         address: inputValue.address,
         detailAddress: inputValue.detailAddress,
       });
-      json.stringify(response);
+      JSON.stringify(response);
       if (response.status === 200) {
         alert("회원가입 성공");
         window.location.href = "/login";
