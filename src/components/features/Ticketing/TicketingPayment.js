@@ -155,7 +155,7 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
         onClickPayment();
       } else {
         alert("기기등록이 필요합니다.");
-        navigate("/mypage");
+        navigate("/mypage#mac");
       }
     } else {
       alert("로그인이 필요합니다.");
