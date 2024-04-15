@@ -7,6 +7,7 @@ import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 const Calendar = ({ onDataChange, data }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
+  const dateToday = new Date();
   const dateFrom = new Date(data.prfpdfrom);
   const dateTo = new Date(data.prfpdto);
 
@@ -31,7 +32,7 @@ const Calendar = ({ onDataChange, data }) => {
       }}
       highlightDates={[dateFrom, dateTo]}
       inline
-      minDate={dateFrom}
+      minDate={dateFrom < dateToday ? dateToday : dateFrom}
       maxDate={dateTo}
       renderCustomHeader={({
         date,
