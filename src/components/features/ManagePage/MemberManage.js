@@ -1,5 +1,3 @@
-// 회원관리
-
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
@@ -42,7 +40,7 @@ const Cell = styled.td`
 `;
 
 
-const Button = styled.button`
+  const Button = styled.button`
   width: 70px;
   height: 36px;
   margin-right: 15px;
@@ -79,6 +77,9 @@ const ButtonContainer = styled.div`
     }
   }
 `;
+
+
+
 const MemberManage = ({ onAddClick, onEditClick }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
@@ -105,17 +106,18 @@ const MemberManage = ({ onAddClick, onEditClick }) => {
 
   
    // 페이징 구현
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, data.length);
 
-   const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE);
-
-   const paginatedMembers = data.slice(
-     (currentPage - 1) * ITEMS_PER_PAGE,
-     currentPage * ITEMS_PER_PAGE
-   );
- 
-   const goToPage = (page) => {
-     setCurrentPage(page);
-   };
+  const goToStartPage = () => setCurrentPage(1);
+  const goToPrevPage = () =>
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  const goToNextPage = () =>
+    setCurrentPage((prevPage) =>
+      Math.min(prevPage + 1, Math.ceil(data.length / ITEMS_PER_PAGE))
+    );
+  const goToEndPage = () =>
+    setCurrentPage(Math.ceil(data.length / ITEMS_PER_PAGE));
   return (
     <>
       <Container>
@@ -130,36 +132,41 @@ const MemberManage = ({ onAddClick, onEditClick }) => {
           </tr>
         </thead>
         <tbody>
-        {paginatedMembers.map((item) => {
-          return (
-            <tr>
+        {data.slice(startIndex, endIndex).map((item, index) => (
+            <tr key={item.id}>
               <Cell>{item.number}</Cell>
               <Cell>{item.user_name}</Cell>
               <Cell>{item.user_id}</Cell>
               <Cell>{item.user_phone}</Cell>
               <Cell>{item.user_email}</Cell>
               <Cell>{item.res_count}</Cell>
-            </tr> );
-      })}
+            </tr>
+          ))}
+          <tr></tr>
         </tbody>
       </Container>
         {/* 페이지네이션 버튼 */}
-        <ButtonContainer>
-        <button onClick={() => goToPage(1)}>{"<<"}</button>
-        <button onClick={() => goToPage(currentPage - 1)}>{"<"}</button>
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i + 1}
-            onClick={() => goToPage(i + 1)}
-            style={{
-              fontWeight: currentPage === i + 1 ? "bold" : "normal",
-            }}
-          >
-            {i + 1}
-          </button>
-        ))}
-        <button onClick={() => goToPage(currentPage + 1)}>{">"}</button>
-        <button onClick={() => goToPage(totalPages)}>{">>"}</button>
+      <ButtonContainer>
+        <button onClick={goToStartPage}>
+          <MdKeyboardDoubleArrowLeft color="#999999" />
+        </button>
+        <button onClick={goToPrevPage}>
+          <MdKeyboardArrowLeft color="#999999" />
+        </button>
+        {Array.from(
+          { length: Math.ceil(data.length / ITEMS_PER_PAGE) },
+          (_, i) => (
+            <button key={i + 1} onClick={() => setCurrentPage(i + 1)}>
+              {i + 1}
+            </button>
+          )
+        )}
+        <button onClick={goToNextPage}>
+          <MdKeyboardArrowRight color="#999999" />
+        </button>
+        <button onClick={goToEndPage}>
+          <MdKeyboardDoubleArrowRight color="#999999" />
+        </button>
       </ButtonContainer>
     </>
   );

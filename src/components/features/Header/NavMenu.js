@@ -96,9 +96,9 @@ const NavMenu = ({ open, isLoggedIn, onClose }) => {
         <NavListItem>
           <Link to="/community?selectedItem=3">이용안내</Link>
         </NavListItem>
-        <NavListItem>
+        {/* <NavListItem>
           <Link to="/managepage?selectedItem=2">확인버튼</Link>
-        </NavListItem>
+        </NavListItem> */}
       </ul>
     </NavMenuContainer>
   );

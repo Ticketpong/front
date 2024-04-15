@@ -176,9 +176,9 @@ const AdminManage = ({ onAddClick, onEditClick }) => {
         {Array.from(
           { length: Math.ceil(data.length / ITEMS_PER_PAGE) },
           (_, i) => (
-            <strong key={i + 1} onClick={() => setCurrentPage(i + 1)}>
+            <button key={i + 1} onClick={() => setCurrentPage(i + 1)}>
               {i + 1}
-            </strong>
+            </button>
           )
         )}
         <button onClick={goToNextPage}>

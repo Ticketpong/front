@@ -1,10 +1,9 @@
-// 공연관리
-
 import React, { useState, useEffect } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight, MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
 import styled from "styled-components";
 import axios from "axios";
 
+import dummyData from "../../../dummy/show_detail.json";
 
 const ITEMS_PER_PAGE = 7;
 
@@ -75,10 +74,8 @@ const ButtonContainer = styled.div`
 `;
 
 const PerformanceManage = ({ onAddClick, onEditClick }) => {
-  const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  
-  
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -86,15 +83,15 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
 
   const fetchData = async () => {
     try {
-       const response = await axios.get(
-         `http://localhost:8080/manage/manageMain/performance`
-       );
+    //   const response = await axios.get(
+    //     `http://localhost:8080/manage/manageMain/performance`
+    //   );
 
-       const newData = response.data.map((item, index) => ({
-         ...item,
-         number: (currentPage - 1) * 7 + index + 1,
-       }));
-      setData(newData);
+    //   const newData = response.data.map((item, index) => ({
+    //     ...item,
+    //     number: (currentPage - 1) * 7 + index + 1,
+    //   }));
+      setData(dummyData);
     } catch (error) {
       console.error(error);
     }
@@ -103,28 +100,34 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
   const url = `http://localhost:8080/manage/manageMain/performanceDelete`;
 
   const performanceDelete = async (mt20id) => {
-     try {
-       const response = await axios.delete(url, { data: { mt20id } });
-       console.log(response);
-       fetchData();
-     } catch (error) {
-       console.error(error);
-     }
+    try {
+      const response = await axios.delete(url, { data: { mt20id } });
+      console.log(response);
+      fetchData();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
+  // 페이징 함수
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, data.length);
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, dummyData.length);
 
-  const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE);
+  const goToStartPage = () => setCurrentPage(1);
+  const goToPrevPage = () =>
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  const goToNextPage = () =>
+    setCurrentPage((prevPage) =>
+      Math.min(prevPage + 1, Math.ceil(dummyData.length / ITEMS_PER_PAGE))
+    );
+  const goToEndPage = () =>
+    setCurrentPage(Math.ceil(dummyData.length / ITEMS_PER_PAGE));
 
-  const paginatedPerformances = data.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  );
 
   const goToPage = (page) => {
     setCurrentPage(page);
   };
+
   return (
     <>
       <Container>
@@ -143,8 +146,7 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
           </tr>
         </thead>
         <tbody>
-        {paginatedPerformances.map((item) => {
-          return (
+        {data.slice(startIndex, endIndex).map((item, index) => (
             <tr>
               <Cell>{item.number}</Cell>
               <Cell>{item.mt20id}</Cell>
@@ -158,26 +160,32 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
                 <Button onClick={() => onEditClick(item.mt20id)}>수정</Button>
                 <Button onClick={() => performanceDelete(item.mt20id)}>삭제</Button>
               </Cell>
-            </tr>);
-        })}
+            </tr>
+          ))}
         </tbody>
       </Container>
-      <ButtonContainer>
-        <button onClick={() => goToPage(1)}>{"<<"}</button>
-        <button onClick={() => goToPage(currentPage - 1)}>{"<"}</button>
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i + 1}
-            onClick={() => goToPage(i + 1)}
-            style={{
-              fontWeight: currentPage === i + 1 ? "bold" : "normal",
-            }}
-          >
+         {/* 페이지네이션 버튼 */}
+         <ButtonContainer>
+        <button onClick={goToStartPage}>
+          <MdKeyboardDoubleArrowLeft color="#999999" />
+        </button>
+        <button onClick={goToPrevPage}>
+          <MdKeyboardArrowLeft color="#999999" />
+        </button>
+        {Array.from(
+          { length: Math.ceil(data.length / ITEMS_PER_PAGE) },
+          (__, i) => (
+            <button key={i + 1} onClick={() => setCurrentPage(i + 1)}>
             {i + 1}
           </button>
-        ))}
-        <button onClick={() => goToPage(currentPage + 1)}>{">"}</button>
-        <button onClick={() => goToPage(totalPages)}>{">>"}</button>
+          )
+        )}
+        <button onClick={goToNextPage}>
+          <MdKeyboardArrowRight color="#999999" />
+        </button>
+        <button onClick={goToEndPage}>
+          <MdKeyboardDoubleArrowRight color="#999999" />
+        </button>
       </ButtonContainer>
       <AddButton name="add" onClick={onAddClick}>
         공연추가하기
