@@ -23,10 +23,17 @@ const Tr = styled.tr`
 `;
 
 function formatDate(dateString) {
-  const year = dateString.slice(2, 4);
-  const month = dateString.slice(4, 6);
-  const day = dateString.slice(6, 8);
-  return `${year}.${month}.${day}`;
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  let month = date.getMonth() + 1;
+  if (month < 10) {
+    month = "0" + month;
+  }
+  let day = date.getDate();
+  if (day < 10) {
+    day = "0" + day;
+  }
+  return `${year}-${month}-${day}`;
 }
 
 function ReviewsTable({ review }) {

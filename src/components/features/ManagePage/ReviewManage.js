@@ -134,14 +134,19 @@ function ReviewsManagement() {
 
   const url = `http://localhost:8080/review/delete`;
 
-  const handleDeleteReview = async (pre_id) => {
+  const handleDeleteReview = async (data) => {
+    console.log(data);
     try {
-      const response = await axios.delete(url, { data: { pre_id } });
-      if (response) {
-        alert(`ID: ${pre_id} 리뷰를 삭제하시겠습니까?`);
-        fetchData();
-      } else {
-        alert("리뷰 삭제에 실패했습니다.");
+      const confirmDelete = window.confirm("리뷰를 삭제하시겠습니까?");
+      if (confirmDelete) {
+        const response = await axios.post(url, { pre_id: data });
+        if (response) {
+          fetchData();
+          console.log(response);
+          alert(`ID: ${data} 리뷰가 삭제되었습니다.`);
+        } else {
+          alert("리뷰 삭제에 실패했습니다.");
+        }
       }
     } catch (error) {
       console.error(error);
