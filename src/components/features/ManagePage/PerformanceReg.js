@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { json, useNavigate } from "react-router-dom";
 import axios from "axios";
 import axiosWithAuth from "../../base/axiosWithAuth";
-import dummydata from "../../../dummy/performance.json";
 
 const Container = styled.div`
   width: 100%;

@@ -3,8 +3,6 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight, MdKeyboardDoubleArrowLeft, M
 import styled from "styled-components";
 import axios from "axios";
 
-import dummyData from "../../../dummy/show_detail.json";
-
 const ITEMS_PER_PAGE = 7;
 
 const Container = styled.table`
@@ -83,15 +81,16 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
 
   const fetchData = async () => {
     try {
-    //   const response = await axios.get(
-    //     `http://localhost:8080/manage/manageMain/performance`
-    //   );
+      const response = await axios.get(
+        `http://localhost:8080/manage/manageMain/performance`
+      );
 
-    //   const newData = response.data.map((item, index) => ({
-    //     ...item,
-    //     number: (currentPage - 1) * 7 + index + 1,
-    //   }));
-      setData(dummyData);
+      const newData = response.data.map((item, index) => ({
+        ...item,
+        number: (currentPage - 1) * 7 + index + 1,
+      }));
+      console.log(newData);
+      setData(newData);
     } catch (error) {
       console.error(error);
     }
@@ -111,17 +110,17 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
 
   // 페이징 함수
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, dummyData.length);
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, data.length);
 
   const goToStartPage = () => setCurrentPage(1);
   const goToPrevPage = () =>
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   const goToNextPage = () =>
     setCurrentPage((prevPage) =>
-      Math.min(prevPage + 1, Math.ceil(dummyData.length / ITEMS_PER_PAGE))
+      Math.min(prevPage + 1, Math.ceil(data.length / ITEMS_PER_PAGE))
     );
   const goToEndPage = () =>
-    setCurrentPage(Math.ceil(dummyData.length / ITEMS_PER_PAGE));
+    setCurrentPage(Math.ceil(data.length / ITEMS_PER_PAGE));
 
 
   const goToPage = (page) => {

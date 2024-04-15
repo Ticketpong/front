@@ -5,14 +5,12 @@ import * as S from "../../styles/TicketingStyled";
 import PlaceMap from "../../components/base/KakaoMap";
 import axios from "axios";
 
-import ShowDataDetail from "../../dummy/show_detail.json";
 import TicketingSelectSeat from "../../components/features/Ticketing/TicketingSelectSeat";
 import TicketingReview from "../../components/features/Ticketing/TicketingReview";
 import TicketingHeader from "../../components/features/Ticketing/TicketingHeader";
 import TicketingShowInfo from "../../components/features/Ticketing/TicketingShowInfo";
 import ShowSchedule from "../../components/features/Ticketing/ShowSchedule";
 
-export const dataDetail = ShowDataDetail;
 
 const Ticketing = () => {
   const { mt20id } = useParams(); // URL 매개변수 추출
