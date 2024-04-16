@@ -233,7 +233,7 @@ const Modal = ({ isOpen, onClose, data }) => {
             <tr>
               <Th>관람일자</Th>
               <Td>
-                {formatDate(data.selectdate)}
+                {formatDate(data.selectdate)}&nbsp;
                 {formatTime(data.selecttime)}
               </Td>
               <Th>결제금액</Th>

@@ -105,10 +105,13 @@ const ReviewStatus = styled.button`
   margin: 0 auto;
   background-color: ${({ status, selectdate }) => {
     const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+
     const viewingDate = new Date(selectdate);
 
     // 관람일 이후이고 후기를 작성하지 않은 경우
-    if (viewingDate < today && status === 0) {
+    if (viewingDate < yesterday && status === 0) {
       return "#fc1055";
     }
     // 관람일 이전이거나 후기를 작성한 경우
@@ -116,10 +119,12 @@ const ReviewStatus = styled.button`
   }};
   cursor: ${({ status, selectdate }) => {
     const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
     const viewingDate = new Date(selectdate);
 
     // 관람일 이후이고 후기를 작성하지 않은 경우에만 클릭 가능
-    return viewingDate < today && status === 0 ? "pointer" : "default";
+    return viewingDate < yesterday && status === 0 ? "pointer" : "default";
   }};
 `;
 
@@ -137,6 +142,10 @@ const BookingDetail = () => {
   const [showName, setShowName] = useState(null);
 
   const navigate = useNavigate();
+
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
 
   useEffect(() => {
     const fetchShowNameData = async () => {
@@ -201,7 +210,7 @@ const BookingDetail = () => {
       }));
       setBookingData(newData);
 
-      const startDate = new Date();
+      const startDate = today;
       switch (selectedPeriod) {
         case "3":
           startDate.setMonth(startDate.getMonth() - 3);
@@ -218,6 +227,7 @@ const BookingDetail = () => {
 
       const filtered = newData.filter((item) => {
         const itemDate = new Date(item.selectdate);
+        console.log(itemDate);
         return itemDate >= startDate;
       });
       setFilteredData(filtered); // setData 호출 이후에 filteredData 설정
@@ -323,7 +333,7 @@ const BookingDetail = () => {
                     onClick={() => {
                       if (
                         item.prestate.data[0] === 0 &&
-                        new Date(item.selectdate) < new Date()
+                        new Date(item.selectdate) < yesterday
                       ) {
                         navigate("/writereview", { state: [item] });
                       }
@@ -331,7 +341,7 @@ const BookingDetail = () => {
                   >
                     {item.prestate.data[0] === 1
                       ? "작성완료"
-                      : new Date(item.selectdate) < new Date()
+                      : new Date(item.selectdate) < yesterday
                       ? "작성하기"
                       : "관람전"}
                   </ReviewStatus>
