@@ -38,28 +38,32 @@ const Header = () => {
     setIsNavOpen(!isNavOpen);
   };
 
-  // 로그아웃 버튼 클릭 시 로그아웃
-  const handleLogout = async () => {
-    try {
-      const response1 = await axios.get("http://localhost:8080/logout");
-      const response2 = await axios.get(
-        "http://localhost:8080/manage/manageLogout"
-      );
+// 로그아웃 버튼 클릭 시 로그아웃
+const handleLogout = async () => {
+  try {
+    const response1 = await axios.get("http://localhost:8080/logout");
+    const response2 = await axios.get(
+      "http://localhost:8080/manage/manageLogout"
+    );
 
-      if (response1.status === 200 && response2.status === 200) {
-        setIsLogined(false);
-        setUserId("");
-        localStorage.removeItem("token");
+    if (response1.status === 200 && response2.status === 200) {
+      setIsLogined(false);
+      setUserId("");
+      localStorage.removeItem("token");
+      if (locationInfo.pathname.toLowerCase() !== "/managepage") {
         navigate("/");
-      } else if (response1.status === 500 && response2.status === 500) {
-        console.error("로그아웃 요청 실패:", response2.statusText);
       } else {
-        console.error("서버에서 오류가 발생했습니다.");
+        // 만약 /managepage에서 로그아웃한 경우, 다른 동작을 하지 않음
       }
-    } catch (error) {
-      console.error("로그아웃 요청 중 에러 발생:", error);
+    } else if (response1.status === 500 && response2.status === 500) {
+      console.error("로그아웃 요청 실패:", response2.statusText);
+    } else {
+      console.error("서버에서 오류가 발생했습니다.");
     }
-  };
+  } catch (error) {
+    console.error("로그아웃 요청 중 에러 발생:", error);
+  }
+};
 
   if (
     locationInfo.pathname === "/login" ||
@@ -73,7 +77,7 @@ const Header = () => {
 
   return (
     <HeaderContainer>
-      <Link to="/">
+       <Link to={locationInfo.pathname.toLowerCase() === "/managepage" ? "#" : "/"}>
         <Logo>
           <img src={logoImg} alt="logoImg" />
         </Logo>

@@ -98,7 +98,7 @@ const UserMenu = ({ isLogined, handleLogout, userId, toggleNav }) => {
         ) : (
           <>
             <li>
-              <Link to="/login">로그인</Link>
+              <Link to={locationInfo.pathname.toLowerCase() === "/managepage" ? "/manage" : "/login"}>로그인</Link>
             </li>
             {locationInfo.pathname.toLowerCase() !== "/managepage" && (
               <li>
