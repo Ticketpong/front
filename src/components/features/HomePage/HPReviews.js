@@ -55,6 +55,7 @@ const Li = styled.li`
   align-items: center;
   border-bottom: 1px solid #999999;
   justify-content: space-between;
+  min-width: 1250px;
   max-width: 1250px;
 `;
 
