@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import AdminManage from "../../components/features/ManagePage/AdminManage";
 import EditManage from "../../components/features/ManagePage/EditManage";
@@ -7,9 +7,9 @@ import MemberManage from "../../components/features/ManagePage/MemberManage";
 import PerformanceReg from "../../components/features/ManagePage/PerformanceReg";
 import PerformanceManageChg from "../../components/features/ManagePage/PerformanceChg";
 import PerformanceManage from "../../components/features/ManagePage/PerformanceManage";
-
-import { MdKeyboardArrowRight } from "react-icons/md";
 import ReviewsManagement from "../../components/features/ManagePage/ReviewManage";
+import { MdKeyboardArrowRight } from "react-icons/md";
+import axiosWithAuth from "../../components/base/axiosWithAuth";
 
 const Container = styled.div`
   display: flex;
@@ -76,6 +76,9 @@ const ManagePage = () => {
   const [selectedItem, setSelectedItem] = useState(1);
   const [selectedManageId, setSelectedManageId] = useState(null);
   const [selectedPerformanceId, setSelectedPerformanceId] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [isLogined, setIsLogined] = useState(false);
+
 
   const handleItemClick = (num) => {
     setSelectedItem(num);
@@ -98,6 +101,29 @@ const ManagePage = () => {
     setSelectedItem(6);
     setSelectedManageId(manageId);
   };
+
+  useEffect(() => {
+    const fetchStatusLogin = async () => {
+      try {
+        const response = await axiosWithAuth().get(
+          "http://localhost:8080/manage/profile"
+        );
+        const { id, isLogined } = response.data;
+        if (isLogined) {
+          setUserId(id);
+          setIsLogined(isLogined);
+        } else {
+          console.log("로그인 상태가 아닙니다.");
+          // 사용자가 로그인하지 않은 경우, 로그인 페이지로 이동
+        }
+      } catch (error) {
+        window.location.href = "/manage"; // 로그인 페이지로 이동
+        console.error("로그인 상태 확인 중 오류가 발생했습니다.", error);
+      }
+    };
+  
+    fetchStatusLogin();
+  }, []);
 
   return (
     <Container>
