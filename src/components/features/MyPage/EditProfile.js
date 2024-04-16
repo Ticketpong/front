@@ -162,6 +162,7 @@ const EditProfile = (props) => {
       alert("회원 탈퇴가 완료되었습니다.");
       setIsLogined(false);
       localStorage.removeItem("token");
+      window.location.href = "/";
     } else {
       alert("회원 탈퇴에 실패했습니다.");
     }
