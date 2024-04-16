@@ -85,7 +85,7 @@ const AdminManage = ({ onAddClick, onEditClick }) => {
   const [isLogined, setIsLogined] = useState(false);
   const [userId, setUserId] = useState("");
 
-  useEffect(() => {
+  /*useEffect(() => {
     const fetchLoginStatus = async () => {
       try {
         const response = await axiosWithAuth().get(
@@ -101,7 +101,7 @@ const AdminManage = ({ onAddClick, onEditClick }) => {
       }
     };
     fetchLoginStatus();
-  }, []);
+  }, []); */
 
   useEffect(() => {
     fetchData();
