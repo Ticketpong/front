@@ -137,7 +137,7 @@ const EditProfile = (props) => {
 
   const handleEmailDuplicationCheck = async () => {
     // 이메일 중복 확인 로직
-    const response = await axios.get(
+    const response = await axios.post(
       "http://localhost:8080/signup/emailcheck",
       {
         email: userInfo.email,
