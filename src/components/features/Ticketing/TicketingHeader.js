@@ -10,9 +10,6 @@ const TicketingHeader = ({ headerData }) => {
   const clickShowList = () => {
     navigate("/viewall");
   };
-  const clickGenre = () => {
-    navigate(`/viewall/${headerData.genrenm}`);
-  };
   return (
     <S.ContentTitle>
       <S.NavLocation>
@@ -20,7 +17,7 @@ const TicketingHeader = ({ headerData }) => {
         <span>/</span>
         <span onClick={clickShowList}>공연전시예매</span>
         <span>/</span>
-        <span onClick={clickGenre}>{headerData.genrenm}</span>
+        <span style={{ cursor: "default" }}>{headerData.genrenm}</span>
       </S.NavLocation>
       <strong>{headerData.prfnm}</strong>
       <span>
