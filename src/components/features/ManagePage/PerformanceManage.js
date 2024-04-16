@@ -79,24 +79,6 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
   const [isLogined, setIsLogined] = useState(false);
   const [userId, setUserId] = useState("");
 
-  /*useEffect(() => {
-    const fetchLoginStatus = async () => {
-      try {
-        const response = await axiosWithAuth().get(
-          "http://localhost:8080/manage/profile"
-        );
-        const { id, isLogined } = response.data;
-        if (isLogined) {
-          setUserId(id);
-          setIsLogined(true);
-        }
-      } catch (error) {
-        console.error("로그인 상태를 확인하는 동안 오류 발생:", error);
-      }
-    };
-    fetchLoginStatus();
-  }, []); */
-
   useEffect(() => {
     fetchData();
   }, [currentPage]);

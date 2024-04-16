@@ -9,9 +9,8 @@ import PerformanceManageChg from "../../components/features/ManagePage/Performan
 import PerformanceManage from "../../components/features/ManagePage/PerformanceManage";
 import ReviewsManagement from "../../components/features/ManagePage/ReviewManage";
 import { MdKeyboardArrowRight } from "react-icons/md";
-import axiosWithAuth from "../../base/axiosWithAuth";
+import axiosWithAuth from "../../components/base/axiosWithAuth";
 
-// axiosWithAuth import 필요
 
 const Container = styled.div`
   display: flex;
@@ -106,7 +105,7 @@ const ManagePage = () => {
   useEffect(() => {
     const fetchStatusLogin = async () => {
       try {
-        const response = await axiosWithAuth().get("http://localhost:8080/login/profile");
+        const response = await axiosWithAuth().get("http://localhost:8080/manage/profile");
         const { id, isLogined } = response.data;
         if (isLogined) {
           setUserId(id);
@@ -114,7 +113,7 @@ const ManagePage = () => {
         } else {
           console.log("로그인 상태가 아닙니다.");
           // 사용자가 로그인하지 않은 경우, 로그인 페이지로 이동
-          window.location.href = '/login'; // 로그인 페이지로 이동
+          window.location.href = '/manage'; // 로그인 페이지로 이동
         }
       } catch (error) {
         console.error("로그인 상태 확인 중 오류가 발생했습니다.", error);
@@ -123,7 +122,6 @@ const ManagePage = () => {
   
     fetchStatusLogin();
   }, []);
-  
   
   return (
     <Container>
