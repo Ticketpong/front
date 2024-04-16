@@ -19,8 +19,7 @@ const Container = styled.div`
   margin-bottom: 120px;
   .head {
     border-width: 3px;
-    min-width: 1530px;
-    max-width: 1530px;
+    max-width: 1350px;
     color: black;
     padding-left: 100px;
     margin-bottom: 10px;
@@ -39,8 +38,7 @@ const Container = styled.div`
 const HeadHr = styled.hr`
   background-color: black;
   height: 2px;
-  min-width: 1540px;
-  max-width: 1540px;
+  max-width: 1250px;
 `;
 const UlContainer = styled.ul`
   list-style-type: none;
@@ -48,8 +46,7 @@ const UlContainer = styled.ul`
   flex-direction: column;
   align-items: flex-start; /* 수직 가운데 정렬 */
   margin: 0 auto;
-  min-width: 1540px;
-  max-width: 1540px;
+  max-width: 1250px;
   padding-left: 0;
 `;
 
@@ -58,21 +55,19 @@ const Li = styled.li`
   align-items: center;
   border-bottom: 1px solid #999999;
   justify-content: space-between;
+  max-width: 1250px;
 `;
 
 const Img = styled.div`
   display: block;
-  min-width: 270px;
   max-width: 270px;
-  height: 340px;
-  margin: 17px 50px 26px 120px;
+  height: 300px;
+  margin: 0 auto;
+  padding: 0 40px;
   object-fit: cover;
   border-radius: 12px;
   img {
-    min-height: 100%;
-    max-height: 100%;
-    min-width: 100%;
-    max-width: 100%;
+    height: 100%;
     border-radius: 12px;
   }
 `;
@@ -80,9 +75,7 @@ const Img = styled.div`
 const Text = styled.div`
   flex-grow: 1;
   margin-top: 70px;
-  min-height: 320px;
-  max-height: 320px;
-  min-width: 1100px;
+  height: 320px;
   max-width: 1100px;
   overflow: hidden;
   display: flex;
@@ -137,6 +130,13 @@ const Name = styled.span`
 const Content = styled.span`
   font-size: 20px;
   color: #999999;
+  overflow: hidden;
+  white-space: normal;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: keep-all;
 `;
 
 const Rank = styled.span`
@@ -204,28 +204,33 @@ const HPReviews = () => {
         <HeadHr />
         <UlContainer>
           {data?.slice(0, 3).map((item, index) => (
-            <StyleLink
-              to={`/reviewdetail/${item.pre_id}`}
-              state={{ preId: item.pre_id }}
-            >
-              <Li key={index}>
-                {item.poster && (
+            <Li key={index}>
+              {item.poster && (
+                <StyleLink
+                  to={`/reviewdetail/${item.pre_id}`}
+                  state={{ preId: item.pre_id }}
+                >
+                  {" "}
                   <Img>
                     <img src={item.poster} alt="포스터" />
                   </Img>
+                </StyleLink>
+              )}
+              <Text>
+                {item.prfnm && (
+                  <Work>
+                    &lt;{item.genrenm}&gt;&nbsp;{item.prfnm}
+                  </Work>
                 )}
-                <Text>
-                  {item.prfnm && <Work>{item.prfnm}</Work>}
-                  {item.pretitle && <Name>{item.pretitle}</Name>}
-                  {item.prestar && <p>{rankStar(item.prestar)}</p>}
-                  {item.precontent && <Content>{item.precontent}</Content>}
-                  <LikeBox>
-                    <FcLike size="35" />
-                    <LikeCount> {item.recommend}</LikeCount>
-                  </LikeBox>
-                </Text>
-              </Li>
-            </StyleLink>
+                {item.pretitle && <Name>{item.pretitle}</Name>}
+                {item.prestar && <p>{rankStar(item.prestar)}</p>}
+                {item.precontent && <Content>{item.precontent}</Content>}
+                <LikeBox>
+                  <FcLike size="35" />
+                  <LikeCount> {item.recommend}</LikeCount>
+                </LikeBox>
+              </Text>
+            </Li>
           ))}
         </UlContainer>
         <BottomBtn>
