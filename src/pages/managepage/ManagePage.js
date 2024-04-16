@@ -105,7 +105,9 @@ const ManagePage = () => {
   useEffect(() => {
     const fetchStatusLogin = async () => {
       try {
-        const response = await axiosWithAuth().get("http://localhost:8080/manage/profile");
+        const response = await axiosWithAuth().get(
+          "http://localhost:8080/manage/profile"
+        );
         const { id, isLogined } = response.data;
         if (isLogined) {
           setUserId(id);
@@ -113,9 +115,9 @@ const ManagePage = () => {
         } else {
           console.log("로그인 상태가 아닙니다.");
           // 사용자가 로그인하지 않은 경우, 로그인 페이지로 이동
-          window.location.href = '/manage'; // 로그인 페이지로 이동
         }
       } catch (error) {
+        window.location.href = "/manage"; // 로그인 페이지로 이동
         console.error("로그인 상태 확인 중 오류가 발생했습니다.", error);
       }
     };
