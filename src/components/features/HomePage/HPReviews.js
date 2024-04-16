@@ -65,7 +65,7 @@ const Img = styled.div`
   min-width: 270px;
   max-width: 270px;
   height: 340px;
-  margin: 17px 35px 17px 120px;
+  margin: 17px 50px 26px 120px;
   object-fit: cover;
   border-radius: 12px;
   img {
@@ -79,7 +79,7 @@ const Img = styled.div`
 
 const Text = styled.div`
   flex-grow: 1;
-  margin-top: 50px;
+  margin-top: 70px;
   min-height: 320px;
   max-height: 320px;
   min-width: 1100px;
@@ -124,17 +124,18 @@ const BottomBtn = styled.div`
 `;
 
 const Work = styled.span`
-  font-size: 24px;
+  font-size: 20px;
   color: #999999;
+  margin-bottom: 4px;
 `;
 
 const Name = styled.span`
-  font-size: 32px;
+  font-size: 24px;
   font-weight: bold;
 `;
 
 const Content = styled.span`
-  font-size: 24px;
+  font-size: 20px;
   color: #999999;
 `;
 
@@ -151,13 +152,19 @@ const LikeIcon = styled.img`
 
 const LikeCount = styled.span`
   font-weight: bold;
-  font-size: 21px;
+  font-size: 20px;
+  margin-left: 8px;
 `;
 
 const LikeBox = styled.div`
   display: flex;
   align-items: center;
   margin-top: 32px;
+`;
+
+const StyleLink = styled(Link)`
+  text-decoration: none;
+  color: black;
 `;
 
 const HPReviews = () => {
@@ -197,24 +204,28 @@ const HPReviews = () => {
         <HeadHr />
         <UlContainer>
           {data?.slice(0, 3).map((item, index) => (
-            <Li key={index}>
-              {item.poster && (
-                <Img>
-                  <img src={item.poster} alt="포스터" />
-                </Img>
-              )}
-              <Text>
-                {item.prfnm && <Work>{item.prfnm}</Work>}
-                {item.pretitle && <Name>{item.pretitle}</Name>}
-                {item.prestar && <p>{rankStar(item.prestar)}</p>}
-                {item.precontent && <Content>{item.precontent}</Content>}
-                <LikeBox>
-                  {/* <LikeIcon src={LikeIconImg} alt="좋아요 아이콘" /> */}
-                  <FcLike size="35" />
-                  <LikeCount> {item.recommend}</LikeCount>
-                </LikeBox>
-              </Text>
-            </Li>
+            <StyleLink
+              to={`/reviewdetail/${item.pre_id}`}
+              state={{ preId: item.pre_id }}
+            >
+              <Li key={index}>
+                {item.poster && (
+                  <Img>
+                    <img src={item.poster} alt="포스터" />
+                  </Img>
+                )}
+                <Text>
+                  {item.prfnm && <Work>{item.prfnm}</Work>}
+                  {item.pretitle && <Name>{item.pretitle}</Name>}
+                  {item.prestar && <p>{rankStar(item.prestar)}</p>}
+                  {item.precontent && <Content>{item.precontent}</Content>}
+                  <LikeBox>
+                    <FcLike size="35" />
+                    <LikeCount> {item.recommend}</LikeCount>
+                  </LikeBox>
+                </Text>
+              </Li>
+            </StyleLink>
           ))}
         </UlContainer>
         <BottomBtn>
