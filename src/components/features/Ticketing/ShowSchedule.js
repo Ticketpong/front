@@ -136,8 +136,6 @@ const ShowSchedule = (data) => {
 
     return schedules;
   });
-
-  console.log(processedData);
   return processedData;
 };
 

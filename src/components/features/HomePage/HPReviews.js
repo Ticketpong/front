@@ -218,7 +218,7 @@ const HPReviews = () => {
           ))}
         </UlContainer>
         <BottomBtn>
-          <Link to="/community">
+          <Link to="/community#review">
             <StyledViewAllButton>후기 전체보기</StyledViewAllButton>
           </Link>
         </BottomBtn>

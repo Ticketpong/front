@@ -286,7 +286,7 @@ const ReviewDetail = () => {
                 <ListButton>
                   <Link
                     style={{ textDecoration: "none", color: "#fff" }}
-                    to="/community"
+                    to="/community#review"
                   >
                     목록
                   </Link>
