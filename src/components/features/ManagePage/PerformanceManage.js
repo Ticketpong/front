@@ -147,6 +147,7 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
     setCurrentPage(page);
   };
 
+  
   return (
     <>
       <Container>
