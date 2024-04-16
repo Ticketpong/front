@@ -192,6 +192,9 @@ const ReviewDetail = () => {
       if (response.data === "recommand success") {
         setRecommandState(true);
         console.log("추천 성공");
+      } else if (response.data === "login required") {
+        alert("로그인 후 이용해주세요");
+        navigate("/login");
       } else {
         setRecommandState(false);
         console.log("추천 취소");
