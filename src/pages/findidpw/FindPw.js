@@ -180,8 +180,6 @@ const FindPw = () => {
     });
   };
 
-  console.log(inputValues);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await axios.post(

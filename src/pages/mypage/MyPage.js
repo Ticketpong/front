@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import BookingDetail from "../../components/features/MyPage/BookingDetail";
 import MyReview from "../../components/features/MyPage/MyReview";
@@ -6,6 +6,7 @@ import EditProfile from "../../components/features/MyPage/EditProfile";
 import PwCheck from "../../components/features/MyPage/PwCheck";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import SetDevice from "../../components/features/MyPage/SetDevice";
+import { useLocation } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -72,6 +73,14 @@ const Title = styled.h2`
 const MyPage = () => {
   const [selectedItem, setSelectedItem] = useState(1);
   const [showPwCheck, setShowPwCheck] = useState(false); // 비밀번호 확인 모달
+  const location = useLocation();
+  const hash = location.hash;
+
+  useEffect(() => {
+    if (hash === "#mac") {
+      setSelectedItem(5);
+    }
+  }, [hash]);
 
   const handleItemClick = (num) => {
     setSelectedItem(num);

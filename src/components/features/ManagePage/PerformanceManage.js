@@ -111,7 +111,6 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
         ...item,
         number: (currentPage - 1) * 7 + index + 1,
       }));
-      console.log(newData);
       setData(newData);
     } catch (error) {
       console.error(error);
@@ -123,7 +122,6 @@ const PerformanceManage = ({ onAddClick, onEditClick }) => {
   const performanceDelete = async (mt20id) => {
     try {
       const response = await axios.delete(url, { data: { mt20id } });
-      console.log(response);
       fetchData();
     } catch (error) {
       console.error(error);

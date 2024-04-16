@@ -128,7 +128,6 @@ const AdminManage = ({ onAddClick, onEditClick }) => {
   const idDelete = async (id) => {
     try {
       const response = await axios.delete(url, { data: { id } });
-      console.log(response);
       fetchData();
     } catch (error) {
       console.error(error);

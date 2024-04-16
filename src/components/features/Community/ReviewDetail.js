@@ -135,7 +135,6 @@ const ReviewDetail = () => {
           ...item,
         }));
         setData(newData);
-        // console.log(newData);
       } catch (error) {
         console.error(error);
       }
@@ -174,15 +173,12 @@ const ReviewDetail = () => {
         );
         const newData = response.data;
         setRecommandState(newData);
-        // console.log(recommandState);
       } catch (error) {
         console.error(error);
       }
     };
     getRecommandInfo();
   }, [preid, userId]);
-
-  // console.log(recommandState);
 
   const recommandHandler = async () => {
     try {
@@ -235,7 +231,6 @@ const ReviewDetail = () => {
       const response = await axios.post("http://localhost:8080/review/delete", {
         pre_id: preid,
       });
-      console.log(response);
       navigate(-1);
     }
   };

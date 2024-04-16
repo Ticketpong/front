@@ -91,6 +91,7 @@ const ButtonContainer = styled.div`
     }
   }
   strong {
+    padding: 0 10px;
   }
 `;
 
@@ -350,7 +351,14 @@ const BookingDetail = () => {
         {Array.from(
           { length: Math.ceil(filteredData.length / ITEMS_PER_PAGE) },
           (_, i) => (
-            <strong key={i + 1} onClick={() => setCurrentPage(i + 1)}>
+            <strong
+              key={i + 1}
+              onClick={() => setCurrentPage(i + 1)}
+              style={{
+                color: currentPage === i + 1 ? "#000000" : "#999999",
+                cursor: "pointer",
+              }}
+            >
               {i + 1}
             </strong>
           )

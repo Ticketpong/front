@@ -113,8 +113,6 @@ const ConfirmId = () => {
   const location = useLocation();
   const userId = location.state.userId;
 
-  console.log(userId);
-
   return (
     <OuterContainer>
       <InnerContainer>

@@ -116,7 +116,6 @@ const EditMyReview = () => {
         precontent: comment,
         prestar: rating,
       });
-      console.log(response);
     } catch (error) {
       console.log(error);
     }

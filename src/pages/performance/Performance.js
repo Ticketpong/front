@@ -130,7 +130,6 @@ const Performance = () => {
           Math.pow(item.la - lat, 2) + Math.pow(item.lo - long, 2)
         );
         // 0.1당 대략 반경 11km 이내
-        // console.log(lat, long);
         return distance <= 0.1;
       });
     } else if (selectedCategory === "전체") {

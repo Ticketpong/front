@@ -153,7 +153,6 @@ const Modal = ({ isOpen, onClose, data }) => {
               imp_uid: data.imp_uid,
             }
           );
-          console.log(response);
           if (response.status === 200 || response.status === 204) {
             alert("예매가 취소되었습니다.");
 

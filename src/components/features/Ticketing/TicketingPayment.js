@@ -41,6 +41,7 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
   const [userValue, setUserValue] = useState([]);
   const [payData, setPayData] = useState([]);
   const [regiData, setRegiData] = useState([]);
+  const [macData, setMacData] = useState([]);
 
   useEffect(() => {
     const iamport = document.createElement("script");
@@ -50,6 +51,21 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
       document.head.removeChild(iamport);
     };
   }, []);
+
+  const getCurrentMac = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/macAddress/current",
+        {
+          user_id: userId,
+        }
+      );
+      console.log(response);
+      setMacData(response.data === true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const fetchLoginStatus = async () => {
@@ -73,6 +89,7 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
   useEffect(() => {
     if (userId) {
       getMacInfo();
+      getCurrentMac();
     }
   }, [userId]);
 
@@ -142,7 +159,6 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
         selectseat: response.custom_data.selectedseat,
         people: response.custom_data.people,
       });
-      console.log(result);
       json.stringify(result);
     } catch (error) {
       console.log(error);
@@ -151,17 +167,22 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
   const navigate = useNavigate();
 
   const checkMac = () => {
-    console.log(regiData);
-    if (userId) {
-      if (regiData) {
+    if (userId && userValue.length > 0 && userValue[0].user_name) {
+      if (macData) {
         onClickPayment();
+      } else if (!macData) {
+        alert("접속한 기기와 등록된 기기가 일치하지 않습니다!");
       } else {
-        alert("기기등록이 필요합니다.");
-        navigate("/mypage");
+        alert("기기 등록이 필요합니다.");
+        navigate("/mypage#mac");
       }
     } else {
-      alert("로그인이 필요합니다.");
-      navigate("/login");
+      if (!userId) {
+        navigate("/login");
+      } else {
+        alert("잠시후 다시 시도해주세요.");
+        window.location.reload();
+      }
     }
   };
 
@@ -195,7 +216,6 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
     };
 
     if (cardData) {
-      console.log(cardData[0]);
       // cardData가 존재하는 경우 추가 카드 정보를 포함하여 결제 요청
       data.card = {
         direct: {
@@ -209,7 +229,6 @@ const Payment = ({ amount, showData, selectedseat, people, cardData }) => {
 
   const callback = (response) => {
     if (response.success) {
-      console.log(response);
       submitPayment(response);
       alert("결제 성공!");
 

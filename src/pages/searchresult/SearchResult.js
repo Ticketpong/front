@@ -62,8 +62,9 @@ const ResultItem = styled.div`
 `;
 
 const PosterImage = styled.img`
-  width: 100%;
-  height: auto;
+  width: 310px;
+  height: 390px;
+  border-radius: 12px;
 `;
 
 const ResultTitle = styled.p`
@@ -85,6 +86,11 @@ const ResultDate = styled.p`
   margin-bottom: 5px;
   line-height: 5px;
   color: #999;
+`;
+
+const StyleLink = styled(Link)`
+  text-decoration: none;
+  color: black;
 `;
 
 const SearchResult = () => {
@@ -121,14 +127,20 @@ const SearchResult = () => {
       <ResultCount>티켓 ({searchResults.length})</ResultCount>
       <ResultContainer>
         {searchResults.map((result) => (
+          <StyleLink to={`/ticketing/${result.mt20id}`} key={result.id}>
           <ResultItem key={result.id}>
             <PosterImage src={result.poster} alt="Poster" />
-            <ResultTitle>{result.prfnm}</ResultTitle>
+            <ResultTitle>
+              {result.prfnm.length > 15 ?
+              (<>&lt;{result.prfnm.slice(0, 15)}...</>)
+              : (<>&lt;{result.prfnm}&gt;</>
+                    )}</ResultTitle>
             <ResultPlace>{result.mt10id}</ResultPlace>
             <ResultDate>
               {result.prfpdfrom} ~ {result.prfpdto}
             </ResultDate>
           </ResultItem>
+          </StyleLink>
         ))}
       </ResultContainer>
     </Container>

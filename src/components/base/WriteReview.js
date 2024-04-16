@@ -97,7 +97,6 @@ const WriteReview = () => {
   const [comment, setComment] = useState("");
 
   const bookingData = useLocation();
-  console.log(bookingData);
   const data = bookingData.state[0];
   const preId = data.mt20id + "pre" + generateRandomCode();
 

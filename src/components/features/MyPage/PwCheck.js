@@ -85,7 +85,6 @@ const PwCheck = () => {
 
     const result = response.data;
 
-    console.log(result);
 
     if (result === true) {
       alert("비밀번호가 확인되었습니다.");
